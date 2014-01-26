@@ -82,7 +82,7 @@ typedef WrappedClassOptions* WrappedClassOptionsPtr;			///< A pointer to Wrapped
 
 // FUNCTIONS
 
-// Wrap a TTBlue class as a Max class.
+// Wrap a Jamoma DSP class as a Max class.
 TTErr wrapAsMaxAudioGraph(TTSymbolPtr ttClassName, char* maxClassName, WrappedClassPtr* c);
 
 // This version can be passed a method that is called to make sure it is legit to instantiate the class.

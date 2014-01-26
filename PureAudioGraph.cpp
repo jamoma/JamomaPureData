@@ -1,7 +1,7 @@
 /* 
  *	MaxAudioGraph
  *	A thin wrapper of the Lydbaer audio system for use in the Cycling '74 Max/MSP environment.
- *	Includes an automated class wrapper to make TTBlue object's available as objects for Max/MSP.
+ *	Includes an automated class wrapper to make Jamoma object's available as objects for Max/MSP.
  *	Copyright © 2008 by Timothy Place
  * 
  * License: This code is licensed under the terms of the "New BSD License"
@@ -16,7 +16,7 @@
 typedef struct _wrappedInstance {
     t_object				obj;						///< Max audio object header
 	WrappedClassPtr			wrappedClassDefinition;		///< A pointer to the class definition
-	TTAudioGraphObjectPtr	audioGraphObject;				///< The instance of the TTBlue object we are wrapping
+	TTAudioGraphObjectPtr	audioGraphObject;				///< The instance of the Jamoma  object we are wrapping
 	TTPtr					audioGraphOutlets[16];			///< Array of outlets, may eventually want this to be more dynamic
 	TTPtr					inlets[16];					///< Array of proxy inlets beyond the first inlet
 } WrappedInstance;

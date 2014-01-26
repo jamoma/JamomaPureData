@@ -14,7 +14,7 @@ typedef struct _ttlimiter {
 	t_object		obj;
 	t_outlet*		outlet;			// outlet for status and version messages
 	t_float			f;				// dummy for signal in first inlet
-	TTAudioObject*	limiter;		// the TTBlue limiter object
+	TTAudioObject*	limiter;		// the Jamoma limiter object
 	TTAudioSignal*	audioIn;
 	TTAudioSignal*	audioOut;
 } t_ttlimiter;

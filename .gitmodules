@@ -1,0 +1,3 @@
+[submodule "CicmWrapper"]
+	path = CicmWrapper
+	url = git@github.com:avilleret/CicmWrapper.git

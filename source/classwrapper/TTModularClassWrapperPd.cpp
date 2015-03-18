@@ -274,7 +274,8 @@ void wrappedModularClass_shareContextNode(TTPtr self, TTNodePtr *contextNode)
 
 t_max_err wrappedModularClass_attrGet(TTPtr self, t_object *attr, long* argc, t_atom** argv)
 {
-	t_symbol	*attrName = (t_symbol*)object_method(attr, _sym_getname);
+	// t_symbol	*attrName = (t_symbol*)object_method(attr, _sym_getname);
+	t_symbol	*attrName = ((t_eattr*)attr)->name;
 	TTValue		v;
 	WrappedModularInstancePtr x = (WrappedModularInstancePtr)self;
 	t_max_err	err;
@@ -299,7 +300,8 @@ t_max_err wrappedModularClass_attrGet(TTPtr self, t_object *attr, long* argc, t_
 t_max_err wrappedModularClass_attrSet(TTPtr self, t_object *attr, long argc, const t_atom *argv)
 {
 	WrappedModularInstancePtr x = (WrappedModularInstancePtr)self;
-	t_symbol	*attrName = (t_symbol*)object_method(attr, _sym_getname);
+	// t_symbol	*attrName = (t_symbol*)object_method(attr, _sym_getname);
+	t_symbol	*attrName = ((t_eattr*)attr)->name;
 	TTValue		v;
 	long        ac = 0;
 	t_atom		*av = NULL;

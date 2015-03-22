@@ -127,7 +127,7 @@ typedef struct _wrappedModularInstance {
 	
 	TTAddress								address;					///< sometime external needs to store an address (e.g. send, receive, view, ...)
 	
-	t_object								*patcherPtr;					///< the patcher in which the external is (ignoring subpatcher)
+	t_canvas								*patcherPtr;					///< the patcher in which the external is (ignoring subpatcher)
 	TTSymbol								patcherContext;				///< the patcher context in which the external is (model, view)
 	TTSymbol								patcherClass;				///< the patcher class in which the external is
 	TTSymbol								patcherName;				///< the patcher name in which the external is
@@ -147,7 +147,7 @@ typedef struct _wrappedModularInstance {
 	
 	void									*extra;						///< used to keep very specific things
 
-    t_outlet*                               dumpOut;
+	t_outlet*                               dumpOut;
 	
 } WrappedModularInstance;
 

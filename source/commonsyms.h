@@ -1,4 +1,4 @@
-/* 
+/*
 	commonsyms.h
 		
 */
@@ -176,6 +176,18 @@ extern t_symbol *_sym_filename;
 extern t_symbol *_sym_nextobject;
 extern t_symbol *_sym_pd;
 extern t_symbol *_sym_box;
+extern t_symbol *_sym_nobox;
+
+//Jamoma specific symbols
+extern t_symbol *_sym_j_in;
+extern t_symbol *_sym_j_out;
+extern t_symbol *_sym_j_intilda;
+extern t_symbol *_sym_j_outtilda;
+extern t_symbol *_sym_j_ui;
+extern t_symbol *_sym_j_model;
+extern t_symbol *_sym_j_view;
+extern t_symbol *_sym_share_patcher_node;
+extern t_symbol *_sym_share_patcher_info;
 
 #ifdef __cplusplus
 }

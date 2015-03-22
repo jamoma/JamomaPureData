@@ -20,6 +20,8 @@
 #define t_max_err t_int
 #endif
 
+#define JAMOMA_ATTR_MAX 256
+
 // TYPE DEFINITIONS
 
 typedef TTErr (*TTValidityCheckFunction)(const TTPtr data);		///< A type that can be used to store a pointer to a validity checking function.
@@ -43,8 +45,6 @@ typedef struct _wrappedClass {
     std::map<std::string,TTSymbol>      pdNamesToTTNames;		///< names may not be direct mappings, as we downcase the first letter.
 
     void*                               specificities;			///< anything needed to deal with somes specificities of the class...
-
-    std::map<std::string,t_atom>        attributesMap;               ///< array of attributes values
 } WrappedClass;
 
 

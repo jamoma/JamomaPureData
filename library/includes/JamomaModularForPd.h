@@ -377,17 +377,6 @@ void JAMOMA_EXPORT jamoma_callback_return_signal_audio(const TTValue& baton, con
 // Patcher
 ///////////////////////////////////////////////
 
-/** Convenient method to get the patcher easily.
- @param obj
- */
-t_canvas JAMOMA_EXPORT *jamoma_patcher_get(t_object *obj);
-
-
-/** Convenient method to get the patcher easily.
- @param patcher
- */
-t_canvas JAMOMA_EXPORT *jamoma_patcher_get(t_canvas *patcher);
-
 /** Convenient method to get the patcher argument easily.
  In poly case it also return the voice index (0 else) 
  @param patcher
@@ -436,7 +425,7 @@ void JAMOMA_EXPORT jamoma_patcher_share_info(t_canvas *patcher, t_canvas **retur
  @param obj
  @param patcherNode
  */
-void JAMOMA_EXPORT jamoma_patcher_share_node(t_object *obj, TTNodePtr *patcherNode);
+void JAMOMA_EXPORT jamoma_patcher_share_node(t_canvas *, TTNodePtr *patcherNode);
 
 
 /** Get all context info from an object (his patcher and the context, the class and the name of his patcher).
@@ -578,8 +567,7 @@ t_symbol JAMOMA_EXPORT *jamoma_parse_dieze(t_canvas *x, t_symbol *address);
  @param default_filename
  @return
  */
-TTSymbol JAMOMA_EXPORT jamoma_file_write(t_object *x, long argc, const t_atom *argv, char* default_filename);
-
+TTSymbol JAMOMA_EXPORT jamoma_file_write(t_object *x, long argc, t_atom *argv, char* default_filename);
 
 /** Get BOOT style filepath from args or, if no args open a dialog to read a file.
  @param x
@@ -588,7 +576,7 @@ TTSymbol JAMOMA_EXPORT jamoma_file_write(t_object *x, long argc, const t_atom *a
  @param filetype
  @return
  */
-TTSymbol JAMOMA_EXPORT jamoma_file_read(t_object *x, long argc, const t_atom *argv, int filetype);
+TTSymbol JAMOMA_EXPORT jamoma_file_read(t_object *x, long argc, t_atom *argv, t_fourcc filetype);
 
 #endif // __JAMOMA_MODULAR_FOR_PD_H__
 	

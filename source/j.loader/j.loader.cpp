@@ -24,9 +24,6 @@ typedef struct _loader{
 // Prototypes for methods
 void* j0x2eloader_new(t_symbol *name, long argc, t_atom *argv);
 
-// Prototypes for loading classes
-extern "C" void j0x2eparameter_setup(void);
-
 // Globals
 static t_class *loader_class;
 
@@ -136,14 +133,13 @@ void plugtastic_classinit()
 /************************************************************************************/
 // Main() Function
 
-int JAMOMA_EXPORT_MAXOBJ j0x2eloader_setup(void)
+extern "C" int JAMOMA_EXPORT_MAXOBJ setup_j0x2eloader(void)
 {
     t_class *c;
 	
     jamoma_init();
     common_symbols_init();
 
-    printf("j.loader_setup\n");
     post("build on %s at %s", __DATE__, __TIME__);
 
 	// Define our class
@@ -209,7 +205,6 @@ int JAMOMA_EXPORT_MAXOBJ j0x2eloader_setup(void)
     // class_register(CLASS_BOX, c);
 
     // Initialize class
-    j0x2eparameter_setup();
 
 	loader_class = c;
 	return 0;
@@ -217,7 +212,7 @@ int JAMOMA_EXPORT_MAXOBJ j0x2eloader_setup(void)
 
 extern "C" int JAMOMA_EXPORT_MAXOBJ jamoma_setup(void)
 {
-    return j0x2eloader_setup();
+	return setup_j0x2eloader();
 }
 
 /************************************************************************************/
@@ -225,11 +220,6 @@ extern "C" int JAMOMA_EXPORT_MAXOBJ jamoma_setup(void)
 
 void *j0x2eloader_new(t_symbol *name, long argc, t_atom *argv)
 {
-    printf("j.loader_new\n");
-
     t_loader *obj = (t_loader*)pd_new(loader_class);
-
-    printf("done\n");
-
 	return obj;
 }

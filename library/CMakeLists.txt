@@ -36,7 +36,6 @@ ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaForPd.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaModularForPd.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaObject.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaSymbols.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/source/commonsyms.c
 # ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaPdSymbols.cpp
 )
 
@@ -59,6 +58,7 @@ include_directories("${PROJECT_SOURCE_DIR}/../../../Core/Modular/library/Schedul
 include_directories("${PROJECT_SOURCE_DIR}/../../../Core/DSP/library/includes")
 include_directories("${PROJECT_SOURCE_DIR}/../../../Core/Graph/library/includes")
 include_directories("${PROJECT_SOURCE_DIR}/../source/CicmWrapper/Sources")
+include_directories("${PROJECT_SOURCE_DIR}/../source/")
 
 
 add_library(${PROJECT_NAME} SHARED ${PROJECT_SRCS} ${PROJECT_HDRS})

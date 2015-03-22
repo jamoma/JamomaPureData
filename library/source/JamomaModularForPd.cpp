@@ -15,7 +15,6 @@
 
 #include "JamomaModularForPd.h"
 
-
 /***********************************************************************************
 *
 *		C EXTERN METHODS
@@ -126,7 +125,8 @@ TTErr jamoma_subscriber_create(t_object *x, TTObject& anObject, TTAddress relati
             returnedSubscriber.get(kTTSym_nodeAddress, v);
             returnedAddress = v[0];
 			
-            JamomaDebug post("registers at %s", returnedAddress.c_str());
+			JamomaDebug post("registers at %s", returnedAddress.c_str());
+			post("registers at %s", returnedAddress.c_str());
 		}
 
 		return kTTErrNone;
@@ -152,27 +152,12 @@ t_symbol *jamoma_patcher_get_hierarchy(t_canvas *canvas)
     else return _sym_subpatcher;
 }
 
-/** Convenient method to get the patcher easily */
-t_canvas *jamoma_patcher_get(t_object *obj)
-{
-    t_glist *glist=(t_glist *)canvas_getcurrent();
-    t_canvas *patcher=(t_canvas*)glist_getcanvas(glist);
-
-    return patcher;
-}
-
-/** Convenient method to get the patcher easily */
-t_canvas *jamoma_patcher_get(t_canvas *patcher)
-{
-    return patcher->gl_owner;
-}
-
 /** Parse #N inside address and replace them by parent patcher arguments if there are */
 t_symbol *jamoma_parse_dieze(t_canvas *x, t_symbol *address)
 {
 	TTString	diezeStr, argsStr, addressStr = address->s_name;
 	t_symbol	*hierarchy;
-    t_canvas	*patcher = (t_canvas*)jamoma_patcher_get(x);
+	t_canvas	*patcher = x;
 	/* TODO : use a TTRegex for this parsing
 	char		dieze[5];
 	char		args[64];
@@ -405,8 +390,9 @@ TTErr jamoma_data_command(TTObject& aData, t_symbol *msg, long argc, const t_ato
 		
 		aData.send(kTTSym_Command, v, none);
 		return kTTErrNone;
+	} else {
+		error("jamoma_data_command : invalid TTObject");
 	}
-	
 	return kTTErrGeneric;
 }
 
@@ -837,9 +823,9 @@ void JAMOMA_EXPORT jamoma_callback_return_ramped_value(void *o, TTUInt32 n, TTFl
 
     // send the atom to the object using return_value method
     if (argc == 1)
-        object_method(x, jps_return_value, _sym_float, argc, argv);
+		object_method_typed(x, jps_return_value, _sym_float, argc, argv);
     else
-        object_method(x, jps_return_value, _sym_list, argc, argv);
+		object_method_typed(x, jps_return_value, _sym_list, argc, argv);
 
     free(argv);
 }
@@ -863,7 +849,7 @@ void jamoma_callback_return_address(const TTValue& baton, const TTValue& v)
             address = v[0];
             
             // send data to a data using the return_value method
-            object_method(x, jps_return_address, SymbolGen(address.c_str()), 0, 0);
+			object_method_typed(x, jps_return_address, SymbolGen(address.c_str()), 0, 0);
         }
     }
 }
@@ -902,7 +888,7 @@ void jamoma_callback_return_value(const TTValue& baton, const TTValue& v)
 	
 	// send data to an external
     if (!deferlow)
-        object_method(x, s_method, _sym_nothing, argc, argv);
+		object_method_typed(x, s_method, _sym_nothing, argc, argv);
     
     else {
         
@@ -955,7 +941,7 @@ void jamoma_callback_return_value_typed(const TTValue& baton, const TTValue& v)
 	
 	// send data to an external
     if (!deferlow)
-        object_method(x, s_method, msg, argc, argv);
+		object_method_typed(x, s_method, msg, argc, argv);
     
     else {
         
@@ -983,7 +969,7 @@ void jamoma_callback_return_signal(const TTValue& baton, const TTValue& v)
 	jamoma_ttvalue_to_Atom(v, &argc, &argv);
 	
 	// send signal using the return_signal method
-	object_method(x, jps_return_signal, _sym_nothing, argc, argv);
+	object_method_typed(x, jps_return_signal, _sym_nothing, argc, argv);
 	
 	sysmem_freeptr(argv);
 }
@@ -1024,7 +1010,6 @@ void jamoma_ttvalue_to_typed_Atom(const TTValue& v, t_symbol **msg, long *argc, 
 	long        i;
 	TTFloat64	f;
 	TTSymbol	s;
-	TTInt32		t;
 	
 	*msg = _sym_nothing;
 	*argc = v.size();
@@ -1036,12 +1021,7 @@ void jamoma_ttvalue_to_typed_Atom(const TTValue& v, t_symbol **msg, long *argc, 
 		
 		for (i = 0; i < *argc; i++) {
 			
-			if(v[i].type() == kTypeFloat32 || v[i].type() == kTypeFloat64){
-				f = v[i];
-				atom_setfloat((*argv)+i, f);
-				*msg = _sym_float;
-			}
-			else if(v[i].type() == kTypeSymbol){
+			if(v[i].type() == kTypeSymbol){
 				s = v[i];
 				if (s == kTTSymEmpty || s == kTTAdrsEmpty)
 					atom_setsym((*argv)+i, _sym_bang);
@@ -1050,9 +1030,9 @@ void jamoma_ttvalue_to_typed_Atom(const TTValue& v, t_symbol **msg, long *argc, 
 				//*msg = _sym_symbol;
 			}
 			else{	// assume int
-				t = v[i];
-				atom_setlong((*argv)+i, t);
-				*msg = _sym_int;
+				f = v[i];
+				atom_setfloat((*argv)+i, f);
+				*msg = _sym_float;
 			}
 		}
 		
@@ -1083,7 +1063,6 @@ void jamoma_ttvalue_to_Atom(const TTValue& v, long *argc, t_atom **argv)
 	long        i;
 	TTFloat64	f;
 	TTSymbol	s;
-	TTInt32		t;
 	
 	*argc = v.size();
 	
@@ -1095,12 +1074,7 @@ void jamoma_ttvalue_to_Atom(const TTValue& v, long *argc, t_atom **argv)
 	
 	for (i = 0; i < v.size(); i++)
     {
-		if (v[i].type() == kTypeFloat32 || v[i].type() == kTypeFloat64)
-        {
-			f = v[i];
-			atom_setfloat((*argv)+i, f);
-		}
-		else if (v[i].type() == kTypeSymbol)
+		if (v[i].type() == kTypeSymbol)
         {
 			s = v[i];
             if (s == kTTSymEmpty)
@@ -1109,9 +1083,9 @@ void jamoma_ttvalue_to_Atom(const TTValue& v, long *argc, t_atom **argv)
                 atom_setsym((*argv)+i, gensym((char*)s.c_str()));
 		}
 		else
-        {	// assume int
-			t = v[i];
-			atom_setlong((*argv)+i, t);
+		{
+			f = v[i];
+			atom_setfloat((*argv)+i, f);
 		}
 	}
 }
@@ -1141,12 +1115,10 @@ void jamoma_ttvalue_from_Atom(TTValue& v, t_symbol *msg, long argc, const t_atom
 		// convert Atom to TTValue
 		for (i = 0; i < argc; i++)
 		{
-			if (atom_gettype(argv+i) == A_LONG)
-                v[i+start] = (int)atom_getlong((t_atom*)argv+i);
-			else if (atom_gettype(argv+i) == A_FLOAT)
-                v[i+start] = (TTFloat64)atom_getfloat((t_atom*)argv+i);
-			else if (atom_gettype(argv+i) == A_SYM)
-                v[i+start] = TTSymbol(atom_getsym((t_atom*)argv+i)->s_name);
+			if (atom_gettype(argv+i) == A_SYM)
+							v[i+start] = TTSymbol(atom_getsym((t_atom*)argv+i)->s_name);
+			else
+                v[i+start] = (TTFloat64)atom_getfloat((t_atom*)argv+i); 
 		}
 	}
 }
@@ -1229,52 +1201,42 @@ void jamoma_patcher_get_args(t_canvas *canvas, long *argc, t_atom **argv)
 }
 
 /** Get the context from the upper j.model|view in the patcher or from patcher's name */
-void jamoma_patcher_get_context(t_canvas **patcher, TTSymbol& returnedContext)
+void jamoma_patcher_get_context(t_canvas *patcher, TTSymbol& returnedContext)
 {
-	t_symbol	*hierarchy, *_sym_j_model, *_sym_j_view, *_sym_context;
-    t_object	*obj;
+	t_symbol	*hierarchy, *_sym_j_context;
     t_canvas    *upperPatcher;
 	TTBoolean	found = NO;
 	
+	t_gobj *obj=patcher->gl_list;
 
-	// Look for j.model|view in the patcher
-    obj = (t_object*)object_attr_getobj(*patcher, _sym_firstobject);
-	
-	// TODO : cache those t_symbol else where ...
-	_sym_j_model = gensym("j.model");
-	_sym_j_view = gensym("j.view");
-	
-	while (obj) {
-		
-		_sym_context = object_attr_getsym(obj, _sym_maxclass);
-		
-		if (_sym_context == _sym_j_model) {
-			
+	for ( ; obj ;  obj = obj->g_next )
+	{
+		_sym_j_context = obj->g_pd->c_name;
+		if (_sym_j_context == _sym_j_model ){
+
 			returnedContext = kTTSym_model;
 			found = YES;
 			break;
-			
-		} else if (_sym_context == _sym_j_view) {
-			
+
+		} else if ( _sym_j_context == _sym_j_view ) {
+
 			returnedContext = kTTSym_view;
 			found = YES;
 			break;
 		}
-
-        obj = (t_object*)object_attr_getobj(obj, _sym_nextobject);
 	}
 	
 	// if no context
 	if (!found) {
 		
 		// in subpatcher look upper
-		hierarchy = jamoma_patcher_get_hierarchy(*patcher);
+		hierarchy = jamoma_patcher_get_hierarchy(patcher);
 		if (hierarchy == _sym_subpatcher || hierarchy == _sym_bpatcher || hierarchy == SymbolGen("poly")) {
 			
 			// get the patcher where is the patcher to look for the context one step upper
-			upperPatcher = jamoma_patcher_get(*patcher);
+			upperPatcher = patcher->gl_owner;
 			
-			jamoma_patcher_get_context(&upperPatcher, returnedContext);
+			jamoma_patcher_get_context(upperPatcher, returnedContext);
 			
 			// if the context is still NULL and there is a j.model|view at this level
 			// the default case would be to set it as a model patcher by default
@@ -1283,7 +1245,7 @@ void jamoma_patcher_get_context(t_canvas **patcher, TTSymbol& returnedContext)
 			// keep the upperPatcher if no j.model|view around
 			// because it is where the context is defined
 			else if (!found)
-				*patcher = upperPatcher;
+				patcher = upperPatcher;
 		}
 		// default case : a patcher has no type
 		else if (hierarchy == _sym_topmost)
@@ -1301,7 +1263,10 @@ void jamoma_patcher_get_class(t_canvas *patcher, TTSymbol context, TTSymbol& ret
     TTBoolean   intoHelp = NO;
 	
 	// extract class from the file name
-	patcherName =  object_attr_getsym(patcher, _sym_filename);
+	if(patcher->gl_name)
+		patcherName = patcher->gl_name;
+	else
+		patcherName =  _sym_nothing;
 	
 	if (patcherName != _sym_nothing) {
 		
@@ -1399,7 +1364,7 @@ void jamoma_patcher_get_class(t_canvas *patcher, TTSymbol context, TTSymbol& ret
             else {
                 
                 // get the patcher where is the patcher to look for the class one step upper
-                upperPatcher = jamoma_patcher_get(patcher);
+				upperPatcher = patcher->gl_owner;
 			
                 jamoma_patcher_get_class(upperPatcher, context, returnedClass);
             }
@@ -1408,7 +1373,7 @@ void jamoma_patcher_get_class(t_canvas *patcher, TTSymbol context, TTSymbol& ret
         else if (hierarchy == _sym_bpatcher) {
             
             // get the patcher where is the patcher to look for the class one step upper
-            upperPatcher = jamoma_patcher_get(patcher);
+			upperPatcher = patcher->gl_owner;
 			
             jamoma_patcher_get_class(upperPatcher, context, returnedClass);
         }
@@ -1477,170 +1442,146 @@ void jamoma_patcher_get_name(t_canvas *patcher, TTSymbol context, TTSymbol& retu
 void jamoma_patcher_share_info(t_canvas *patcher, t_canvas **returnedPatcher, TTSymbol& returnedContext, TTSymbol& returnedClass,  TTSymbol& returnedName)
 {
 	TTValue		patcherInfo;
-	t_object	*obj;
-	t_symbol	*_sym_j_model, *_sym_j_view, *_sym_j_context, *_sym_share;
+	t_symbol	*_sym_j_context;
 	
-    obj = (t_object*)object_attr_getobj(patcher, _sym_firstobject);
-	
-	// TODO : cache those t_symbol else where ...
-	_sym_j_model = gensym("j.model");
-	_sym_j_view = gensym("j.view");
-	_sym_share = gensym("share_patcher_info");
-	while (obj) {
-		_sym_j_context = object_attr_getsym(obj, _sym_maxclass);
+	t_gobj *obj=patcher->gl_list;
+
+	for ( ; obj ;  obj = obj->g_next )
+	{
+		_sym_j_context = obj->g_pd->c_name;
 		if (_sym_j_context == _sym_j_model || _sym_j_context == _sym_j_view) {
-		
-			// ask it patcher info
-			object_method(object_attr_getobj(obj, _sym_object), _sym_share, &patcherInfo);
-			
+
+			rmethod _method = (rmethod)getfn(&obj->g_pd,_sym_share_patcher_info);
+			if ( _method )
+				_method(&obj->g_pd, &patcherInfo);
+
 			if (patcherInfo.size() == 4) {
-                *returnedPatcher = (t_canvas*)((TTPtr)patcherInfo[0]);
+				*returnedPatcher = (t_canvas*)((TTPtr)patcherInfo[0]);
 				returnedContext = patcherInfo[1];
 				returnedClass = patcherInfo[2];
-                returnedName = patcherInfo[3];
+				returnedName = patcherInfo[3];
 				break;
 			}
 		}
-        obj = (t_object*)object_attr_getobj(obj, _sym_nextobject);
 	}
+
 }
 
 /** Get j.model or j.view of a patcher */
-void jamoma_patcher_get_model_or_view(t_object *patcher, t_object **returnedModelOrView)
+void jamoma_patcher_get_model_or_view(t_canvas *patcher, t_object **returnedModelOrView)
 {
 	TTValue		patcherInfo;
-	t_object	*obj;
-	t_symbol	*_sym_j_model, *_sym_j_view, *_sym_j_context;
+	t_symbol	*_sym_j_context;
     
     *returnedModelOrView = NULL;
-	
-    obj = (t_object*)object_attr_getobj(patcher, _sym_firstobject);
-	
-	// TODO : cache those t_symbol else where ...
-	_sym_j_model = gensym("j.model");
-	_sym_j_view = gensym("j.view");
-	while (obj) {
-		_sym_j_context = object_attr_getsym(obj, _sym_maxclass);
+
+	t_gobj *obj=patcher->gl_list; // objects list
+
+	for ( ; obj ;  obj = obj->g_next )
+	{
+		_sym_j_context = obj->g_pd->c_name;
 		if (_sym_j_context == _sym_j_model || _sym_j_context == _sym_j_view) {
-            
-            *returnedModelOrView = (t_object*)object_attr_getobj(obj, _sym_object);
-            break;
+
+			*returnedModelOrView = (t_object*) obj;
+			break;
 		}
-        obj = (t_object*)object_attr_getobj(obj, _sym_nextobject);
 	}
+
+	return (void)returnedModelOrView;
 }
 
 /** Look for input and output (data and audio) */
-void jamoma_patcher_get_input_output(t_object *patcher, TTBoolean& dataInput, TTBoolean& dataOutput, TTBoolean& audioInput, TTBoolean& audioOutput)
+void jamoma_patcher_get_input_output(t_canvas *patcher, TTBoolean& dataInput, TTBoolean& dataOutput, TTBoolean& audioInput, TTBoolean& audioOutput)
 {
 	TTValue		patcherInfo;
-	t_object	*obj;
-	t_symbol	*_sym_jcomcontext, *_sym_jin, *_sym_jout, *_sym_jintilda, *_sym_jouttilda;
+	t_symbol	*_sym_jcomcontext;
     
     dataInput = NO;
     dataOutput = NO;
     audioInput = NO;
     audioOutput = NO;
 	
-    obj = (t_object*)object_attr_getobj(patcher, _sym_firstobject);
+	t_gobj *obj=patcher->gl_list; // pointer to the first object
 	
-	// TODO : cache those t_symbol else where ...
-	_sym_jin = gensym("j.in");
-	_sym_jout = gensym("j.out");
-    _sym_jintilda = gensym("j.in~");
-	_sym_jouttilda = gensym("j.out~");
-	while (obj) {
-		_sym_jcomcontext = object_attr_getsym(obj, _sym_maxclass);
+	for ( ; obj ;  obj = obj->g_next )
+	{
+		_sym_jcomcontext = obj->g_pd->c_name;
 		
-        dataInput = dataInput || _sym_jcomcontext == _sym_jin;
-        dataOutput = dataOutput || _sym_jcomcontext == _sym_jout;
-        audioInput = audioInput || _sym_jcomcontext == _sym_jintilda;
-        audioOutput = audioOutput || _sym_jcomcontext == _sym_jouttilda;
-        
-        obj = (t_object*)object_attr_getobj(obj, _sym_nextobject);
+		dataInput = dataInput || _sym_jcomcontext == _sym_j_in;
+		dataOutput = dataOutput || _sym_jcomcontext == _sym_j_out;
+		audioInput = audioInput || _sym_jcomcontext == _sym_j_intilda;
+		audioOutput = audioOutput || _sym_jcomcontext == _sym_j_outtilda;
 	}
 }
 
 /** Is there a j.ui object */
-TTBoolean jamoma_patcher_get_ui(t_object *patcher)
+TTBoolean jamoma_patcher_get_ui(t_canvas *patcher)
 {
-	TTValue		patcherInfo;
-	t_object	*obj;
-	t_symbol	*_sym_jcomcontext, *_sym_jui;
+	t_symbol	*_sym_j_context;
     TTBoolean   uiObject = NO;
 
-    obj = (t_object*)object_attr_getobj(patcher, _sym_firstobject);
-	
-	// TODO : cache this t_symbol else where ...
-	_sym_jui = gensym("j.ui");
-	while (obj) {
-		_sym_jcomcontext = object_attr_getsym(obj, _sym_maxclass);
-		
-        uiObject = _sym_jcomcontext == _sym_jui;
-        if (uiObject)
-            break;
-        
-        obj = (t_object*)object_attr_getobj(obj, _sym_nextobject);
+	t_gobj *obj=patcher->gl_list;
+
+	for ( ; obj ;  obj = obj->g_next )
+	{
+		_sym_j_context = obj->g_pd->c_name;
+		uiObject = _sym_j_context == _sym_j_ui;
+		if ( uiObject ) {
+			break;
+		}
 	}
     
     return uiObject;
 }
 
 /** Get the "aClass.model" external in the patcher */
-void jamoma_patcher_get_model_patcher(t_object *patcher, TTSymbol modelClass, t_object **returnedModelPatcher)
+void jamoma_patcher_get_model_patcher(t_canvas *patcher, TTSymbol modelClass, t_object **returnedModelPatcher)
 {
-	t_object	*obj;
-	t_symbol	*_sym_modelfilename, *_sym_objmaxclass, *_sym_objfilename;
+	t_symbol	*_sym_modelfilename, *_sym_j_context, *_sym_objfilename;
 	
 	jamoma_edit_filename(*ModelPatcherFormat, modelClass, &_sym_modelfilename);
-	
-    obj = (t_object*)object_attr_getobj(patcher, _sym_firstobject);
-	
-	*returnedModelPatcher = NULL;
-	
-	while (obj) {
 		
-		// look for jpatcher
-		_sym_objmaxclass = object_attr_getsym(obj, _sym_maxclass);
-		if (_sym_objmaxclass == _sym_jpatcher) {
-			
+	*returnedModelPatcher = NULL;
+
+	t_gobj *obj=patcher->gl_list; // pointer to the first object
+
+	for ( ; obj ;  obj = obj->g_next )
+	{
+		_sym_j_context = obj->g_pd->c_name;
+		if (_sym_j_context == _sym_jpatcher) {
+
 			// look for _sym_modelfilename
-			_sym_objfilename = object_attr_getsym(obj, _sym_filename);
+			_sym_objfilename = patcher->gl_name;
 			if (_sym_objfilename == _sym_modelfilename) {
-			
-                *returnedModelPatcher = (t_object*)object_attr_getobj(obj, _sym_object);
+
+				*returnedModelPatcher = (t_object*)obj->g_pd;
 				break;
 			}
 		}
-        obj = (t_object*)object_attr_getobj(obj, _sym_nextobject);
 	}
 }
 
 /** Get patcher's node from the root j.model|view in the patcher */
-void jamoma_patcher_share_node(t_object *patcher, TTNodePtr *patcherNode)
+void jamoma_patcher_share_node(t_canvas *patcher, TTNodePtr *patcherNode)
 {
-	t_object	*obj;
-	t_symbol	*_sym_j_model, *_sym_j_view, *_sym_j_context, *_sym_share;
+	t_symbol	*_sym_j_context;
 	
 	*patcherNode = NULL;
 	
-    obj = (t_object*)object_attr_getobj(patcher, _sym_firstobject);
-	
-	// TODO : cache those t_symbol else where ...
-	_sym_j_model = gensym("j.model");
-	_sym_j_view = gensym("j.view");
-	_sym_share = gensym("share_patcher_node");
-	while (obj) {
-		_sym_j_context = object_attr_getsym(obj, _sym_maxclass);
+	t_gobj *obj=patcher->gl_list; // pointer to the first object
+
+//    obj = (t_object*)object_attr_getobj(patcher, _sym_firstobject);
+	for ( ; obj ;  obj = obj->g_next )
+	{
+		_sym_j_context = obj->g_pd->c_name;
+
 		if (_sym_j_context == _sym_j_model || _sym_j_context == _sym_j_view) {
-			
-			// ask it patcher info
-			object_method(object_attr_getobj(obj, _sym_object), _sym_share, patcherNode);
-			
+			rmethod _method = (rmethod)getfn(&obj->g_pd,_sym_share_patcher_info);
+			if ( _method )
+				_method(&obj->g_pd, patcherNode);
 			if (*patcherNode)
 				break;
 		}
-        obj = (t_object*)object_attr_getobj(obj, _sym_nextobject);
 	}
 }
 
@@ -1656,7 +1597,8 @@ TTErr jamoma_patcher_get_info(t_object *obj, t_canvas **returnedPatcher, TTSymbo
 	TTSymbol	sharedClass;
 	TTSymbol	sharedName;
 	
-	*returnedPatcher = jamoma_patcher_get(obj);
+	t_eobj* x = (t_eobj*) obj;
+	*returnedPatcher = x->o_canvas;
 
 	_sym_j_context = object_classname(obj);
 	canShare = _sym_j_context == gensym("j.model") || _sym_j_context == gensym("j.view");
@@ -1683,7 +1625,7 @@ TTErr jamoma_patcher_get_info(t_object *obj, t_canvas **returnedPatcher, TTSymbo
 		
 		// get the context looking for a j.model|view in the patcher
 		// it will also return a patcher above where a j.model|view has been found
-		jamoma_patcher_get_context(returnedPatcher, returnedContext);
+		jamoma_patcher_get_context(*returnedPatcher, returnedContext);
 		
 		// if still no context : stop the subscription process
 		if (returnedContext == kTTSymEmpty) {
@@ -1860,14 +1802,12 @@ void jamoma_edit_filename(TTString format, TTSymbol className, t_symbol **return
 
 
 /** Get BOOT style filepath from args or, if no args open a dialog to write a file */
-/*
- * AV - TODO : rewrite this in PD's style
-TTSymbol jamoma_file_write(t_object *x, long argc, const t_atom *argv, char* default_filename)
+TTSymbol jamoma_file_write(t_object *x, long argc, t_atom *argv, char* default_filename)
 {
-	char 			fullpath[MAX_PATH_CHARS];		// for storing the absolute path of the file
+	char 			fullpath[MAXPDSTRING];		// for storing the absolute path of the file
 	short 			err, path;						// pathID#, error number
-	t_filehandle	file_handle;					// a reference to our file (for opening it, closing it, etc.)
-	t_fourcc		filetype = 'TEXT', outtype;		// the file type that is actually true
+//	t_filehandle	file_handle;					// a reference to our file (for opening it, closing it, etc.)
+//	t_fourcc		filetype = 'TEXT', outtype;		// the file type that is actually true
 	t_symbol        *userpath;
 	TTSymbol		result = kTTSymEmpty;
 	
@@ -1879,16 +1819,20 @@ TTSymbol jamoma_file_write(t_object *x, long argc, const t_atom *argv, char* def
 			if (userpath != _sym_nothing && userpath != _sym_bang) {
 				// Use BOOT style path
 				path = 0;
-				path_nameconform(userpath->s_name, fullpath, PATH_STYLE_NATIVE, PATH_TYPE_BOOT);// Copy symbol argument to a local string
-				
+
+				t_binbuf* buf = binbuf_new();
+				// path_nameconform(userpath->s_name, fullpath, PATH_STYLE_NATIVE, PATH_TYPE_BOOT);// Copy symbol argument to a local string
+				canvas_makefilename(((t_eobj*)x)->o_canvas,userpath->s_name,fullpath,MAXPDSTRING);
+				binbuf_write(buf,fullpath,"",1);
+				binbuf_free(buf);
 				// Create a file using Max API
-                path_createsysfile(fullpath, path, filetype, &file_handle);
+				// path_createsysfile(fullpath, path, filetype, &file_handle);
 				
 				result = TTSymbol(fullpath);
 			}
 		}
 	} 
-	
+	/* TODO rewrite an open panel for Pd ?
 	// ... or open a dialog
 	if (result == kTTSymEmpty) {
 		
@@ -1907,19 +1851,17 @@ TTSymbol jamoma_file_write(t_object *x, long argc, const t_atom *argv, char* def
 			result = TTSymbol(posixpath);
 		}
 	}
+	*/
 	
 	return result;
 }
-*/
 
 /** Get BOOT style filepath from args or, if no args open a dialog to read a file */
-/*
- * AV - TODO : rewrite this in PD's style
-TTSymbol jamoma_file_read(t_object *x, long argc, const t_atom *argv, t_fourcc filetype)
+TTSymbol jamoma_file_read(t_object *x, long argc, t_atom *argv, t_fourcc filetype)
 {
-	char 			filepath[MAX_FILENAME_CHARS];	// for storing the name of the file locally
-	char 			fullpath[MAX_PATH_CHARS];		// path and name passed on to the xml parser
-    char            posixpath[MAX_PATH_CHARS];
+	char 			filepath[MAXPDSTRING];	// for storing the name of the file locally
+	char 			fullpath[MAXPDSTRING];		// path and name passed on to the xml parser
+	char            posixpath[MAXPDSTRING];
 	short 			path = 0;						// pathID#
 	t_fourcc		outtype;
 	t_symbol        *userpath;
@@ -1931,29 +1873,36 @@ TTSymbol jamoma_file_read(t_object *x, long argc, const t_atom *argv, t_fourcc f
 			userpath = atom_getsym(argv);
 			
 			if (userpath != _sym_nothing && userpath != _sym_bang) {
-                
-                strcpy(filepath, userpath->s_name);    // must copy symbol before calling locatefile_extended
-                if (locatefile_extended(filepath, &path, &outtype, &filetype, 1)) {     // Returns 0 if successful
+
+				canvas_makefilename(((t_eobj*)x)->o_canvas,userpath->s_name,fullpath,MAXPDSTRING);
+
+				result = TTSymbol(fullpath);
+
+//                strcpy(filepath, userpath->s_name);    // must copy symbol before calling locatefile_extended
+//                if (locatefile_extended(filepath, &path, &outtype, &filetype, 1)) {     // Returns 0 if successful
                     
-                    object_error(x, "%s : not found", filepath);
-                    return result;
-                }
+//                    object_error(x, "%s : not found", filepath);
+//                    return result;
+//                }
 			}
 		}
 	}
 	
 	// ... or open a dialog
+	/* TODO rewrite an open panel for Pd ?
 	if (!path)
 		open_dialog(filepath, &path, &outtype, &filetype, 1);
+	*/
 
+	/*
     if (path) {
         
-        path_topathname(path, filepath, fullpath);
-        path_nameconform(fullpath, posixpath, PATH_STYLE_NATIVE, PATH_TYPE_BOOT);
+		open_via_path(path,filepath,"",fullpath,posixpath,MAXPDSTRING,0);
+//        path_topathname(path, filepath, fullpath);
+//        path_nameconform(fullpath, posixpath, PATH_STYLE_NATIVE, PATH_TYPE_BOOT);
         result = TTSymbol(posixpath);
     }
+	*/
 	
 	return result;
 }
-*/
-

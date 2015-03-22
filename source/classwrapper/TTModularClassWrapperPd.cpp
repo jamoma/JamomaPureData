@@ -1,7 +1,8 @@
 /*
  *	TTModularClassWrapperMax
- *	An automated class wrapper to make Jamoma object's available as objects for Max/MSP
+ *	An automated class wrapper to make Jamoma object's available as objects for Puredata
  *	Copyright © 2008 by Timothy Place
+ *      Pd port by Antoine Villeret 2015
  *
  * License: This code is licensed under the terms of the GNU LGPL
  * http://www.gnu.org/licenses/lgpl.html
@@ -68,7 +69,7 @@ t_object *wrappedModularClass_new(t_symbol *name, long argc, t_atom *argv)
         x->patcherAddress = kTTAdrsEmpty;
 		
 		// dumpout
-        x->dumpOut = outlet_new((t_object*)x,NULL);
+		// x->dumpOut = outlet_new((t_object*)x,NULL);
         // object_obex_store((void *)x, _sym_dumpout, (object *)outlet_new(x,NULL));
 		
 #ifdef UI_EXTERNAL
@@ -362,7 +363,8 @@ t_max_err wrappedModularClass_attrSet(TTPtr self, t_object *attr, long argc, con
 			selectedObject->getAttributeValue(ttAttrName, v);
 			
 			jamoma_ttvalue_to_Atom(v, &ac, &av);
-			object_obex_dumpout(self, attrName, ac, av);
+			// object_obex_dumpout(self, attrName, ac, av);
+			outlet_anything(x->dumpOut, attrName, ac, av);
             free(av);
             return 0; // MAX_ERR_NONE;
 		}
@@ -471,8 +473,9 @@ TTErr wrappedModularClass_sendMessage(TTPtr self, t_symbol *s, long argc, const 
 				selectedObject->sendMessage(ttName, inputValue, outputValue);
 				
 				jamoma_ttvalue_to_Atom(outputValue, &ac, &av);
-				object_obex_dumpout(self, s, ac, av);
-                free(av);
+//				object_obex_dumpout(self, s, ac, av);
+				outlet_anything(x->dumpOut, s, ac, av);
+				free(av);
 			}
 			else
 				selectedObject->sendMessage(ttName);
@@ -508,8 +511,9 @@ TTErr wrappedModularClass_setAttribute(TTPtr self, t_symbol *s, long argc, const
 			selectedObject->getAttributeValue(TTSymbol(s->s_name), outputValue);
 			
 			jamoma_ttvalue_to_Atom(outputValue, &ac, &av);
-			object_obex_dumpout(self, s, ac, av);
-            free(av);
+//			object_obex_dumpout(self, s, ac, av);
+			outlet_anything(x->dumpOut, s, ac, av);
+			free(av);
         }
 	}
 	
@@ -536,7 +540,8 @@ void wrappedModularClass_dump(TTPtr self)
         x->subscriberObject.get("nodeAddress", v);
         address = v[0];
         atom_setsym(&a, gensym((char *) address.c_str()));
-        object_obex_dumpout(self, gensym("address"), 1, &a);
+//        object_obex_dumpout(self, gensym("address"), 1, &a);
+		outlet_anything(x->dumpOut, gensym("address"), 1, &a);
     }
 #endif
     
@@ -553,8 +558,9 @@ void wrappedModularClass_dump(TTPtr self)
 		ac = 0;
 		av = NULL;
 		jamoma_ttvalue_to_Atom(v, &ac, &av);
-		object_obex_dumpout(self, s, ac, av);
-        free(av);
+//		object_obex_dumpout(self, s, ac, av);
+		outlet_anything(x->dumpOut, s, ac, av);
+		free(av);
     }
 }
 
@@ -823,7 +829,7 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
 	o.attributes(v);
 	for (i = 0; i < v.size(); i++) {
 		TTAttributePtr	attr = NULL;
-        // t_symbol		*pdType = _sym_long;
+		t_symbol		*pdType = _sym_long;
 		
 		TTName = v[i];
         
@@ -846,23 +852,19 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
             wrappedPdClass->pdNamesToTTNames[PdName->s_name] = (t_object*)(TTName.rawpointer());
             // hashtab_store(wrappedPdClass->pdNamesToTTNames, PdName, (t_object*)(TTName.rawpointer()));
 
-            if (attr->type == kTypeFloat32 || attr->type == kTypeFloat64)
-            {
-                SETFLOAT(&wrappedPdClass->attributesMap[PdName->s_name],0);
-                CLASS_ATTR_FLOAT(wrappedPdClass->pdClass,PdName->s_name,0,_wrappedClass,attributesMap[PdName->s_name]);
-            }
+			if (attr->type == kTypeFloat32)
+				pdType = _sym_float;
+			else if (attr->type == kTypeFloat64)
+				pdType = _sym_float;
 			else if (attr->type == kTypeSymbol || attr->type == kTypeString)
-            {
-                SETSYMBOL(&wrappedPdClass->attributesMap[PdName->s_name],gensym(""));
-                eclass_new_attr_typed(wrappedPdClass->pdClass,PdName->s_name, "symbol", 1, 0, 0, (long int)&(wrappedPdClass->attributesMap[PdName->s_name]));
-                // CLASS_ATTR_SYMBOL(wrappedPdClass->pdClass,PdName->s_name,0,_wrappedClass,attributesMap[PdName->s_name]);
-            }
+				pdType = _sym_symbol;
 			else if (attr->type == kTypeLocalValue)
-            {
-                eclass_new_attr_typed(wrappedPdClass->pdClass,PdName->s_name, "atom", 1, 0, 0, (long int)&(wrappedPdClass->attributesMap[PdName->s_name]));
-            }
-			
-            // class_addattr(wrappedPdClass->pdClass, attr_offset_new(PdName->s_name, pdType, 0, (method)wrappedModularClass_attrGet, (method)wrappedModularClass_attrSet, 0));
+				pdType = _sym_atom;
+
+			eclass_new_attr_typed(wrappedPdClass->pdClass,PdName->s_name,pdType->s_name,1,0,0,0);
+			CLASS_ATTR_ACCESSORS(wrappedPdClass->pdClass,PdName->s_name,wrappedModularClass_attrGet,wrappedModularClass_attrSet);
+
+			// class_addattr(wrappedPdClass->pdClass, attr_offset_new(PdName->s_name, pdType, 0, (method)wrappedModularClass_attrGet, (method)wrappedModularClass_attrSet, 0));
 			
 			// Add display styles for the Max 5 inspector
 			if (attr->type == kTypeBoolean)

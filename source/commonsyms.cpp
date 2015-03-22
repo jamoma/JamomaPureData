@@ -175,6 +175,18 @@ t_symbol *_sym_filename;
 t_symbol *_sym_nextobject;
 t_symbol *_sym_pd;
 t_symbol *_sym_box;
+t_symbol *_sym_nobox;
+
+// jamoma specific symbols
+t_symbol *_sym_j_in;
+t_symbol *_sym_j_out;
+t_symbol *_sym_j_intilda;
+t_symbol *_sym_j_outtilda;
+t_symbol *_sym_j_ui;
+t_symbol *_sym_j_model;
+t_symbol *_sym_j_view;
+t_symbol *_sym_share_patcher_node;
+t_symbol *_sym_share_patcher_info;
 
 //comonly used symbols that are exported
 void common_symbols_init(void);
@@ -350,4 +362,17 @@ void common_symbols_init(void)
     _sym_nextobject     = gensym("nextobject");
     _sym_pd             = gensym("pd");
     _sym_box            = gensym("box");
+	_sym_nobox            = gensym("nobox");
+
+	// jamoma specific symbols
+	_sym_j_in = gensym("j.in");
+	_sym_j_out = gensym("j.out");
+	_sym_j_intilda = gensym("j.in~");
+	_sym_j_outtilda = gensym("j.out~");
+	_sym_j_ui = gensym("j.ui");
+	_sym_j_model = gensym("j.model");
+	_sym_j_view = gensym("j.view");
+	_sym_share_patcher_node = gensym("share_patcher_node");
+	_sym_share_patcher_info = gensym("share_patcher_info");
+
 }

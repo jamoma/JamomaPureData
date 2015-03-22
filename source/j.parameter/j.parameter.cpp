@@ -9,7 +9,7 @@
  * @authors Timothy Place, Théo de la Hogue, Trond Lossius
  *
  * @copyright © 2011 by Timothy Place, Théo de la Hogue @n
- * Pd port by Antoine Villeret 2014 @n
+ * Pd port by Antoine Villeret 2015 @n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */
@@ -42,7 +42,7 @@ void        WrappedDataClass_free(TTPtr self);
  @param arg		Determines what input/output assistance is requested for.
  @param dst		Destination address that assistance string is copied to.
  */
-//~void		data_assist(TTPtr self, TTPtr b, long msg, long arg, char *dst);
+void		data_assist(TTPtr self, TTPtr b, long msg, long arg, char *dst);
 
 void		data_new_address(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void		data_subscribe(TTPtr self, t_symbol *address, long argc, t_atom *argv);
@@ -71,7 +71,7 @@ void		data_int(TTPtr self, long value);
  @param self		The parameter instance.
  @param value		The float value received.
  */
-void		data_float(TTPtr self, double value);
+void		data_float(TTPtr self, t_float value);
 
 
 /** Process an incoming message containing a list. When the object receives a bang, int, float or anything, it is fornatted as a list and frwarded to this method.
@@ -104,14 +104,14 @@ void		data_inc(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
  */
 void		data_dec(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
-extern "C" void JAMOMA_EXPORT_MAXOBJ j0x2eparameter_setup(void)
+extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2eparameter(void)
 {
-    printf("j.parameter_setup\n");
 	ModularSpec *spec = new ModularSpec;
 	spec->_wrap = &WrapTTDataClass;
 	spec->_new = &WrappedDataClass_new;
 	spec->_free = &WrappedDataClass_free;
 	spec->_any = &WrappedDataClass_anything;
+	spec->_notify = NULL;
 	
 #ifdef JMOD_MESSAGE
     return (void)wrapTTModularClassAsPdClass(kTTSym_Data, "j.message", NULL, spec);
@@ -131,7 +131,7 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ j0x2eparameter_setup(void)
 
 void WrapTTDataClass(WrappedClassPtr c)
 {	
-    // eclass_addmethod(c->pdClass, (method)data_assist,						"assist",				A_CANT, 0L);
+	eclass_addmethod(c->pdClass, (method)data_assist,						"assist",				A_CANT, 0L);
 
     eclass_addmethod(c->pdClass, (method)data_return_value,					"return_value",			A_CANT, 0L);
 
@@ -153,8 +153,6 @@ void WrappedDataClass_new(TTPtr self, long argc, t_atom *argv)
 	t_symbol*					relativeAddress;
 	long						attrstart = attr_args_offset(argc, argv);			// support normal arguments
 	
-    printf("j.parameter_new\n");
-
 	// check address argument
 	relativeAddress = _sym_nothing;
 	if (attrstart && argv)
@@ -162,7 +160,7 @@ void WrappedDataClass_new(TTPtr self, long argc, t_atom *argv)
 			relativeAddress = atom_getsym(argv);
 	
 	if (relativeAddress == _sym_nothing) {
-        object_error((t_object*)x, "needs a name as first argument");
+		object_error((t_object*)x, "needs a name as first argument");
 		return;
 	}
     
@@ -188,8 +186,10 @@ void WrappedDataClass_new(TTPtr self, long argc, t_atom *argv)
 	/////////////////////////////////////////////////////////////////////////////////
 
 	// Don't create outlets during dynamic changes
-    x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 2);
-    x->outlets[data_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output data
+	x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 2);   
+	x->outlets[data_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output data
+	x->dumpOut = outlet_new((t_object*)x,NULL);									// dumpout
+	x->outlets[dump_out] = x->dumpOut;
     
     // Prepare extra data
 	x->extra = (t_extra*)malloc(sizeof(t_extra));
@@ -323,7 +323,7 @@ void data_int(TTPtr self, long value)
 }
 
 
-void data_float(TTPtr self, double value)
+void data_float(TTPtr self, t_float value)
 {
 	t_atom a;
 	
@@ -354,9 +354,9 @@ void data_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 	
 	// avoid blank before data
 	if (msg == _sym_nothing)
-        outlet_anything((t_outlet*)x->outlets[data_out], _sym_list, argc, argv);
+		outlet_anything((t_outlet*)x->outlets[data_out], _sym_list, argc, argv);
 	else
-        outlet_anything((t_outlet*)x->outlets[data_out], msg, argc, argv);
+		outlet_anything((t_outlet*)x->outlets[data_out], msg, argc, argv);
 }
 
 

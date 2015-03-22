@@ -2,7 +2,7 @@
  *	TTClassWrapperPd
  *	An automated class wrapper to make Jamoma objects available as objects for PureData
  *	Copyright � 2008 by Timothy Place
- *  Copyright 2014 by Antoine Villeret
+ *      Pd port by Antoine Villeret - 2015
  * 
  * License: This code is licensed under the terms of the "New BSD License"
  * http://creativecommons.org/licenses/BSD/
@@ -96,12 +96,16 @@ t_eobj* wrappedClass_new(t_symbol* name, long argc, t_atom* argv)
 		x->wrappedObject = new TTAudioObject(wrappedPdClass->ttblueClassName, x->maxNumChannels);
 		x->audioIn = new TTAudio(x->numInputs);
 		x->audioOut = new TTAudio(x->numOutputs);
-        attr_args_process(x,argc,argv);				// handle attribute args
-        x->dumpOut = outlet_new((t_object*)x,NULL);
-		
+		attr_args_process(x,argc,argv);				// handle attribute args
+
+		/*
+		x->dumpOut = outlet_new((t_object*)x,NULL);
+
         for (short i=1; i < x->numInputs; i++)
             inlet_new(&x->obj.o_obj, &x->obj.o_obj.ob_pd, &s_signal, &s_signal);
+		*/
 
+		eobj_dspsetup(x,x->numInputs,0);
         // dsp_setup(x, x->numInputs);			// inlets
 				
 		//if (wrappedPdClass->options && !wrappedPdClass->options->lookup(TT("numControlOutlets"), v))
@@ -134,7 +138,6 @@ t_eobj* wrappedClass_new(t_symbol* name, long argc, t_atom* argv)
 		for (short i=0; i < x->numOutputs; i++)
             x->outlets[i] = outlet_new(&x->obj.o_obj, &s_signal);
 
-		  
         // x->obj.z_misc = Z_NO_INPLACE;
 	}
     return (t_eobj*)x;
@@ -372,7 +375,7 @@ void wrappedClass_dsp64(WrappedInstancePtr self, t_object* dsp64, short *count, 
 	self->audioIn->setVectorSizeWithInt(self->vs);
 	self->audioOut->setVectorSizeWithInt(self->vs);
 	
-	object_method(dsp64, gensym("dsp_add64"), self, wrappedClass_perform64, 0, NULL);
+	// object_method(dsp64, gensym("dsp_add64"), self, wrappedClass_perform64, 0, NULL);
 }
 
 

@@ -20,6 +20,7 @@ typedef unsigned int t_fourcc; // Max specific type
 
 // define Pd log level
 #define PD_LOG_WARN 2
+#define MAX_FILENAME_CHARS MAXPDSTRING
 
 
 #ifdef WIN_VERSION
@@ -138,6 +139,12 @@ bool JAMOMA_EXPORT jamoma_loadextern(t_symbol *objectname, long argc, t_atom *ar
 // prototype for some Max specific functions wrapped
 t_symbol* object_attr_getsym(void *x, t_symbol *s); // Retrieves the value of an attribute, given its parent object and name.
 void* object_attr_getobj(void *x, t_symbol *s);
+method object_getmethod(void* x, t_symbol* s);
+void* object_method(void *x, t_symbol *s);
+void* object_method_typed(void* x, t_symbol* method, t_symbol* s, long argc, t_atom* argv);
+// void* object_method_dsp64(void* x, t_symbol* method, void* s, void method2, long argc, void* argv);
+short locatefile_extended(char *name, short *outvol, t_fourcc *outtype, const t_fourcc *filetypelist, short numtypes);
+short path_topathname(const short path, const char *file, char *name);
 
 #endif //__JAMOMA_FOR_PD__
 

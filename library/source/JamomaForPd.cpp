@@ -80,9 +80,6 @@ void jamoma_init(void)
             JamomaApplication = out[0];
         
         // Edit the path to the JamomaConfiguration.xml file
-        printf("Edit the path to the JamomaConfiguration.xml file : \n");
-        printf("%s\n",TTFoundationBinaryPath.data());
-        printf("copy it\n");
         long size = TTFoundationBinaryPath.size()-6;
         if ( size > 0 )
             strncpy(name, TTFoundationBinaryPath.data(), size);
@@ -92,14 +89,12 @@ void jamoma_init(void)
         JamomaConfigurationFilePath += "misc/JamomaConfiguration.xml";
         
         // check if the JamomaConfiguration.xml file exists
-        printf("check if the JamomaConfiguration.xml file exists\n");
         strncpy(name, JamomaConfigurationFilePath.data(), MAX_PATH_CHARS);
         // TODO : rewrite locatefile_extended fn
         //if (locatefile_extended(name, &outvol, &outtype, &filetype, 1))
             //return error("Jamoma not loaded : can't find %s", JamomaConfigurationFilePath.data());
         
         // JamomaApplication have to read JamomaConfiguration.xml
-        printf("JamomaApplication have to read JamomaConfiguration.xml");
         TTObject anXmlHandler(kTTSym_XmlHandler);
         anXmlHandler.set(kTTSym_object, JamomaApplication);
         v = TTSymbol(JamomaConfigurationFilePath);
@@ -119,7 +114,7 @@ void jamoma_init(void)
         ttRegexForPdhelp = new TTRegex("(-help.pd)");
 		ttRegexForBracket = new TTRegex("\\[(\\d|\\d\\d|\\d\\d\\d)\\]");	// parse until 999
 		
-		ModelPatcherFormat = new TTString("%s.model.maxpat");
+		ModelPatcherFormat = new TTString("%s.model.pd");
 		ModelPresetFormat = new TTString("%s.model.presets.txt");
 		ViewPresetFormat = new TTString("%s.view.presets.txt");
 		HelpPatcherFormat = new TTString("%s.model");
@@ -258,7 +253,7 @@ bool jamoma_loadextern(t_symbol *objectname, long argc, t_atom *argv, t_object *
 
 t_symbol *object_attr_getsym(void *x, t_symbol *s){
     int argc=0;
-    t_atom *argv=NULL;
+	t_atom *argv=NULL;
     eclass_attr_getter((t_object *) x, s, &argc, &argv);
     if ( argv && argv[0].a_type == A_SYMBOL)
     return argv[0].a_w.w_symbol;
@@ -291,3 +286,39 @@ void attr_args_process(void *x, short ac, t_atom *av)
 
 }
 */
+
+method object_getmethod(void* x, t_symbol* s)
+{
+	return (method)getfn((t_pd *)x, s);
+}
+
+void* object_method_typed(void* x, t_symbol* method, t_symbol* s, long argc, t_atom* argv)
+{
+	rmethod nrmethod = (rmethod)getfn((t_pd *)x, method);
+	return nrmethod(x, s, argc, argv);
+}
+
+void* object_method(void *x, t_symbol *s)
+{
+	rmethod nrmethod = (rmethod)getfn((t_pd *)x, s);
+	return nrmethod(x);
+}
+
+short locatefile_extended(char *name, short *outvol, t_fourcc *outtype, const t_fourcc *filetypelist, short numtypes)
+{
+	int fd = -1;
+	int bin;
+	char realname[MAXPDSTRING], dirbuf[MAXPDSTRING], *basename;
+	fd = open_via_path(NULL, name, "", dirbuf, &basename, MAXPDSTRING, 0);
+	return fd < 0;
+}
+
+short path_topathname(const short path, const char *file, char *name)
+{
+	int fd = -1;
+	int bin;
+	char realname[MAXPDSTRING], dirbuf[MAXPDSTRING], *basename;
+	fd =	open_via_path(NULL, file, "", name, &basename, MAXPDSTRING, 0);
+	strcat(name,basename);
+	return fd < 0;
+}

@@ -123,7 +123,9 @@ void WrappedContainerClass_new(TTPtr self, long argc, t_atom *argv)
 	// Make two outlets
 	x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 1);
 	x->outlets[data_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output data
-	
+	x->dumpOut = outlet_new((t_object*)x,NULL);									// dumpout
+	x->outlets[dump_out] = x->dumpOut;
+
 	// Prepare extra data
 	x->extra = (t_extra*)malloc(sizeof(t_extra));
     EXTRA->modelInfo = new TTObject();

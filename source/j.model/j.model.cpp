@@ -273,7 +273,8 @@ void model_subscribe(TTPtr self)
 			jamoma_patcher_get_args(aPatcher, &ac, &av);
 			
 			// check if it's a sub model
-			isSubModel = atom_getsym(av) == _sym_pd;
+			if ( ac > 0 && av[0].a_type == A_SYMBOL )
+				isSubModel = atom_getsym(av) == _sym_pd;
 			
 			// in subpatcher :
 			if (jamoma_patcher_get_hierarchy(aPatcher) == _sym_subpatcher) {

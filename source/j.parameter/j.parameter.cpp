@@ -24,6 +24,7 @@
 typedef struct extra {
 	
 	TTValue*         arrayArgs;		// store arguments
+	t_symbol*		 address;
 
 } t_extra;
 #define EXTRA ((t_extra*)x->extra)
@@ -45,7 +46,7 @@ void        WrappedDataClass_free(TTPtr self);
 void		data_assist(TTPtr self, TTPtr b, long msg, long arg, char *dst);
 
 void		data_new_address(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
-void		data_subscribe(TTPtr self, t_symbol *address, long argc, t_atom *argv);
+void		data_subscribe(TTPtr self, t_symbol *address);
 void		data_address(TTPtr self, t_symbol *name);
 
 void		data_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
@@ -104,6 +105,10 @@ void		data_inc(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
  */
 void		data_dec(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
+
+/** Loadbang method to register parameter *after* box creation */
+void data_loadbang(TTPtr self);
+
 extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2eparameter(void)
 {
 	ModularSpec *spec = new ModularSpec;
@@ -144,6 +149,7 @@ void WrapTTDataClass(WrappedClassPtr c)
     eclass_addmethod(c->pdClass, (method)data_dec,							"-",					A_GIMME, 0);
 
     eclass_addmethod(c->pdClass, (method)data_address,						"address",				A_SYM,0);
+	eclass_addmethod(c->pdClass, (method)data_loadbang,						"loadbang",				A_NULL,0);
 }
 
 
@@ -155,6 +161,12 @@ void WrappedDataClass_new(TTPtr self, long argc, t_atom *argv)
 	
 	// check address argument
 	relativeAddress = _sym_nothing;
+
+	// Prepare extra data
+	x->extra = (t_extra*)malloc(sizeof(t_extra));
+	EXTRA->address = _sym_nothing;
+	EXTRA->arrayArgs = new TTValue();
+
 	if (attrstart && argv)
 		if (atom_gettype(argv) == A_SYM)
 			relativeAddress = atom_getsym(argv);
@@ -190,16 +202,12 @@ void WrappedDataClass_new(TTPtr self, long argc, t_atom *argv)
 	x->outlets[data_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output data
 	x->dumpOut = outlet_new((t_object*)x,NULL);									// dumpout
 	x->outlets[dump_out] = x->dumpOut;
-    
-    // Prepare extra data
-	x->extra = (t_extra*)malloc(sizeof(t_extra));
-    
-    EXTRA->arrayArgs = new TTValue();
 
     // Store arguments
 	if (argc > 1 && argv)
         jamoma_ttvalue_from_Atom(*(EXTRA->arrayArgs), _sym_list, argc--, argv++);
 
+	EXTRA->address = relativeAddress;
 	data_new_address(self, relativeAddress, argc--, argv++);
 }
 
@@ -241,7 +249,7 @@ void data_new_address(TTPtr self, t_symbol *relativeAddress, long argc, t_atom *
 }
 
 
-void data_subscribe(TTPtr self, t_symbol *relativeAddress, long argc, t_atom *argv)
+void data_subscribe(TTPtr self, t_symbol *relativeAddress)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
     TTAddress   returnedAddress;
@@ -377,4 +385,11 @@ void data_dec(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 	
 	jamoma_ttvalue_from_Atom(v, _sym_nothing, argc, argv);
 	x->wrappedObject.send("Dec", v, none);
+}
+
+void data_loadbang(TTPtr self)
+{
+	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
+	post("j.parameter loadbang called");
+	data_subscribe((t_object*)x, EXTRA->address);
 }

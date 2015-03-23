@@ -79,6 +79,8 @@ void WrapTTContainerClass(WrappedClassPtr c)
 	eclass_addmethod(c->pdClass, (method)model_signal_return_audio_bypass,  "return_audio_bypass",  A_CANT, 0);
 	eclass_addmethod(c->pdClass, (method)model_signal_return_audio_mix,     "return_audio_mix",     A_CANT, 0);
 	eclass_addmethod(c->pdClass, (method)model_signal_return_audio_gain,    "return_audio_gain",	A_CANT, 0);
+
+	eclass_addmethod(c->pdClass, (method)model_subscribe,    "loadbang",				A_NULL, 0);
     
 	CLASS_ATTR_ATOM(c->pdClass,        "amenities",	0,		WrappedModularInstance,	extra);
 	CLASS_ATTR_DEFAULT(c->pdClass,		"amenities",	0,		"all");

@@ -109,7 +109,13 @@ void		data_dec(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 /** Loadbang method to register parameter *after* box creation */
 void data_loadbang(TTPtr self);
 
+#if defined(JMOD_RETURN)
+extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2ereturn(void)
+#elif defined(JMOD_MESSAGE)
+extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2emessage(void)
+#else
 extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2eparameter(void)
+#endif
 {
 	ModularSpec *spec = new ModularSpec;
 	spec->_wrap = &WrapTTDataClass;
@@ -245,7 +251,7 @@ void data_new_address(TTPtr self, t_symbol *relativeAddress, long argc, t_atom *
 	// and our box is not yet valid until we have finished instantiating the object.
 	// Trying to use a loadbang method instead is also not fully successful (as of Max 5.0.6)
     // defer_low((t_object*)x, (t_method)data_subscribe, relativeAddress, argc, argv);
-    data_subscribe((t_object*)x, relativeAddress, argc, argv);
+	data_subscribe((t_object*)x, relativeAddress);
 }
 
 

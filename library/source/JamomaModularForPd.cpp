@@ -126,7 +126,6 @@ TTErr jamoma_subscriber_create(t_eobj *x, TTObject& anObject, TTAddress relative
             returnedAddress = v[0];
 			
 			JamomaDebug post("registers at %s", returnedAddress.c_str());
-			post("registers at %s", returnedAddress.c_str());
 		}
 
 		return kTTErrNone;
@@ -342,7 +341,7 @@ TTErr jamoma_container_send(TTObject& aContainer, t_symbol *relativeAddressAndAt
 			anAddress = anAddress.appendAttribute(ToTTName(anAddress.getAttribute()));
 
 		data.append(anAddress);
-		
+
 		jamoma_ttvalue_from_Atom(v, _sym_nothing, argc, argv);
 		data.append((TTPtr)&v);
 		

@@ -398,6 +398,5 @@ void data_dec(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 void data_loadbang(TTPtr self)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	post("j.parameter loadbang called");
 	data_subscribe((t_object*)x, EXTRA->address);
 }

@@ -37,7 +37,7 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2emodel(void)
 void WrapTTContainerClass(WrappedClassPtr c)
 {
 	eclass_addmethod(c->pdClass, (method)model_assist,                      "assist",				A_CANT, 0L);
-	
+
 	eclass_addmethod(c->pdClass, (method)model_share_patcher_info,          "share_patcher_info",	A_CANT, 0);
 	eclass_addmethod(c->pdClass, (method)model_share_patcher_node,          "share_patcher_node",	A_CANT, 0);
 	
@@ -106,8 +106,6 @@ void WrappedContainerClass_new(TTPtr self, long argc, t_atom *argv)
         object_error((t_object*)x, "can't have two models or views in the same patcher");
         return;
     }
-
-	post("x->obj->o_canvas->gl_list : %p",x->obj.o_canvas->gl_list);
 		
 	// create a container
 	jamoma_container_create((t_object*)x, x->wrappedObject);
@@ -552,7 +550,6 @@ void model_share_patcher_node(TTPtr self, TTNodePtr *patcherNode)
 void WrappedContainerClass_anything(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	post("call WrappedContainerClass_anything with symbol : %s",msg->s_name);
 	
 	// the msg have to contains a relative address
 	jamoma_container_send(x->wrappedObject, msg, argc, argv);

@@ -176,6 +176,10 @@ t_symbol *_sym_nextobject;
 t_symbol *_sym_pd;
 t_symbol *_sym_box;
 t_symbol *_sym_nobox;
+t_symbol *_sym_read;
+t_symbol *_sym_write;
+t_symbol *_sym_error;
+t_symbol *_sym_jed;
 
 // jamoma specific symbols
 t_symbol *_sym_j_in;
@@ -187,6 +191,9 @@ t_symbol *_sym_j_model;
 t_symbol *_sym_j_view;
 t_symbol *_sym_share_patcher_node;
 t_symbol *_sym_share_patcher_info;
+
+// custom symbols
+t_symbol *_sym_loadbang;
 
 //comonly used symbols that are exported
 void common_symbols_init(void);
@@ -362,7 +369,11 @@ void common_symbols_init(void)
     _sym_nextobject     = gensym("nextobject");
     _sym_pd             = gensym("pd");
     _sym_box            = gensym("box");
-	_sym_nobox            = gensym("nobox");
+	_sym_nobox          = gensym("nobox");
+	_sym_read			= gensym("read");
+	_sym_write			= gensym("write");
+	_sym_error			= gensym("error");
+	_sym_jed			= gensym("jed");
 
 	// jamoma specific symbols
 	_sym_j_in = gensym("j.in");
@@ -374,5 +385,8 @@ void common_symbols_init(void)
 	_sym_j_view = gensym("j.view");
 	_sym_share_patcher_node = gensym("share_patcher_node");
 	_sym_share_patcher_info = gensym("share_patcher_info");
+
+	// custom symbols
+	_sym_loadbang = gensym("loadbang");
 
 }

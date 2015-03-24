@@ -177,6 +177,10 @@ extern t_symbol *_sym_nextobject;
 extern t_symbol *_sym_pd;
 extern t_symbol *_sym_box;
 extern t_symbol *_sym_nobox;
+extern t_symbol *_sym_read;
+extern t_symbol *_sym_write;
+extern t_symbol *_sym_error;
+extern t_symbol *_sym_jed;
 
 //Jamoma specific symbols
 extern t_symbol *_sym_j_in;
@@ -188,6 +192,9 @@ extern t_symbol *_sym_j_model;
 extern t_symbol *_sym_j_view;
 extern t_symbol *_sym_share_patcher_node;
 extern t_symbol *_sym_share_patcher_info;
+
+// custom symbol
+extern t_symbol *_sym_loadbang;
 
 #ifdef __cplusplus
 }

@@ -112,6 +112,12 @@ t_object *wrappedModularClass_new(t_symbol *name, long argc, t_atom *argv)
 			// handle attribute args
 			attr_args_process(x, argc, argv);
 	}
+
+	// call an object loadbang method if it exists
+	method _method = (method)getfn((t_pd*)x,_sym_loadbang);
+	if (_method)
+		_method(x);
+
 	return (t_object*)x;
 }
 

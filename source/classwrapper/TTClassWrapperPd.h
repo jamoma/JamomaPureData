@@ -151,6 +151,4 @@ long TTMatrixReferenceJitterMatrix(TTMatrix aMatrix, TTPtr aJitterMatrix, TTBool
 TTErr TTMatrixCopyDataFromJitterMatrix(TTMatrix aMatrix, TTPtr aJitterMatrix);
 TTErr TTMatrixCopyDataToJitterMatrix(TTMatrix aMatrix, TTPtr aJitterMatrix);
 
-void object_obex_dumpout(void *x, t_symbol *s, long argc, t_atom *argv);
-
 #endif // __TT_CLASS_WRAPPER_MAX_H__

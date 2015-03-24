@@ -309,7 +309,7 @@ short locatefile_extended(char *name, short *outvol, t_fourcc *outtype, const t_
 	int fd = -1;
 	int bin;
 	char realname[MAXPDSTRING], dirbuf[MAXPDSTRING], *basename;
-	fd = open_via_path(NULL, name, "", dirbuf, &basename, MAXPDSTRING, 0);
+	fd = open_via_path("", name, "", dirbuf, &basename, MAXPDSTRING, 0);
 	return fd < 0;
 }
 

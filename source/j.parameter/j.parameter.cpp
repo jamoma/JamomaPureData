@@ -269,6 +269,7 @@ void data_subscribe(TTPtr self, t_symbol *relativeAddress)
         
 #ifndef JMOD_MESSAGE
 #ifndef JMOD_RETURN
+		/* TODO this crashes Pd
         // if a j.parameter is registered under the root : reset to the default value our self
         if (returnedContextNode == accessApplicationLocalDirectory->getRoot())
         {
@@ -277,6 +278,7 @@ void data_subscribe(TTPtr self, t_symbol *relativeAddress)
             if (!initialized)
                 x->wrappedObject.send(kTTSym_Init);
         }
+		*/
 #endif
 #endif
 	}

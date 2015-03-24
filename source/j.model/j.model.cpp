@@ -164,7 +164,7 @@ void WrappedContainerClass_free(TTPtr self)
     if (!EXTRA)
         return;
     
-    if (EXTRA->modelInfo->valid()) {
+	if (EXTRA->modelInfo && EXTRA->modelInfo->valid()) {
         
         modelAddress = EXTRA->containerAddress.appendAddress(TTAddress("model"));
         
@@ -173,7 +173,7 @@ void WrappedContainerClass_free(TTPtr self)
     }
     delete EXTRA->modelInfo;
     
-    if (EXTRA->presetManager->valid()) {
+	if (EXTRA->presetManager && EXTRA->presetManager->valid()) {
         
         presetAddress = EXTRA->containerAddress.appendAddress(TTAddress("preset"));
         
@@ -208,21 +208,41 @@ void model_subscribe(TTPtr self)
 	TTObject                    aTextHandler;
 	TTBoolean					isSubModel;
 	TTAddress                   returnedAddress, adrs;
-    TTSymbol                    description;
+	TTSymbol                    description;
 	long                        ac;
 	t_atom*						av;
     t_atom                      a;
 	t_canvas*					aPatcher = ((t_eobj*)x)->o_canvas;
+	TTAddress    modelAddress, presetAddress;
+
+	// unsubscribe before subscribing
+	if (EXTRA->modelInfo && EXTRA->modelInfo->valid()) {
+
+		modelAddress = EXTRA->containerAddress.appendAddress(TTAddress("model"));
+
+		// remove the model node
+		JamomaApplication.send("ObjectUnregister", modelAddress, none);
+	}
+
+	if (EXTRA->presetManager && EXTRA->presetManager->valid()) {
+
+		presetAddress = EXTRA->containerAddress.appendAddress(TTAddress("preset"));
+
+		// remove the preset node
+		 JamomaApplication.send("ObjectUnregister", presetAddress, none);
+	}
 
 	// if the subscription is successful
 	if (!jamoma_subscriber_create((t_eobj*)x, x->wrappedObject, kTTAdrsEmpty, x->subscriberObject, returnedAddress, &returnedNode, &returnedContextNode)) {
 		
 		// get all info relative to our patcher
 		jamoma_patcher_get_info(aPatcher, &x->patcherPtr, x->patcherContext, x->patcherClass, x->patcherName);
+		/*
 		post("j.model info :");
 		post("context : %s",x->patcherContext.c_str());
 		post("classe : %s",x->patcherClass.c_str());
 		post("name : %s",x->patcherName.c_str());
+		*/
 		// set the address attribute of the Container 
 		x->wrappedObject.set(kTTSym_address, returnedAddress);
         

@@ -28,7 +28,7 @@ void jamoma_subscriber_fill_list(TTList& listToFill, TTAddress address, TTPtr po
 // Method to deal with TTSubscriber
 ///////////////////////////////////////////////////////////////////////
 
-TTErr jamoma_subscriber_create(t_object *x, TTObject& anObject, TTAddress relativeAddress, TTObject& returnedSubscriber, TTSymbol& returnedAddress, TTNodePtr *returnedNode, TTNodePtr *returnedContextNode)
+TTErr jamoma_subscriber_create(t_eobj *x, TTObject& anObject, TTAddress relativeAddress, TTObject& returnedSubscriber, TTSymbol& returnedAddress, TTNodePtr *returnedNode, TTNodePtr *returnedContextNode)
 {
 	TTValue		v, args;
 	TTList		aContextList;
@@ -91,7 +91,7 @@ TTErr jamoma_subscriber_create(t_object *x, TTObject& anObject, TTAddress relati
                 t_atom *  argv = NULL;
                 
                 // get patcher info
-                jamoma_patcher_get_info(x, &patcher, patcherContext, patcherClass, patcherName);
+				jamoma_patcher_get_info(x->o_canvas, &patcher, patcherContext, patcherClass, patcherName);
                 
                 // get patcher argument (dedicated for the name)
                 jamoma_patcher_get_args(patcher, &argc, &argv);
@@ -240,10 +240,10 @@ t_symbol *jamoma_parse_dieze(t_canvas *x, t_symbol *address)
 	return address;
 }
 
-void jamoma_subscriber_get_patcher_list(t_object *x, TTList& aContextListToFill)
+void jamoma_subscriber_get_patcher_list(t_eobj *x, TTList& aContextListToFill)
 {
 	TTValue		v;
-	t_object	*objPtr = x;
+	t_canvas	*objPtr = x->o_canvas;
     t_canvas	*patcherPtr = NULL;
 	TTSymbol	patcherContext;
 	TTSymbol	patcherName;
@@ -268,7 +268,7 @@ void jamoma_subscriber_get_patcher_list(t_object *x, TTList& aContextListToFill)
                 jamoma_subscriber_fill_list(aContextListToFill, TTAddress(patcherName), patcherPtr);
 				
 				// replace current object by his parent patcher
-                //objPtr = &patcherPtr->gl_obj;
+				objPtr = patcherPtr->gl_owner;
 		/*	théo - when commenting this part we allow to subscribe view into model and model into view
             }
 			else {
@@ -1586,7 +1586,7 @@ void jamoma_patcher_share_node(t_canvas *patcher, TTNodePtr *patcherNode)
 }
 
 /** Get all context info from an object (his patcher and the context, the class and the name of his patcher) */
-TTErr jamoma_patcher_get_info(t_object *obj, t_canvas **returnedPatcher, TTSymbol& returnedContext, TTSymbol& returnedClass, TTSymbol& returnedName)
+TTErr jamoma_patcher_get_info(t_canvas *obj, t_canvas **returnedPatcher, TTSymbol& returnedContext, TTSymbol& returnedClass, TTSymbol& returnedName)
 {
 	TTBoolean	canShare;
 	t_symbol	*_sym_j_context;
@@ -1597,8 +1597,8 @@ TTErr jamoma_patcher_get_info(t_object *obj, t_canvas **returnedPatcher, TTSymbo
 	TTSymbol	sharedClass;
 	TTSymbol	sharedName;
 	
-	t_eobj* x = (t_eobj*) obj;
-	*returnedPatcher = x->o_canvas;
+	// t_eobj* x = (t_eobj*) obj;
+	*returnedPatcher = obj;
 
 	_sym_j_context = object_classname(obj);
 	canShare = _sym_j_context == gensym("j.model") || _sym_j_context == gensym("j.view");

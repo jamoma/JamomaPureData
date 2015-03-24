@@ -215,10 +215,10 @@ void model_subscribe(TTPtr self)
 	t_canvas*					aPatcher = ((t_eobj*)x)->o_canvas;
 
 	// if the subscription is successful
-	if (!jamoma_subscriber_create((t_object*)x, x->wrappedObject, kTTAdrsEmpty, x->subscriberObject, returnedAddress, &returnedNode, &returnedContextNode)) {
+	if (!jamoma_subscriber_create((t_eobj*)x, x->wrappedObject, kTTAdrsEmpty, x->subscriberObject, returnedAddress, &returnedNode, &returnedContextNode)) {
 		
 		// get all info relative to our patcher
-		jamoma_patcher_get_info((t_object*)x, &x->patcherPtr, x->patcherContext, x->patcherClass, x->patcherName);
+		jamoma_patcher_get_info(aPatcher, &x->patcherPtr, x->patcherContext, x->patcherClass, x->patcherName);
 		post("j.model info :");
 		post("context : %s",x->patcherContext.c_str());
 		post("classe : %s",x->patcherClass.c_str());

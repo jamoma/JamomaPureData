@@ -65,7 +65,7 @@ extern JAMOMA_EXPORT	TTString*			DocumentationFormat;	///<
  @param returnedContextNode
  @return						#TTErr error message if the method does not execute as expected.
  */
-TTErr JAMOMA_EXPORT jamoma_subscriber_create(t_object *x, TTObject& anObject, TTAddress relativeAddress, TTObject& returnedSubscriber, TTSymbol& returnedAddress, TTNodePtr *returnedNode, TTNodePtr *returnedContextNode);
+TTErr JAMOMA_EXPORT jamoma_subscriber_create(t_eobj *x, TTObject& anObject, TTAddress relativeAddress, TTObject& returnedSubscriber, TTSymbol& returnedAddress, TTNodePtr *returnedNode, TTNodePtr *returnedContextNode);
 
 
 /** Get the <patcher name, patcher pointer> list above an external.
@@ -73,7 +73,7 @@ TTErr JAMOMA_EXPORT jamoma_subscriber_create(t_object *x, TTObject& anObject, TT
  @param x
  @param aContextListToFill
  */
-void JAMOMA_EXPORT jamoma_subscriber_get_patcher_list(t_object *x, TTList& aContextListToFill);
+void JAMOMA_EXPORT jamoma_subscriber_get_patcher_list(t_eobj *x, TTList& aContextListToFill);
 
 
 
@@ -436,7 +436,7 @@ void JAMOMA_EXPORT jamoma_patcher_share_node(t_canvas *, TTNodePtr *patcherNode)
  @param returnedName
  @return						#TTErr error message if the method does not execute as expected.
  */
-TTErr JAMOMA_EXPORT jamoma_patcher_get_info(t_object *obj, t_canvas **returnedPatcher, TTSymbol& returnedContext, TTSymbol& returnedClass, TTSymbol& returnedName);
+TTErr JAMOMA_EXPORT jamoma_patcher_get_info(t_canvas *obj, t_canvas **returnedPatcher, TTSymbol& returnedContext, TTSymbol& returnedClass, TTSymbol& returnedName);
 
 /** Get j.model or j.view of a patcher 
  @param patcher

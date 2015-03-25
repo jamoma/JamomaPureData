@@ -18,14 +18,14 @@
 
 // those stuffes are needed for handling patchers without using the pcontrol object
 // #include "jpatcher_api.h"
-/*
+
 typedef struct dll {
 	t_object d_ob;
 	struct dll *d_next;
 	struct dll *d_prev;
 	void *d_x1;
 } t_dll;
-
+/*
 typedef struct outlet {
 	struct tinyobject o_ob;
 	struct dll *o_dll;
@@ -35,7 +35,8 @@ typedef struct outlet {
 // This is used to store extra data
 typedef struct extra {
     TTAddress   name;           ///< the name to use for subscription
-	TTPtr		ui_qelem;		///< to output "qlim'd" data for ui object
+    // TTPtr		ui_qelem;		///< to output "qlim'd" data for ui object
+    t_clock*    ui_clock;
 	t_object*	connected;		// our ui object
 	long		x;				// our ui object x presentation
 	long		y;				// our ui object y presentation
@@ -98,9 +99,9 @@ void WrapTTViewerClass(WrappedClassPtr c)
 {
 	eclass_addmethod(c->pdClass, (method)remote_assist,					"assist",				A_CANT, 0L);
 	
-	eclass_addmethod(c->pdClass, (method)remote_mousemove,				"mousemove",			A_CANT, 0);
-	eclass_addmethod(c->pdClass, (method)remote_mouseleave,				"mouseleave",			A_CANT, 0);
-	eclass_addmethod(c->pdClass, (method)remote_mousedown,				"mousedown",			A_CANT, 0);
+    // eclass_addmethod(c->pdClass, (method)remote_mousemove,				"mousemove",			A_CANT, 0);
+    // eclass_addmethod(c->pdClass, (method)remote_mouseleave,				"mouseleave",			A_CANT, 0);
+    // eclass_addmethod(c->pdClass, (method)remote_mousedown,				"mousedown",			A_CANT, 0);
 	
 	eclass_addmethod(c->pdClass, (method)remote_return_value,			"return_value",			A_CANT, 0);
 	eclass_addmethod(c->pdClass, (method)remote_return_model_address,	"return_model_address",	A_CANT, 0);
@@ -167,8 +168,9 @@ void WrappedViewerClass_new(TTPtr self, long argc, t_atom *argv)
 	x->outlets[set_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output qlim data
 	
 	// Make qelem object
-	EXTRA->ui_qelem = qelem_new(x, (method)remote_ui_queuefn);
-    
+    //EXTRA->ui_qelem = qelem_new(x, (method)remote_ui_queuefn);
+    EXTRA->ui_clock = clock_new(x,(t_method)remote_ui_queuefn);
+
     // clear support for qelem value
     x->argc = 0;
     x->argv = NULL;
@@ -210,7 +212,8 @@ void WrappedViewerClass_free(TTPtr self)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
     
-	qelem_free(EXTRA->ui_qelem);
+    clock_unset(EXTRA->ui_clock);
+    clock_free(EXTRA->ui_clock);
     
     x->wrappedObject.set(kTTSym_address, kTTAdrsEmpty);
     
@@ -256,7 +259,7 @@ void remote_subscribe(TTPtr self)
 	}
 	
 	// for relative address
-	jamoma_patcher_get_info((t_object*)x, &x->patcherPtr, x->patcherContext, x->patcherClass, x->patcherName);
+    jamoma_patcher_get_info(((t_eobj*)x)->o_canvas, &x->patcherPtr, x->patcherContext, x->patcherClass, x->patcherName);
     
     // if no name is provided or can be edited in remote_attach() : use the address
     if (EXTRA->name == kTTAdrsEmpty)
@@ -365,14 +368,14 @@ void remote_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 	
 	// avoid blank before data
 	if (msg == _sym_nothing)
-		outlet_atoms(x->outlets[value_out], argc, argv);
+        outlet_anything((t_outlet*)x->outlets[value_out], NULL, argc, argv);
 	else
-		outlet_anything(x->outlets[value_out], msg, argc, argv);
+        outlet_anything((t_outlet*)x->outlets[value_out], msg, argc, argv);
 	
     // Copy msg and atom in order to avoid losing data
     copy_msg_argc_argv(self, msg, argc, argv);
 	
-    qelem_set(EXTRA->ui_qelem);
+    clock_set(EXTRA->ui_clock,10);
 }
 
 void remote_ui_queuefn(TTPtr self)
@@ -380,7 +383,7 @@ void remote_ui_queuefn(TTPtr self)
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
     
     if (x->argc && x->argv)
-        outlet_anything(x->outlets[set_out], _sym_set, x->argc, x->argv);
+        outlet_anything((t_outlet*)x->outlets[set_out], _sym_set, x->argc, x->argv);
 }
 
 void remote_bang(TTPtr self)
@@ -468,17 +471,18 @@ void remote_return_description(TTPtr self, t_symbol *msg, long argc, t_atom *arg
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
 	
     // if an ui object is connected
-	if (EXTRA->connected)
+    // if (EXTRA->connected)
         
         // set its annotation attribute
-        object_attr_setvalueof(EXTRA->connected, _sym_annotation , argc, argv);
+        // there is no annotation on Pd, right ?
+        // object_attr_setvalueof(EXTRA->connected, _sym_annotation , argc, argv);
 }
 
 void remote_address(TTPtr self, t_symbol *address)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
     
-	x->address =  TTAddress(jamoma_parse_dieze((t_object*)x, address)->s_name);
+    x->address =  TTAddress(address->s_name);
     
     // unsubscribe the remote before
     if (x->subscriberObject.valid())
@@ -563,6 +567,7 @@ void remote_attach(TTPtr self, int attach_output_id)
 }
 
 // When the mouse is moving on the j.ui (not our remote object !)
+/* TODO : AV remove this for now, do we need it in Puredata ?
 void remote_mousemove(TTPtr self, t_object *patcherview, t_pt pt, long modifiers)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
@@ -679,3 +684,4 @@ void remote_mousedown(TTPtr self, t_object *patcherview, t_pt pt, long modifiers
 		}
 	}
 }
+*/

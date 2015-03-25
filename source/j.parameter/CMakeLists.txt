@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(j.parameter)
+project(pd_j.parameter)
 
 set(PROJECT_SRCS
 ${CMAKE_CURRENT_SOURCE_DIR}/j.parameter.cpp

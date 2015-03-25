@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 #[[
-project(j.remote)
+project(pd_j.remote)
 
 set(PROJECT_SRCS
 ${CMAKE_CURRENT_SOURCE_DIR}/j.remote.cpp

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(j.message)
+project(pd_j.message)
 
 add_definitions(-DJMOD_MESSAGE)
 

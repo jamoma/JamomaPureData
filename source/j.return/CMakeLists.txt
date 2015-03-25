@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(j.return)
+project(pd_j.return)
 
 add_definitions(-DJMOD_RETURN)
 

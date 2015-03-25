@@ -53,6 +53,9 @@ if(APPLE)
 endif()
 
 ### Output ###
+# remove "_pd" at the start of project name
+string(REGEX REPLACE "^pd_" "" BIN_NAME ${PROJECT_NAME})
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${BIN_NAME})
 if(APPLE)
 	set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 	set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".pd_darwin")

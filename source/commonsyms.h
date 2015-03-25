@@ -181,6 +181,8 @@ extern t_symbol *_sym_read;
 extern t_symbol *_sym_write;
 extern t_symbol *_sym_error;
 extern t_symbol *_sym_jed;
+extern t_symbol *_sym_none;
+extern t_symbol *_sym_store;
 
 //Jamoma specific symbols
 extern t_symbol *_sym_j_in;

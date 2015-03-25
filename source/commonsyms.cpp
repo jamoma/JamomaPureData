@@ -180,6 +180,8 @@ t_symbol *_sym_read;
 t_symbol *_sym_write;
 t_symbol *_sym_error;
 t_symbol *_sym_jed;
+t_symbol *_sym_none;
+t_symbol *_sym_store;
 
 // jamoma specific symbols
 t_symbol *_sym_j_in;
@@ -374,6 +376,9 @@ void common_symbols_init(void)
 	_sym_write			= gensym("write");
 	_sym_error			= gensym("error");
 	_sym_jed			= gensym("jed");
+    _sym_none           = gensym("none");
+    _sym_store          = gensym("store");
+
 
 	// jamoma specific symbols
 	_sym_j_in = gensym("j.in");

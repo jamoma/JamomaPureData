@@ -152,7 +152,7 @@ void WrappedContainerClass_new(TTPtr self, long argc, t_atom *argv)
 	// and our box is not yet valid until we have finished instantiating the object.
 	// Trying to use a loadbang method instead is also not fully successful (as of Max 5.0.6)
 	// defer_low((t_object*)x, (method)model_subscribe, NULL, 0, 0);
-	model_subscribe((t_object*)x);
+    // model_subscribe((t_object*)x);
 }
 
 void WrappedContainerClass_free(TTPtr self)

@@ -523,12 +523,7 @@ void model_assist(TTPtr self, void *b, long msg, long arg, char *dst)
 void model_share_patcher_info(TTPtr self, TTValuePtr patcherInfo)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	// patcherInfo->clear();
-
-	printf("patcher info : \n");
-	printf("context : %s\n",x->patcherContext.c_str());
-	printf("class : %s\n",x->patcherClass.c_str());
-	printf("name : %s\n",x->patcherName.c_str());
+    patcherInfo->clear();
 
 	if (x->patcherPtr && x->patcherContext != kTTSymEmpty && x->patcherClass != kTTSymEmpty && x->patcherName != kTTSymEmpty) {
 		patcherInfo->append((TTPtr)x->patcherPtr);

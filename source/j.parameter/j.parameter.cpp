@@ -204,10 +204,8 @@ void WrappedDataClass_new(TTPtr self, long argc, t_atom *argv)
 	/////////////////////////////////////////////////////////////////////////////////
 
 	// Don't create outlets during dynamic changes
-	x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 2);   
+    x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr));
 	x->outlets[data_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output data
-	x->dumpOut = outlet_new((t_object*)x,NULL);									// dumpout
-	x->outlets[dump_out] = x->dumpOut;
 
     // Store arguments
 	if (argc > 1 && argv)

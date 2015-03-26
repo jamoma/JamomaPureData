@@ -134,7 +134,6 @@ void WrappedCueManagerClass_new(TTPtr self, long argc, t_atom *argv)
 	// Make two outlets
 	x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 1);
 	x->outlets[line_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output data
-	x->dumpOut = outlet_new((t_object*)x, NULL);
 
 	// Prepare Internals hash to store TextHandler object
 	x->internals = new TTHash();

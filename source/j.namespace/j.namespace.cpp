@@ -121,8 +121,6 @@ void WrappedExplorerClass_new(TTPtr self, long argc, t_atom *argv)
 	x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 2);
     x->outlets[size_out] = outlet_new((t_object*)x, NULL);
     x->outlets[data_out] = outlet_new((t_object*)x, NULL);
-    x->outlets[dump_out] = outlet_new((t_object*)x, NULL);
-    x->dumpOut = outlet_new((t_object*)x, NULL);
 	
 	x->msg = _sym_none;
 	

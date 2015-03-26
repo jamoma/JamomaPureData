@@ -121,8 +121,6 @@ void WrappedContainerClass_new(TTPtr self, long argc, t_atom *argv)
 	// Make two outlets
 	x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 1);
 	x->outlets[data_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output data
-	x->dumpOut = outlet_new((t_object*)x,NULL);									// dumpout
-	x->outlets[dump_out] = x->dumpOut;
 
 	// Prepare extra data
 	x->extra = (t_extra*)malloc(sizeof(t_extra));
@@ -353,7 +351,7 @@ void model_subscribe(TTPtr self)
             if (v.size() == 1) {
                 returnedAddress = v[0];
                 atom_setsym(&a, gensym((char*)returnedAddress.c_str()));
-				outlet_anything(x->dumpOut, gensym("address"),1,&a);
+                outlet_anything(x->dumpOut, gensym("address"),1,&a);
 //                object_obex_dumpout(self, gensym("address"), 1, &a);
             }
 			

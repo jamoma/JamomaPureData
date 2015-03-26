@@ -124,18 +124,12 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2eparameter(void)
 	spec->_any = &WrappedDataClass_anything;
 	spec->_notify = NULL;
 	
-#ifdef JMOD_MESSAGE
+#if defined(JMOD_MESSAGE)
     return (void)wrapTTModularClassAsPdClass(kTTSym_Data, "j.message", NULL, spec);
-#endif
-	
-#ifdef JMOD_RETURN
+#elif defined(JMOD_RETURN)
     return (void)wrapTTModularClassAsPdClass(kTTSym_Data, "j.return", NULL, spec);
-#endif
-	
-#ifndef JMOD_MESSAGE
-#ifndef JMOD_RETURN
+#else
     return (void)wrapTTModularClassAsPdClass(kTTSym_Data, "j.parameter", NULL, spec);
-#endif
 #endif
 }
 

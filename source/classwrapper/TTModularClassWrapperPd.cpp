@@ -1292,3 +1292,7 @@ void wrappedModularClass_ArrayResize(TTPtr self, long newSize)
 }
 #endif
 
+void object_obex_dumpout(TTPtr self, t_symbol* msg, int argc, t_atom* argv)
+{
+    outlet_anything(((WrappedModularInstancePtr)self)->dumpOut,msg,argc,argv);
+}

@@ -342,7 +342,7 @@ t_max_err	wrappedModularClass_FormatGet(TTPtr self, TTPtr attr, long *ac, t_atom
  @param argc		t_atomarray count (length)
  @param argv		Pointer to the atom array
 */
-t_max_err	wrappedModularClass_FormatSet(TTPtr self, TTPtr attr, long ac, const t_atom *av);
+t_max_err	wrappedModularClass_FormatSet(TTPtr self, TTPtr attr, long ac, t_atom *av);
 
 
 /**
@@ -351,12 +351,14 @@ t_max_err	wrappedModularClass_FormatSet(TTPtr self, TTPtr attr, long ac, const t
  @param argc		t_atomarray count (length)
  @param argv		Pointer to the atom array
 */
-void		wrappedModularClass_ArraySelect(TTPtr self, t_symbol *msg, long ac, const t_atom *av);
+void		wrappedModularClass_ArraySelect(TTPtr self, t_symbol *msg, long ac, t_atom *av);
 
 
 /**
 */
 void		wrappedModularClass_ArrayResize(TTPtr self, long newSize);
 #endif
+
+void object_obex_dumpout(TTPtr self, t_symbol* msg, int argc, t_atom* argv);
 
 #endif // __TT_MODULAR_CLASS_WRAPPER_PD_H__

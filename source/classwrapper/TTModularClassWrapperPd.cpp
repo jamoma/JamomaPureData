@@ -902,12 +902,12 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
 	
 #ifdef ARRAY_EXTERNAL
 	
-    class_addmethod(wrappedPdClass->pdClass, (method)wrappedModularClass_ArraySelect,				"array/select",			A_GIMME,0);
-    class_addmethod(wrappedPdClass->pdClass, (method)wrappedModularClass_ArrayResize,				"array/resize",			A_LONG,0);
+    eclass_addmethod(wrappedPdClass->pdClass, (method)wrappedModularClass_ArraySelect,				"array/select",			A_GIMME,0);
+    eclass_addmethod(wrappedPdClass->pdClass, (method)wrappedModularClass_ArrayResize,				"array/resize",			A_LONG,0);
 	
-    CLASS_ATTR_SYM(wrappedPdClass->pdClass,			"format",	0,		WrappedModularInstance,	arrayAttrFormat);
+    CLASS_ATTR_SYMBOL(wrappedPdClass->pdClass,			"format",	0,		WrappedModularInstance,	arrayAttrFormat);
     CLASS_ATTR_ACCESSORS(wrappedPdClass->pdClass,		"format",			wrappedModularClass_FormatGet,	wrappedModularClass_FormatSet);
-    CLASS_ATTR_ENUM(wrappedPdClass->pdClass,			"format",	0,		"single array");
+    // CLASS_ATTR_ENUM(wrappedPdClass->pdClass,			"format",	0,		"single array");
 #endif
 	
     eclass_register(_sym_box, wrappedPdClass->pdClass);
@@ -1196,17 +1196,17 @@ t_max_err wrappedModularClass_FormatGet(TTPtr self, TTPtr attr, long *ac, t_atom
 		*ac = 1;
 		if (!(*av = (t_atom*)getbytes(sizeof(t_atom)*(*ac)))) {
 			*ac = 0;
-			return MAX_ERR_OUT_OF_MEM;
+            return -4; // MAX_ERR_OUT_OF_MEM;
 		}
 	}
 	
 	atom_setsym(*av, x->arrayAttrFormat);
 	
-	return MAX_ERR_NONE;
+    return 0; // MAX_ERR_NONE;
 }
 
 
-t_max_err wrappedModularClass_FormatSet(TTPtr self, TTPtr attr, long ac, const t_atom *av)
+t_max_err wrappedModularClass_FormatSet(TTPtr self, TTPtr attr, long ac, t_atom *av)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
 	
@@ -1216,11 +1216,11 @@ t_max_err wrappedModularClass_FormatSet(TTPtr self, TTPtr attr, long ac, const t
 		// no args, set to single
 		x->arrayAttrFormat = gensym("single");
 	}
-	return MAX_ERR_NONE;
+    return 0; // MAX_ERR_NONE;
 }
 
 
-void wrappedModularClass_ArraySelect(TTPtr self, t_symbol *msg, long ac, const t_atom *av)
+void wrappedModularClass_ArraySelect(TTPtr self, t_symbol *msg, long ac, t_atom *av)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
 	t_symbol					*instanceAddress;
@@ -1284,8 +1284,9 @@ void wrappedModularClass_ArrayResize(TTPtr self, long newSize)
         
         jamoma_edit_string_instance(x->arrayFormatString, &instanceAddress, s_bracket.c_str());
         
-        object_method((t_object*)x, gensym("address"), instanceAddress, 0, NULL);
-        JamomaDebug object_post((t_object*)x, "array/resize : to %s address", instanceAddress->s_name);
+        getfn((t_pd*)x,gensym("address"))((t_object*)x,instanceAddress,0,NULL);
+//        object_method((t_object*)x, gensym("address"), instanceAddress, 0, NULL);
+        JamomaDebug logpost((t_object*)x, 3,"array/resize : to %s address", instanceAddress->s_name);
     }
     else
         object_error((t_object*)x, "array/resize : %d is not a valid size", newSize);

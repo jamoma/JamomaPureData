@@ -80,6 +80,8 @@ void WrapTTExplorerClass(WrappedClassPtr c)
 	
     eclass_addmethod(c->pdClass, (method)nmspc_bang,				"explore",					A_NULL, 0); // overwrite explore message to use the bang method
 
+    eclass_addmethod(c->pdClass, (method)NULL,				"loadbang",					A_NULL, 0); // overwrite explore message to use the bang method
+
     //eclass_addmethod(c->pdClass, (method)nmspc_add_max_namespace,	"add_max_namespace",		0);
 	
     // TODO restore those attributes

@@ -16,7 +16,11 @@
 
 #include "j.model.h"
 
+#if defined (JCOM_VIEW)
+extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2eview(void)
+#else
 extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2emodel(void)
+#endif
 {
 	ModularSpec *spec = new ModularSpec;
 	spec->_wrap = &WrapTTContainerClass;

@@ -36,7 +36,6 @@ ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaForPd.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaModularForPd.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaObject.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaSymbols.cpp
-# ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaPdSymbols.cpp
 )
 
 file(GLOB_RECURSE PROJECT_HDRS
@@ -63,8 +62,8 @@ include_directories("${PROJECT_SOURCE_DIR}/../source/")
 
 add_library(${PROJECT_NAME} SHARED ${PROJECT_SRCS} ${PROJECT_HDRS})
 
-target_link_libraries(${PROJECT_NAME} JamomaFoundation)
-target_link_libraries(${PROJECT_NAME} JamomaModular)
+target_link_libraries(${PROJECT_NAME} Foundation)
+target_link_libraries(${PROJECT_NAME} Modular)
 target_link_libraries(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/../source/CicmWrapper/Sources/.libs/libCicmWrapper.a)
 
 # addAppleFramework(Carbon)

@@ -64,7 +64,7 @@ add_library(${PROJECT_NAME} SHARED ${PROJECT_SRCS} ${PROJECT_HDRS})
 
 target_link_libraries(${PROJECT_NAME} Foundation)
 target_link_libraries(${PROJECT_NAME} Modular)
-target_link_libraries(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/../source/CicmWrapper/Sources/.libs/libCicmWrapper.a)
+target_link_libraries(${PROJECT_NAME} CicmWrapper)
 
 # addAppleFramework(Carbon)
 

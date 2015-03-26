@@ -25,11 +25,11 @@ add_library(TTClassWrapperPd OBJECT
 add_library(TTModularClassWrapperPd OBJECT
                         ${CMAKE_CURRENT_SOURCE_DIR}/classwrapper/TTModularClassWrapperPd.cpp)
 
-#add_library(TTModularClassWrapperPdArray OBJECT
-#                        ${CMAKE_CURRENT_SOURCE_DIR}/../classwrapper/TTModularClassWrapperPdArray.cpp)
-#
-#set_property(TARGET TTModularClassWrapperPdArray
-#			 PROPERTY COMPILE_DEFINITIONS ARRAY_EXTERNAL)
+add_library(TTModularClassWrapperPdArray OBJECT
+                        ${CMAKE_CURRENT_SOURCE_DIR}/classwrapper/TTModularClassWrapperPd.cpp)
+
+set_property(TARGET TTModularClassWrapperPdArray
+                         PROPERTY COMPILE_DEFINITIONS ARRAY_EXTERNAL)
 
 #addMaxsupport()
 

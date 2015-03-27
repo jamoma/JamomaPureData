@@ -28,7 +28,7 @@ Then you are ready to build Jamoma and JamomaPuredata. From the root of the Jamo
 ~~~~
 mkdir build
 cd build 
-cmake ..
+cmake -DBUILD_JAMOMAPD:STRING=True ..
 make
 ~~~~
 

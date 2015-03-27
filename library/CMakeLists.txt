@@ -36,6 +36,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaForPd.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaModularForPd.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaObject.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/source/JamomaSymbols.cpp
+$<TARGET_OBJECTS:PdCommonSyms>
 )
 
 file(GLOB_RECURSE PROJECT_HDRS

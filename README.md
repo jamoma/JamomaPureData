@@ -1,6 +1,7 @@
 JamomaPureData
 ==============
 This is a port of [JamomaMax](https://github.com/jamoma/JamomaMax) library to [Puredata](http://puradata.info).
+For reference, it's based on https://github.com/jamoma/JamomaMax/commit/957d817c508a69de06538cc9ac17a197279ff9fe.
 
 Building
 --------

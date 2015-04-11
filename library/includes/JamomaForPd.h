@@ -67,10 +67,14 @@ typedef unsigned int t_fourcc; // Max specific type
 #include "TTModular.h"
 
 // CicmWrapper
+#ifdef __cplusplus
 extern "C"
 {
+#endif
     #include "cicm_wrapper.h"
+#ifdef __cplusplus
 }
+#endif
 #include "commonsyms.h"
 
 // standard includes

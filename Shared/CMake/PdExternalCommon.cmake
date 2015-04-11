@@ -1,9 +1,5 @@
 set(PROJECT_SRCS ${PROJECT_SRCS} $<TARGET_OBJECTS:PdCommonSyms>)
 
-if(APPLE)
-	include_directories("${FILE_H_DIR}")
-endif()
-
 add_library(${PROJECT_NAME} MODULE ${PROJECT_SRCS})
 
 #[[ block comment

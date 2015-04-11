@@ -1,6 +1,6 @@
 /** @file
  *
- * @ingroup implementationMaxExternals
+ * @ingroup implementationPdExternals
  *
  * @brief j.model / j.view - The main control center of Jamoma model and view patcher
  *

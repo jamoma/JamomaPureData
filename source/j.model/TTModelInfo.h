@@ -1,6 +1,6 @@
 /** @file
  *
- * @ingroup maxLibrary
+ * @ingroup pdLibrary
  *
  * @brief A base class for Jamoma models
  *

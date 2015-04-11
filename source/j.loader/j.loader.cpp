@@ -1,14 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxExternals
+ * @ingroup implementationPdExternals
  *
  * @brief j.loader - Simply used to load the framework when Max is launched
  *
  * @details
  *
- * @authors Tim Place, Trond Lossius
+ * @authors Tim Place, Trond Lossius, Antoine Villeret
  *
  * @copyright Copyright © 2007 by Tim Place @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */

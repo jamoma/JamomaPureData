@@ -1,14 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxLibrary
+ * @ingroup implementationPdLibrary
  *
  * @brief Data types for Max objects that fit more naturally with the Jamoma coding style.
  *
  * @details
  *
- * @authors Tim Place
+ * @authors Tim Place, Antoine Villeret
  *
  * @copyright Copyright © 2006, Tim Place @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */

@@ -1,15 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxExternals
+ * @ingroup implementationPdExternals
  *
  * @brief j.parameter / j.message / j.return : Jamoma model parameter definition
  *
  * @details
  *
- * @authors Timothy Place, Théo de la Hogue, Trond Lossius
+ * @authors Timothy Place, Théo de la Hogue, Trond Lossius, Antoine Villeret
  *
  * @copyright © 2011 by Timothy Place, Théo de la Hogue @n
- * Pd port by Antoine Villeret 2015 @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */

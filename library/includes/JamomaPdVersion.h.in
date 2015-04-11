@@ -1,12 +1,12 @@
 /** @file
  *
- * @ingroup implementationMaxLibrary
+ * @ingroup implementationPdLibrary
  *
- * @brief Jamoma For Max Shared Library
+ * @brief Jamoma For Pd Shared Library
  *
- * @details Functions and resources used by Max objects.
+ * @details Functions and resources used by Pd objects.
  *
- * @authors Tim Place
+ * @authors Tim Place / Antoine Villeret
  *
  * @copyright Copyright (c) 2009, Tim Place @n
  * This code is licensed under the terms of the "New BSD License" @n

@@ -1,14 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxExternals
+ * @ingroup implementationPdExternals
  *
  * @brief j.node : edit priority, tag and description for a node that doesn't refer to any parameter, message or return
  *
  * @details
  *
- * @authors Théo de la Hogue
+ * @authors Théo de la Hogue, Antoine Villeret
  *
  * @copyright © 2014 by Théo de la Hogue @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */

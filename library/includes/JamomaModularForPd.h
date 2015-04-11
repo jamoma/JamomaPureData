@@ -1,14 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxLibrary
+ * @ingroup implementationPdLibrary
  *
  * @brief JamomaModular For Max Shared Library
  *
  * @details Functions and resources based on Modular framework used by Max objects
  *
- * @authors Théo de la Hogue, Tim Place
+ * @authors Théo de la Hogue, Tim Place, Antoine Villeret
  *
  * @copyright © 2013, Théo de la Hogue & Tim Place @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */

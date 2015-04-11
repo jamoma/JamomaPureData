@@ -1,14 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxLibrary
+ * @ingroup implementationPdLibrary
  *
  * @brief The global Jamoma object.
  *
- * @details Functions and resources used by Max objects.
+ * @details Functions and resources used by Pd objects.
  *
- * @authors Tim Place
+ * @authors Tim Place, Antoine Villeret
  *
  * @copyright Copyright © 2007, Tim Place @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */

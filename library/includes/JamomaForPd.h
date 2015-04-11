@@ -1,14 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxLibrary
+ * @ingroup implementationPdLibrary
  *
- * @brief Various utilities for interfacing with Max that are not specific to JamomaModular as such.
+ * @brief Various utilities for interfacing with Pd that are not specific to JamomaModular as such.
  *
- * @details Functions and resources used by Max objects.
+ * @details Functions and resources used by Pd objects.
  *
- * @authors Tim Place, Théo de la Hogue, Trond Lossius
+ * @authors Tim Place, Théo de la Hogue, Trond Lossius, Antoine Villeret
  *
  * @copyright Copyright © 2013, Tim Place & Théo de la Hogue @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */

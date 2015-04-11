@@ -1,14 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxExternals
+ * @ingroup implementationPdExternals
  *
  * @brief j.model / j.view - The main control center of Jamoma model and view patcher
  *
  * @details
  *
- * @authors Tim Place, Théo de la Hogue, Trond Lossius
+ * @authors Tim Place, Théo de la Hogue, Trond Lossius, Antoine Villeret
  *
  * @copyright Copyright © 2010 by Tim Place and Théo de la Hogue @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */

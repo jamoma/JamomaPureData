@@ -1,14 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxExternals
+ * @ingroup implementationPdExternals
  *
  * @brief j.out & j.out~ & j.out= - Manage control and audio outputs for a Jamoma model
  *
  * @details
  *
- * @authors  Timothy Place, Th�o de la Hogue, Trond Lossius
+ * @authors  Timothy Place, Théo de la Hogue, Trond Lossius, Antoine Villeret
  *
- * @copyright � 2008 by Timothy Place and Th�o de la Hogue @n
+ * @copyright © 2008 by Timothy Place and Théo de la Hogue @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */

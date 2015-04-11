@@ -1,14 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxExternals
+ * @ingroup implementationPdExternals
  *
  * @brief j.in & j.in~ & j.in= - Manage control and audio inputs for a Jamoma model
  *
  * @details
  *
- * @authors Tim Place, Théo de la Hogue, Nils Peters, Trond Lossius
+ * @authors Tim Place, Théo de la Hogue, Nils Peters, Trond Lossius, Antoine Villeret
  *
  * @copyright Copyright © 2006 by Tim Place @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */

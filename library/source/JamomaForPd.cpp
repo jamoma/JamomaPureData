@@ -1,14 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxLibrary
+ * @ingroup implementationPdLibrary
  *
  * @brief Jamoma For Max Shared Library
  *
  * @details Functions and resources used by Max objects.
  *
- * @authors Tim Place, Théo de la Hogue, Trond Lossius
+ * @authors Tim Place, Théo de la Hogue, Trond Lossius, Antoine Villeret
  *
  * @copyright Copyright © 2013, Tim Place & Théo de la Hogue @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */
@@ -129,7 +130,7 @@ void jamoma_init(void)
            // jamomaSymbol->s_thing = jamoma_object_new();
 		}
 		
-        post("Jamoma for Pd %s version %s | jamoma.org", JAMOMA_PD_REV, JAMOMA_PD_VERSION);
+        post("Jamoma for Pd version %s - %s | jamoma.org",JAMOMA_PD_VERSION, JAMOMA_PD_REV);
 
 		initialized = true;
 	}

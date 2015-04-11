@@ -1,14 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxExternals
+ * @ingroup implementationPdExternals
  *
  * @brief j.init - Send bang to initialize something.
  *
  * @details Bang source may be global or for just one module
  *
- * @authors Tim Place, Trond Lossius
+ * @authors Tim Place, Trond Lossius, Antoine Villeret
  *
  * @copyright Copyright © 2006 by Tim Place @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */

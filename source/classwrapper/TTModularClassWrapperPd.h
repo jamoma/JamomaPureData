@@ -9,6 +9,7 @@
  * @authors Timothy Place, Theo de la Hogue, Trond Lossius, Antoine Villeret
  *
  * @copyright © 2010-13 by Timothy Place, Theo de la Hogue @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */

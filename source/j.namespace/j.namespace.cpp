@@ -1,14 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxExternals
+ * @ingroup implementationPdExternals
  *
  * @brief j.namespace - deal with the Jamoma Namespace
  *
  * @details
  *
- * @authors Théo de la Hogue, Trond Lossius
+ * @authors Théo de la Hogue, Trond Lossius, Antoine Villeret
  *
  * @copyright Copyright © 2010 Théo de la Hogue @n
+ * Copyright © 2015, Antoine Villeret@n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */

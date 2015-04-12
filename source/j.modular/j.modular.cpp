@@ -119,10 +119,14 @@ void WrappedApplicationClass_new(TTPtr self, long argc, t_atom *argv)
 		
 		// check if the protocol has been loaded
 		if (!protocol.valid()) {
-            
-            if (TTModularApplicationManager->sendMessage("ProtocolInstantiate", protocolName, out))
+            try {
+                TTModularApplicationManager->sendMessage("ProtocolInstantiate", protocolName, out);
+            } catch ( TTException & e )
+            {
                 object_error((t_object*)x, "the %s protocol is not available", protocolName.c_str());
-            
+                return;
+            }
+
             protocol = out[0];
         }
 

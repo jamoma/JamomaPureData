@@ -257,7 +257,8 @@ t_symbol *object_attr_getsym(void *x, t_symbol *s){
 	t_atom *argv=NULL;
     eclass_attr_getter((t_object *) x, s, &argc, &argv);
     if ( argv && argv[0].a_type == A_SYMBOL)
-    return argv[0].a_w.w_symbol;
+        return argv[0].a_w.w_symbol;
+    return _sym_nothing;
 }
 
 void* object_attr_getobj(void *x, t_symbol *attrname){

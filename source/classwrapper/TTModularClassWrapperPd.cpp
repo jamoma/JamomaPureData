@@ -107,14 +107,14 @@ t_object *wrappedModularClass_new(t_symbol *name, long argc, t_atom *argv)
 		else
 			// handle attribute args
 			attr_args_process(x, argc, argv);
+
+        x->dumpOut = outlet_new((t_object*)x,NULL);
+
+        // call an object loadbang method if it exists
+        method _method = (method)getfn((t_pd*)x,_sym_loadbang);
+        if (_method)
+            _method(x);
 	}
-
-    x->dumpOut = outlet_new((t_object*)x,NULL);
-
-	// call an object loadbang method if it exists
-	method _method = (method)getfn((t_pd*)x,_sym_loadbang);
-	if (_method)
-		_method(x);
 
 	return (t_object*)x;
 }
@@ -758,8 +758,8 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
     t_symbol* s_pdClassName = gensym(pdClassName);
 	
 	// AV : why do we need to do initialize this each time a new class is instanciated ?
-	// jamoma_init();
-	// common_symbols_init();
+    // jamoma_init();
+    // common_symbols_init();
     
 #ifdef UI_EXTERNAL
 	TTGraphicsInit();

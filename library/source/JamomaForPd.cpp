@@ -62,7 +62,7 @@ void jamoma_init(void)
         TTErr       err;
         
 		// Init the Modular library
-        TTModularInit();
+        TTModularInit(NULL, true);
         
         // prepare a symbol for Jamoma
         kTTSym_Jamoma = TTSymbol(JAMOMA);

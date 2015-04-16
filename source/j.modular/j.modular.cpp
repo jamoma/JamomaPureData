@@ -123,7 +123,7 @@ void WrappedApplicationClass_new(TTPtr self, long argc, t_atom *argv)
                 TTModularApplicationManager->sendMessage("ProtocolInstantiate", protocolName, out);
             } catch ( TTException & e )
             {
-                object_error((t_object*)x, "the %s protocol is not available", protocolName.c_str());
+                object_error((t_object*)x, "Can't instantiate protocole %s. Reason : %s", protocolName.c_str(),e.getReason());
                 return;
             }
 

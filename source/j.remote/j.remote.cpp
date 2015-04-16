@@ -131,7 +131,7 @@ void WrappedViewerClass_new(TTPtr self, long argc, t_atom *argv)
 		address = _sym_nothing;
 	
 	// x->address = TTAddress(jamoma_parse_dieze((t_object*)x, address)->s_name);
-	x->address = address;
+    x->address = TTAddress(address->s_name);
 	x->index = 0; // the index member is usefull to count how many time the external tries to bind
 	
 	// Prepare extra data

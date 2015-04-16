@@ -793,7 +793,13 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
 #endif
 	
 	// Create a temporary instance of the class so that we can query it.
-	o = TTObject(ttblueClassName);
+    try {
+      o = TTObject(ttblueClassName);
+    } catch (TTException e){
+        error("can't create Jamoma %s object instance. The reason invoked is : %s",ttblueClassName.c_str(),e.getReason());
+        return (TTErr) -1; // generic error
+    }
+
 	
     // Register Messages as Pd method
 	o.messages(v);

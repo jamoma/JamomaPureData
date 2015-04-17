@@ -164,9 +164,9 @@ void WrappedViewerClass_new(TTPtr self, long argc, t_atom *argv)
 	
 	// Make two outlets
 	x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 3);
-	x->outlets[attach_out] = outlet_new((t_object*)x, NULL);					// anything outlet to select ui
+    x->outlets[set_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output qlim data
 	x->outlets[value_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output data
-	x->outlets[set_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output qlim data
+    x->outlets[attach_out] = outlet_new((t_object*)x, NULL);					// anything outlet to select ui
 	
 	// Make qelem object
     //EXTRA->ui_qelem = qelem_new(x, (method)remote_ui_queuefn);

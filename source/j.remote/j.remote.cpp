@@ -75,6 +75,7 @@ TTErr       remote_list(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void        remote_set(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
 void        remote_address(TTPtr self, t_symbol *address);
+void        remote_loadbang(TTPtr self);
 
 void        remote_attach(TTPtr self, int attach_output_id);
 void        remote_mousemove(TTPtr self, t_object *patcherview, t_pt pt, long modifiers);
@@ -116,6 +117,7 @@ void WrapTTViewerClass(WrappedClassPtr c)
 	eclass_addmethod(c->pdClass, (method)remote_set,					"set",					A_GIMME, 0L);
     
 	eclass_addmethod(c->pdClass, (method)remote_address,				"address",				A_SYM, 0);
+    eclass_addmethod(c->pdClass, (method)remote_loadbang,				"loadbang",				A_NULL, 0);
 }
 
 void WrappedViewerClass_new(TTPtr self, long argc, t_atom *argv)
@@ -489,6 +491,12 @@ void remote_address(TTPtr self, t_symbol *address)
     if (x->subscriberObject.valid())
         x->subscriberObject = TTObject();
     
+    remote_subscribe(self);
+}
+
+void remote_loadbang(TTPtr self)
+{
+    WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
     remote_subscribe(self);
 }
 

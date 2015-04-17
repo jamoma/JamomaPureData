@@ -185,7 +185,7 @@ void WrappedViewerClass_new(TTPtr self, long argc, t_atom *argv)
 	// and our box is not yet valid until we have finished instantiating the object.
 	// Trying to use a loadbang method instead is also not fully successful (as of Max 5.0.6)
 //	defer_low((t_object*)x, (method)remote_subscribe, NULL, 0, 0);
-	remote_subscribe(x);
+    // remote_subscribe(x);
 }
 
 // Method for Assistance Messages

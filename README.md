@@ -16,12 +16,11 @@ This could be sumup like this :
 ~~~~
 git clone -b dev https://github.com/jamoma/Jamoma
 cd Jamoma
-git submodule init
-git submodule update Core
-git submodule update Implementations/PureData
+git submodule update --init
+git submodule foreach git checkout dev
+git submodule foreach git pull
 cd  Implementations/PureData
-git submodule init
-git submodule update
+git submodule update --init
 ~~~~
 
 Then you are ready to build JamomaCore and JamomaPuredata. From the root of the Jamoma umbrella repo : 

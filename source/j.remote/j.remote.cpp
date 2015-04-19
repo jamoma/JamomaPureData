@@ -510,6 +510,8 @@ void remote_attach(TTPtr self, int attach_output_id)
 	long        ac;
 	t_atom		*av;
 	
+    /* TODO reenable this for Pd later
+     * but how to know on wich object it's connected ?
 	// get the first object connected to the given outlet
 	object_obex_lookup(x, _sym_pound_B, &box);
 	
@@ -551,6 +553,7 @@ void remote_attach(TTPtr self, int attach_output_id)
             }
 		}
 	}
+    */
     
     // if no ui object are connected to :
     if (!connecteds || !object || !maxclass) {

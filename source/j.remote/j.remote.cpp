@@ -75,6 +75,7 @@ TTErr       remote_list(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void        remote_set(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
 void        remote_address(TTPtr self, t_symbol *address);
+void        remote_loadbang(TTPtr self);
 
 void        remote_attach(TTPtr self, int attach_output_id);
 void        remote_mousemove(TTPtr self, t_object *patcherview, t_pt pt, long modifiers);
@@ -116,6 +117,7 @@ void WrapTTViewerClass(WrappedClassPtr c)
 	eclass_addmethod(c->pdClass, (method)remote_set,					"set",					A_GIMME, 0L);
     
 	eclass_addmethod(c->pdClass, (method)remote_address,				"address",				A_SYM, 0);
+    eclass_addmethod(c->pdClass, (method)remote_loadbang,				"loadbang",				A_NULL, 0);
 }
 
 void WrappedViewerClass_new(TTPtr self, long argc, t_atom *argv)
@@ -164,9 +166,9 @@ void WrappedViewerClass_new(TTPtr self, long argc, t_atom *argv)
 	
 	// Make two outlets
 	x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 3);
-	x->outlets[attach_out] = outlet_new((t_object*)x, NULL);					// anything outlet to select ui
+    x->outlets[set_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output qlim data
 	x->outlets[value_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output data
-	x->outlets[set_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output qlim data
+    x->outlets[attach_out] = outlet_new((t_object*)x, NULL);					// anything outlet to select ui
 	
 	// Make qelem object
     //EXTRA->ui_qelem = qelem_new(x, (method)remote_ui_queuefn);
@@ -183,7 +185,7 @@ void WrappedViewerClass_new(TTPtr self, long argc, t_atom *argv)
 	// and our box is not yet valid until we have finished instantiating the object.
 	// Trying to use a loadbang method instead is also not fully successful (as of Max 5.0.6)
 //	defer_low((t_object*)x, (method)remote_subscribe, NULL, 0, 0);
-	remote_subscribe(x);
+    // remote_subscribe(x);
 }
 
 // Method for Assistance Messages
@@ -492,6 +494,12 @@ void remote_address(TTPtr self, t_symbol *address)
     remote_subscribe(self);
 }
 
+void remote_loadbang(TTPtr self)
+{
+    WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
+    remote_subscribe(self);
+}
+
 void remote_attach(TTPtr self, int attach_output_id)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
@@ -502,6 +510,8 @@ void remote_attach(TTPtr self, int attach_output_id)
 	long        ac;
 	t_atom		*av;
 	
+    /* TODO reenable this for Pd later
+     * but how to know on wich object it's connected ?
 	// get the first object connected to the given outlet
 	object_obex_lookup(x, _sym_pound_B, &box);
 	
@@ -543,6 +553,7 @@ void remote_attach(TTPtr self, int attach_output_id)
             }
 		}
 	}
+    */
     
     // if no ui object are connected to :
     if (!connecteds || !object || !maxclass) {

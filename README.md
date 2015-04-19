@@ -34,4 +34,43 @@ make
 
 This have been tested on Ubuntu 14.04 64bit.
 
+On Mac OS X, this is pretty much the same, expect you have more options.
+If you want to build FAT binary (32bit and 64bit) you can add `-DCMAKE_C_FLAGS="-arch i386 -arch x86_64"` to cmake options.
+And if you want to build JamomaMax at the same time, you can add `-DBUILD_JAMOMAMAX:STRING=True` (it builds but binaries are not usable at time of writing this).
+Then you have :
 
+~~~~
+mkdir build
+cd build 
+cmake -DCMAKE_C_FLAGS="-arch i386 -arch x86_64" -DBUILD_JAMOMAMAX:STRING=True -DBUILD_JAMOMAPD:STRING=True ..
+make
+~~~~
+
+This have been tested on Ubuntu 14.04 64bit and Mac OS X 10.9 with Pd vanilla 0.46-6 64bit and Pd-extended 0.43-4.
+
+Using
+-----
+
+To use this library with Pd, you have to tell Pd where to find it.
+When you try to load an external object (an object which is not shipped with Pd), Pd search through its "search paths" to find a candidate.
+By adding the Jamoma folder to the search path, Pd can find it.
+To do so on Pd-extended go to Preferences and click `New` to add a new path to the list then select the Jamoma folder (in which you have jamoma.pd_darwin or jamoma.pd_linux or jamoma.dll).
+And on Vanilla, you can do the same from Preferences->Path...
+
+Then you first have to load the `[jamoma]` external itself which loads and initializes the Jamoma environment.
+You have two options :
+- put a `[jamoma]` object in your patch
+or
+- add `jamoma` to the library to load at startup.
+To add a library at startup on Pd-extended, go to Preferences and add in the "Startup flag" (or something like that) field : `-lib jamoma`.
+If you are using Pd Vanilla (and I encourage you to do so), go to Preferences->Startup, add a new and type `jamoma`.
+
+If Jamoma loads it prints something like : 
+
+~~~~
+Jamoma for Pd version ..- - 88aea77 | jamoma.org
+build on Apr 16 2015 at 22:06:34
+~~~~
+
+on the Pd's console.
+If you don't see that, Jamoma is not loaded.

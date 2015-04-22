@@ -204,8 +204,8 @@ void wrappedModularClass_free(WrappedModularInstancePtr x)
 	
 	x->argv = NULL;
     
-    delete x->internals;
-    x->internals = NULL;
+    // delete x->internals;
+    // x->internals = NULL;
 }
 
 

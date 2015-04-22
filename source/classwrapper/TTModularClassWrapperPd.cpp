@@ -103,10 +103,10 @@ t_object *wrappedModularClass_new(t_symbol *name, long argc, t_atom *argv)
 		if (spec) {
 			if (spec->_new)
 				spec->_new((TTPtr)x, argc, argv);
-		}
-		else
-			// handle attribute args
-			attr_args_process(x, argc, argv);
+        } else {
+            // handle attribute args
+            attr_args_process(x, argc, argv);
+        }
 
         x->dumpOut = outlet_new((t_object*)x,NULL);
 

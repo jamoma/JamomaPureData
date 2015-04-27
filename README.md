@@ -32,19 +32,8 @@ cmake -DBUILD_JAMOMAPD:STRING=True ..
 make
 ~~~~
 
+For more informations on CMake build system, please see the [Building with CMake](https://github.com/jamoma/Jamoma/wiki/Building-with-CMake) page on Jamoma wiki.
 This have been tested on Ubuntu 14.04 64bit.
-
-On Mac OS X, this is pretty much the same, expect you have more options.
-If you want to build FAT binary (32bit and 64bit) you can add `-DCMAKE_C_FLAGS="-arch i386 -arch x86_64"` to cmake options.
-And if you want to build JamomaMax at the same time, you can add `-DBUILD_JAMOMAMAX:STRING=True` (it builds but binaries are not usable at time of writing this).
-Then you have :
-
-~~~~
-mkdir build
-cd build 
-cmake -DCMAKE_C_FLAGS="-arch i386 -arch x86_64" -DBUILD_JAMOMAMAX:STRING=True -DBUILD_JAMOMAPD:STRING=True ..
-make
-~~~~
 
 This have been tested on Ubuntu 14.04 64bit and Mac OS X 10.9 with Pd vanilla 0.46-6 64bit and Pd-extended 0.43-4.
 

@@ -1,3 +1,6 @@
 [submodule "source/CicmWrapper"]
 	path = source/CicmWrapper
 	url = https://github.com/avilleret/CicmWrapper.git
+[submodule "JamomaCore"]
+	path = JamomaCore
+	url = https://github.com/jamoma/JamomaCore.git

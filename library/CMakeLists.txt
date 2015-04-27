@@ -94,6 +94,16 @@ target_link_libraries(${PROJECT_NAME} Foundation)
 target_link_libraries(${PROJECT_NAME} Modular)
 target_link_libraries(${PROJECT_NAME} CicmWrapper)
 
+install(TARGETS ${PROJECT_NAME}
+    DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma/externals"
+    COMPONENT JamomaPd)
+
+if( APPLE )
+                SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "@loader_path/../support;@loader_path")
+elseif( NOT WIN32 )
+                SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "\$$ORIGIN/../support:.")
+endif()
+
 # addAppleFramework(Carbon)
 
 ### Output ###

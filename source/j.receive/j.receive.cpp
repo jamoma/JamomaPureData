@@ -138,7 +138,6 @@ void WrappedReceiverClass_new(TTPtr self, long argc, t_atom *argv)
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
 	t_symbol                    *address;
  	long						attrstart = attr_args_offset(argc, argv);			// support normal arguments
-    t_atom						a[1];
 	
 	// read first argument
 	if (attrstart && argv) 
@@ -173,20 +172,8 @@ void WrappedReceiverClass_new(TTPtr self, long argc, t_atom *argv)
         x->outlets[address_out] = outlet_new((t_object*)x, NULL);					// anything outlet to output address
 #endif
 
-	// handle attribute args
-	attr_args_process(x, argc, argv);
-    
-    // for absolute address
-	if (x->address.getType() == kAddressAbsolute) {
-		
-		x->wrappedObject.set(kTTSym_address, x->address);
-		atom_setsym(a, gensym((char*)x->address.c_str()));
-		object_obex_dumpout((t_object*)x, gensym("address"), 1, a);
-        
-        // JamomaDebug object_post((t_object*)x, "binds on %s", x->address.c_str());
-        
-		return;
-	}
+        attr_args_process(x, argc, argv);
+
 	
 	// The following must be deferred because we have to interrogate our box,
 	// and our box is not yet valid until we have finished instantiating the object.
@@ -380,6 +367,19 @@ void receive_bang(TTPtr self)
 void receive_loadbang(TTPtr self)
 {
     WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
+    t_atom * a;
+    // for absolute address
+    if (x->address.getType() == kAddressAbsolute) {
+
+        x->wrappedObject.set(kTTSym_address, x->address);
+        atom_setsym(a, gensym((char*)x->address.c_str()));
+        if(x->dumpOut) outlet_anything((t_outlet*)x->dumpOut, gensym("address"), 1, a);
+        else error("can't output anything ??? WTF ?");
+
+        // JamomaDebug object_post((t_object*)x, "binds on %s", x->address.c_str());
+
+        return;
+    }
     receive_subscribe(x);
 }
 

@@ -51,6 +51,7 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2emodular(void)
 	spec->_new = &WrappedApplicationClass_new;
 	spec->_any = NULL;
 	spec->_free = &WrappedApplicationClass_free;
+    spec->_notify = NULL;
 	
     return (void)wrapTTModularClassAsPdClass(kTTSym_Application, "j.modular", NULL, spec);
 }

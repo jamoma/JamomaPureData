@@ -103,10 +103,10 @@ t_object *wrappedModularClass_new(t_symbol *name, long argc, t_atom *argv)
 		if (spec) {
 			if (spec->_new)
 				spec->_new((TTPtr)x, argc, argv);
-		}
-		else
-			// handle attribute args
-			attr_args_process(x, argc, argv);
+        } else {
+            // handle attribute args
+            attr_args_process(x, argc, argv);
+        }
 
         x->dumpOut = outlet_new((t_object*)x,NULL);
 
@@ -204,8 +204,8 @@ void wrappedModularClass_free(WrappedModularInstancePtr x)
 	
 	x->argv = NULL;
     
-    delete x->internals;
-    x->internals = NULL;
+    // delete x->internals;
+    // x->internals = NULL;
 }
 
 
@@ -1249,7 +1249,7 @@ void wrappedModularClass_ArraySelect(TTPtr self, t_symbol *msg, long ac, t_atom 
 					x->cursor = TTSymbol(instanceAddress->s_name);
 				}
 				else
-					object_error((t_object*)x, "array/select : %ld is not a valid index", i);
+                    object_error((t_object*)x, "array/select : %d is not a valid index", i);
 			}
 			else if (atom_gettype(av) == A_SYM) {
 				
@@ -1300,7 +1300,7 @@ void wrappedModularClass_ArrayResize(TTPtr self, long newSize)
         JamomaDebug logpost((t_object*)x, 3,"array/resize : to %s address", instanceAddress->s_name);
     }
     else
-        object_error((t_object*)x, "array/resize : %d is not a valid size", newSize);
+        object_error((t_object*)x, "array/resize : %ld is not a valid size", newSize);
 }
 #endif
 

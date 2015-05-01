@@ -63,14 +63,14 @@ else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".pd_linux")
 endif()
 
-if("${PROJECT_NAME}" STREQUAL "j.loader")
-	install(TARGETS ${PROJECT_NAME} 
-			DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma/extensions"
-			COMPONENT JamomaPd)
+if("${PROJECT_NAME}" STREQUAL "pd_jamoma")
+        install(TARGETS ${PROJECT_NAME}
+                        DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma"
+                        COMPONENT JamomaPd)
 else()
-	install(TARGETS ${PROJECT_NAME} 
-			DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma/externals"
-			COMPONENT JamomaPd)
+        install(TARGETS ${PROJECT_NAME}
+                        DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma/externals"
+                        COMPONENT JamomaPd)
 endif()
 
 

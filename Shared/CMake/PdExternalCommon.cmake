@@ -33,6 +33,7 @@ target_link_libraries(${PROJECT_NAME} DSP)
 target_link_libraries(${PROJECT_NAME} Graph)
 target_link_libraries(${PROJECT_NAME} AudioGraph)
 
+#[[ block comment
 if(APPLE)
 		SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES XCODE_ATTRIBUTE_MACH_O_TYPE "mh_bundle")
 		SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES XCODE_ATTRIBUTE_WRAPPER_EXTENSION "mxo")
@@ -46,8 +47,9 @@ if(APPLE)
 		SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES XCODE_ATTRIBUTE_GCC_DYNAMIC_NO_PIC "NO")
 		SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "@loader_path/../support;@loader_path")
 elseif( NOT WIN32 )
-                SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "\$ORIGIN/../support:.")
+                SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "\$ORIGIN/../support;\$ORIGIN")
 endif()
+]]
 
 ### Output ###
 # remove "_pd" at the start of project name
@@ -64,14 +66,14 @@ else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".pd_linux")
 endif()
 
-if("${PROJECT_NAME}" STREQUAL "j.loader")
-	install(TARGETS ${PROJECT_NAME} 
-			DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma/extensions"
-			COMPONENT JamomaPd)
+if("${PROJECT_NAME}" STREQUAL "pd_jamoma")
+        install(TARGETS ${PROJECT_NAME}
+                        DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma"
+                        COMPONENT JamomaPd)
 else()
-	install(TARGETS ${PROJECT_NAME} 
-			DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma/externals"
-			COMPONENT JamomaPd)
+        install(TARGETS ${PROJECT_NAME}
+                        DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma/externals"
+                        COMPONENT JamomaPd)
 endif()
 
 

@@ -99,9 +99,9 @@ install(TARGETS ${PROJECT_NAME}
     COMPONENT JamomaPd)
 
 if( APPLE )
-                SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "@loader_path/../support;@loader_path")
+    SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "@loader_path/../support;@loader_path")
 elseif( NOT WIN32 )
-                SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "\$$ORIGIN/../support:.")
+    SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "\$ORIGIN/../support;\$ORIGIN")
 endif()
 
 # addAppleFramework(Carbon)

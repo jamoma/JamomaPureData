@@ -781,6 +781,11 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
     // wrappedPdClass->pdNamesToTTNames = hashtab_new(0);
 
     wrappedPdClass->specificities = specificities;
+
+    if ( ! wrappedPdClass->pdClass) {
+        post("can't instantiate object !!");
+        return kTTErrGeneric;
+    }
     
 #ifdef UI_EXTERNAL
     jbox_initclass(wrappedPdClass->pdClass, flags);

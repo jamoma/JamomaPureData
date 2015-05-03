@@ -15,7 +15,7 @@ include(${PROJECT_SOURCE_DIR}/Shared/CMake/JamomaConfiguration.cmake NO_POLICY_S
 include(${PROJECT_SOURCE_DIR}/Shared/CMake/JamomaUtilFunctions.cmake NO_POLICY_SCOPE)
 
 if(NOT JAMOMA_UMBRELLA)
-    set(JAMOMAPD_INSTALL_FOLDER "pd-externals")
+    set(JAMOMAPD_INSTALL_FOLDER "lib/pd-externals")
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Jamoma"
         DESTINATION ${JAMOMAPD_INSTALL_FOLDER}
             COMPONENT JamomaPd)

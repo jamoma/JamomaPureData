@@ -1,14 +1,15 @@
 /** @file
  *
- * @ingroup implementationMaxExternals
+ * @ingroup implementationPdExternals
  *
  * @brief j.receive / j.receive~ : Receive messages and audio through remote communication
  *
  * @details
  *
- * @authors Théo de la Hogue, Trond Lossius
+ * @authors Théo de la Hogue, Trond Lossius, Antoine Villeret
  *
  * @copyright © 2011 by Théo de la Hogue @n
+ * © 2015 by Antoine Villeret @n
  * This code is licensed under the terms of the "New BSD License" @n
  * http://creativecommons.org/licenses/BSD/
  */
@@ -22,7 +23,7 @@
 
 // Definitions
 
-/** Wrap the j.receive class as a Max object.
+/** Wrap the j.receive class as a Pd object.
  @param c			The class to be wrapped
  @see				WrappedReceiverClass_new, WrappedReceiverClass_free
  */

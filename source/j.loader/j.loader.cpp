@@ -211,7 +211,7 @@ extern "C" int JAMOMA_EXPORT_MAXOBJ setup_j0x2eloader(void)
 	return 0;
 }
 
-extern "C" int JAMOMA_EXPORT_MAXOBJ jamoma_setup(void)
+extern "C" int JAMOMA_EXPORT_MAXOBJ Jamoma_setup(void)
 {
 	return setup_j0x2eloader();
 }

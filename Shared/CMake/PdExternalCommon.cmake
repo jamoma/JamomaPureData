@@ -66,7 +66,7 @@ else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".pd_linux")
 endif()
 
-if("${PROJECT_NAME}" STREQUAL "pd_jamoma")
+if("${PROJECT_NAME}" STREQUAL "pd_Jamoma")
         install(TARGETS ${PROJECT_NAME}
                         DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma"
                         COMPONENT JamomaPd)

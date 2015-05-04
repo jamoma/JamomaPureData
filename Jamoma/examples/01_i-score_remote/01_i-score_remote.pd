@@ -1,0 +1,12 @@
+#N canvas 668 419 450 300 10;
+#X obj 177 38 MinuitInterface myDevice;
+#X obj 110 127 j.parameter myParam;
+#X floatatom 110 159 5 0 0 0 - - -, f 5;
+#X floatatom 105 99 5 0 0 0 - - -, f 5;
+#X floatatom 114 258 5 0 0 0 - - -, f 5;
+#X floatatom 109 198 5 0 0 0 - - -, f 5;
+#X obj 114 226 j.parameter myParam2;
+#X connect 1 0 2 0;
+#X connect 3 0 1 0;
+#X connect 5 0 6 0;
+#X connect 6 0 4 0;

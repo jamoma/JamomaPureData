@@ -1,0 +1,25 @@
+#N canvas 71 470 602 505 10;
+#X obj 139 199 j.modular Minuit @name \$1;
+#X msg 199 163 protocol/setup ip localhost \, protocol/setup port 9998
+;
+#X obj 139 76 inlet;
+#X msg 139 104 activity \$1;
+#X obj 139 352 j.modular i-score Minuit;
+#X obj 199 139 loadbang;
+#X obj 139 263 loadbang;
+#X msg 217 324 directory/build;
+#X msg 139 287 protocol/setup ip localhost \, protocol/setup port 13579
+;
+#X obj 140 429 print activity/in;
+#X obj 285 429 print activity/out;
+#X obj 285 407 j.receive /:activity/out;
+#X obj 140 407 j.receive /:activity/in;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 5 0 1 0;
+#X connect 6 0 8 0;
+#X connect 7 0 4 0;
+#X connect 8 0 4 0;
+#X connect 11 0 10 0;
+#X connect 12 0 9 0;

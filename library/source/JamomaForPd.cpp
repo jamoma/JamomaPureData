@@ -15,6 +15,7 @@
  */
 
 #include "JamomaForPd.h"
+#include <dlfcn.h>
 #include <map>
 
 // statics and globals
@@ -62,7 +63,22 @@ void jamoma_init(void)
         TTErr       err;
         
         // Init the Modular library
-        TTModularInit("../support",true);
+        Dl_info		info;
+        char		mainBundleStr[4096];
+
+        // Use the path of JamomaFoundation
+        if (dladdr((const void*)jamoma_init, &info))
+        {
+            char *c = 0;
+
+            strncpy(mainBundleStr, info.dli_fname, 4096);
+            c = strrchr(mainBundleStr, '/');
+            if (c)
+                *c = 0; // chop the "/JamomaFoundation.dylib/so off of the path
+            strcat(mainBundleStr,"/../support");
+        }
+
+        TTModularInit(mainBundleStr);
 
         // prepare a symbol for Jamoma
         kTTSym_Jamoma = TTSymbol(JAMOMA);

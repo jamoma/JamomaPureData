@@ -57,15 +57,17 @@ elseif( NOT WIN32 )
 endif()
 
 if("${PROJECT_NAME}" STREQUAL "pd_Jamoma")
-        SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "${PD_LOADER_RPATH}")
-        install(TARGETS ${PROJECT_NAME}
-                        DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma"
-                        COMPONENT JamomaPd)
+    # use the install path when linking
+    SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE INSTALL_RPATH "${PD_LOADER_RPATH}")
+	install(TARGETS ${PROJECT_NAME}
+            DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma"
+            COMPONENT JamomaPd)
 else()
-        SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "${PD_EXTERNAL_RPATH}")
-        install(TARGETS ${PROJECT_NAME}
-                        DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma/externals"
-                        COMPONENT JamomaPd)
+    # use the install path when linking
+    SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE INSTALL_RPATH "${PD_EXTERNAL_RPATH}")
+	install(TARGETS ${PROJECT_NAME}
+            DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma/externals"
+            COMPONENT JamomaPd)
 endif()
 
 

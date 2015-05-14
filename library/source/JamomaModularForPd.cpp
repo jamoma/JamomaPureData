@@ -1115,8 +1115,31 @@ void jamoma_ttvalue_from_Atom(TTValue& v, t_symbol *msg, long argc, const t_atom
 		// convert Atom to TTValue
 		for (i = 0; i < argc; i++)
 		{
-			if (atom_gettype(argv+i) == A_SYM)
-							v[i+start] = TTSymbol(atom_getsym((t_atom*)argv+i)->s_name);
+            if (atom_gettype(argv+i) == A_SYMBOL){
+                if ( atom_getsym((t_atom*)argv+i)->s_name[0] == '"'){
+                    std::string concatSym = std::string(atom_getsym((t_atom*)argv+i)->s_name+1);
+                    int j = i;
+                    i++;
+                    for (;i < argc; i++){
+                        if (argv[i].a_type == A_SYMBOL) {
+                            char* sym = atom_getsym((t_atom*)argv+i)->s_name;
+                            concatSym += std::string(" ");
+                            char* c = strchr(sym,'"');
+                            if (c) {
+                                concatSym+=sym;
+                                break;
+                            }
+                            concatSym+=sym;
+                        } else if ( argv[i].a_type == A_FLOAT ) {
+                            concatSym += std::string(" ");
+                            concatSym+= std::to_string(atom_getfloat((t_atom*)argv+i));
+                        }
+                    }
+                    v[j+start] = TTSymbol(concatSym.substr(0,concatSym.size()-1));
+                }
+                else
+                    v[i+start] = TTSymbol(atom_getsym((t_atom*)argv+i)->s_name);
+            }
 			else
                 v[i+start] = (TTFloat64)atom_getfloat((t_atom*)argv+i); 
 		}

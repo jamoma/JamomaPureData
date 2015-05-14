@@ -179,7 +179,7 @@ t_max_err wrappedClass_attrGet(TTPtr self, t_object* attr, long* argc, t_atom** 
     TTPtr		rawpointer = NULL;
 	t_max_err		err;
 	
-    rawpointer = &x->wrappedClassDefinition->pdNamesToTTNames[attrName->s_name];
+    rawpointer = x->wrappedClassDefinition->pdNamesToTTNames[attrName->s_name];
     // err = hashtab_lookup(x->wrappedClassDefinition->pdNamesToTTNames, attrName, (t_object**)&rawpointer);
     if (!rawpointer)
         return -2; // MAX_ERR_INVALID_PTR
@@ -225,7 +225,7 @@ t_max_err wrappedClass_attrSet(TTPtr self, t_object* attr, long argc, t_atom* ar
 		TTPtr		ptr = NULL;
 		
 //		err = hashtab_lookup(x->wrappedClassDefinition->pdNamesToTTNames, attrName, (t_object**)&ptr);
-        ptr = &x->wrappedClassDefinition->pdNamesToTTNames[attrName->s_name];
+        ptr = x->wrappedClassDefinition->pdNamesToTTNames[attrName->s_name];
 		if (err)
 			return err;
 		
@@ -258,7 +258,7 @@ void wrappedClass_anything(TTPtr self, t_symbol* s, long argc, t_atom* argv)
 	TTValue				v_out;
 	
 //	err = hashtab_lookup(x->wrappedClassDefinition->pdNamesToTTNames, s, (t_object**)&ttName);
-    ttName = &x->wrappedClassDefinition->pdNamesToTTNames[s->s_name];
+    ttName = x->wrappedClassDefinition->pdNamesToTTNames[s->s_name];
 	if (err) {
         pd_error((t_object*)x, "no method found for %s", s->s_name);
 		return;

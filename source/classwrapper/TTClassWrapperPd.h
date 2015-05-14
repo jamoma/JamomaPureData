@@ -42,7 +42,7 @@ typedef struct _wrappedClass {
     TTPtr                               validityCheckArgument;	///< An argument to pass to the validityCheck function when it is called.
     WrappedClassOptions*                options;				///< Additional configuration options specified for the class.
     //std::map<std::string,std::string>*	pdNamesToTTNames;		///< names may not be direct mappings, as we downcase the first letter.
-    std::map<std::string,TTSymbol>      pdNamesToTTNames;		///< names may not be direct mappings, as we downcase the first letter.
+    std::map<std::string,TTPtr>      pdNamesToTTNames;		///< names may not be direct mappings, as we downcase the first letter.
 
     void*                               specificities;			///< anything needed to deal with somes specificities of the class...
 } WrappedClass;

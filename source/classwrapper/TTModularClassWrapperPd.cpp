@@ -287,7 +287,7 @@ t_max_err wrappedModularClass_attrGet(TTPtr self, t_object *attr, long* argc, t_
 	TTPtr		ptr;
 	
     // err = hashtab_lookup(x->wrappedClassDefinition->pdNamesToTTNames, attrName, (t_object**)&ptr);
-    ptr = &x->wrappedClassDefinition->pdNamesToTTNames[attrName->s_name];
+    ptr = x->wrappedClassDefinition->pdNamesToTTNames[attrName->s_name];
     if (ptr == NULL)
         return -2;
 	
@@ -340,7 +340,7 @@ t_max_err wrappedModularClass_attrSet(TTPtr self, t_object *attr, long argc, con
 	}
 	
     // m_err = hashtab_lookup(x->wrappedClassDefinition->pdNamesToTTNames, attrName, (t_object**)&ptr);
-    ptr = &x->wrappedClassDefinition->pdNamesToTTNames[attrName->s_name];
+    ptr = x->wrappedClassDefinition->pdNamesToTTNames[attrName->s_name];
     if (ptr == NULL)
         return -2; // INVALID POINTER
 	
@@ -463,7 +463,7 @@ TTErr wrappedModularClass_sendMessage(TTPtr self, t_symbol *s, long argc, const 
     TTPtr           ptr;
 	
     // m_err = hashtab_lookup(x->wrappedClassDefinition->pdNamesToTTNames, s, (t_object**)&ptr);
-    ptr = &x->wrappedClassDefinition->pdNamesToTTNames[s->s_name];
+    ptr = x->wrappedClassDefinition->pdNamesToTTNames[s->s_name];
     if (ptr != NULL ) {
 		
 		// Is it a message of the wrapped object ?

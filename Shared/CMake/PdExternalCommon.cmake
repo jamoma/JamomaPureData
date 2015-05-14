@@ -48,6 +48,7 @@ else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".pd_linux")
 endif()
 
+### Installation ###
 if(APPLE)
     set(PD_EXTERNAL_RPATH "@loader_path/../support;@loader_path")
     set(PD_LOADER_RPATH "@loader_path/support;@loader_path/externals")
@@ -57,19 +58,16 @@ elseif( NOT WIN32 )
 endif()
 
 if("${PROJECT_NAME}" STREQUAL "pd_Jamoma")
-    # use the install path when linking
-    SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE INSTALL_RPATH "${PD_LOADER_RPATH}")
+    set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "${PD_LOADER_RPATH}")
 	install(TARGETS ${PROJECT_NAME}
             DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma"
             COMPONENT JamomaPd)
 else()
-    # use the install path when linking
-    SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE INSTALL_RPATH "${PD_EXTERNAL_RPATH}")
+    set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH "${PD_EXTERNAL_RPATH}")
 	install(TARGETS ${PROJECT_NAME}
             DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma/externals"
             COMPONENT JamomaPd)
 endif()
-
 
 ### Tests ###
 addTestTarget()

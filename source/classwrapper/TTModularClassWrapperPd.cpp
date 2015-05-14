@@ -354,8 +354,8 @@ t_max_err wrappedModularClass_attrSet(TTPtr self, t_object *attr, long argc, con
 		jamoma_ttvalue_from_Atom(v, _sym_nothing, argc, argv);
 		
 		if (selectedObject) {
-			selectedObject->setAttributeValue(ttAttrName, v);
-            return 0;  // MAX_ERR_NONE;
+            TTErr err = selectedObject->setAttributeValue(ttAttrName, v);
+            return err;  // MAX_ERR_NONE;
 		}
 		else
             return -1; // MAX_ERR_GENERIC;

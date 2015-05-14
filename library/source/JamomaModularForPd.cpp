@@ -1100,7 +1100,7 @@ void jamoma_ttvalue_from_Atom(TTValue& v, t_symbol *msg, long argc, const t_atom
 	else
     {
 		// add msg to the value
-		if (msg != _sym_nothing && msg != _sym_int && msg != _sym_float && msg != _sym_symbol && msg != _sym_list)
+        if (msg && msg != _sym_nothing && msg != _sym_int && msg != _sym_float && msg != _sym_symbol && msg != _sym_list)
         {
 			v.resize(argc+1);
 			v[0] = TTSymbol(msg->s_name);

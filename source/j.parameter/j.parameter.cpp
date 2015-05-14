@@ -61,13 +61,6 @@ void		WrappedDataClass_anything(TTPtr self, t_symbol *msg, long argc, t_atom *ar
 void		data_bang(TTPtr self);
 
 
-/** Process an incoming integer value.
- @param self		The parameter instance.
- @param value		The integer value received.
- */
-void		data_int(TTPtr self, long value);
-
-
 /** Process an incoming float value.
  @param self		The parameter instance.
  @param value		The float value received.
@@ -141,7 +134,6 @@ void WrapTTDataClass(WrappedClassPtr c)
     eclass_addmethod(c->pdClass, (method)data_return_value,					"return_value",			A_CANT, 0L);
 
     eclass_addmethod(c->pdClass, (method)data_bang,							"bang",					A_NULL, 0L);
-    eclass_addmethod(c->pdClass, (method)data_int,							"int",					A_LONG, 0);
     eclass_addmethod(c->pdClass, (method)data_float,						"float",				A_FLOAT, 0);
     eclass_addmethod(c->pdClass, (method)data_list,							"list",					A_GIMME, 0);
 
@@ -319,17 +311,6 @@ void data_bang(TTPtr self)
 {
 	data_list(self, _sym_bang, 0, NULL);
 }
-
-
-void data_int(TTPtr self, long value)
-{
-	t_atom a;
-	
-	atom_setlong(&a, value);
-    // Forwards to data_float
-	data_list(self, _sym_int, 1, &a);
-}
-
 
 void data_float(TTPtr self, t_float value)
 {

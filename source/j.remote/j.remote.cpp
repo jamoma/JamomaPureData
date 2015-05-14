@@ -68,7 +68,6 @@ void        remote_return_model_address(TTPtr self, t_symbol *msg, long argc, t_
 void        remote_return_description(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
 void        remote_bang(TTPtr self);
-void        remote_int(TTPtr self, long value);
 void        remote_float(TTPtr self, double value);
 TTErr       remote_list(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
@@ -110,7 +109,6 @@ void WrapTTViewerClass(WrappedClassPtr c)
 	eclass_addmethod(c->pdClass, (method)remote_return_description,     "return_description",	A_CANT, 0);
     
 	eclass_addmethod(c->pdClass, (method)remote_bang,					"bang",					A_NULL, 0L);
-	eclass_addmethod(c->pdClass, (method)remote_int,					"int",					A_LONG, 0L);
 	eclass_addmethod(c->pdClass, (method)remote_float,					"float",				A_FLOAT, 0L);
 	eclass_addmethod(c->pdClass, (method)remote_list,					"list",					A_GIMME, 0L);
     
@@ -392,14 +390,6 @@ void remote_ui_queuefn(TTPtr self)
 void remote_bang(TTPtr self)
 {
 	remote_list(self, _sym_bang, 0, NULL);
-}
-
-void remote_int(TTPtr self, long value)
-{
-	t_atom a;
-	
-	atom_setlong(&a, value);
-	remote_list(self, _sym_int, 1, &a);
 }
 
 void remote_float(TTPtr self, double value)

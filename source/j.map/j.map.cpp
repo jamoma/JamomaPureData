@@ -54,6 +54,7 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2emap(void)
 	spec->_new = &WrappedMapperClass_new;
 	spec->_free = &WrappedMapperClass_free;
 	spec->_any = NULL;
+    spec->_notify = NULL;
 	
     return (void)wrapTTModularClassAsPdClass(kTTSym_Mapper, "j.map", NULL, spec);
 }

@@ -868,16 +868,16 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
             wrappedPdClass->pdNamesToTTNames[PdName->s_name] = (t_object*)(TTName.rawpointer());
             // hashtab_store(wrappedPdClass->pdNamesToTTNames, PdName, (t_object*)(TTName.rawpointer()));
 
-			if (attr->type == kTypeFloat32)
-				pdType = _sym_float;
-			else if (attr->type == kTypeFloat64)
-				pdType = _sym_float;
-			else if (attr->type == kTypeSymbol || attr->type == kTypeString)
-				pdType = _sym_symbol;
-			else if (attr->type == kTypeLocalValue)
-				pdType = _sym_atom;
+            if (attr->type == kTypeFloat32 )
+                CLASS_ATTR_FLOAT(wrappedPdClass->pdClass,PdName->s_name,0,t_eclass,c_attr);
+            else if (attr->type == kTypeFloat64)
+                CLASS_ATTR_DOUBLE(wrappedPdClass->pdClass,PdName->s_name,0,t_eclass,c_attr);
+            else if (attr->type == kTypeSymbol || attr->type == kTypeString)
+                CLASS_ATTR_SYMBOL(wrappedPdClass->pdClass,PdName->s_name,0,t_eclass,c_attr);
+            else if (attr->type == kTypeLocalValue)
+                CLASS_ATTR_ATOM(wrappedPdClass->pdClass,PdName->s_name,0,t_eclass,c_attr);
 
-			eclass_new_attr_typed(wrappedPdClass->pdClass,PdName->s_name,pdType->s_name,1,0,0,0);
+            // eclass_new_attr_typed(wrappedPdClass->pdClass,PdName->s_name,pdType->s_name,1,0,0,0);
 			CLASS_ATTR_ACCESSORS(wrappedPdClass->pdClass,PdName->s_name,wrappedModularClass_attrGet,wrappedModularClass_attrSet);
 
 			// class_addattr(wrappedPdClass->pdClass, attr_offset_new(PdName->s_name, pdType, 0, (method)wrappedModularClass_attrGet, (method)wrappedModularClass_attrSet, 0));

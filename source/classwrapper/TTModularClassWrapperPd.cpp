@@ -67,6 +67,8 @@ t_object *wrappedModularClass_new(t_symbol *name, long argc, t_atom *argv)
         x->patcherClass = kTTSymEmpty;
         x->patcherName = kTTSymEmpty;
         x->patcherAddress = kTTAdrsEmpty;
+
+        x->dumpOut = NULL;
 		
 #ifdef UI_EXTERNAL
 		flags = 0
@@ -108,7 +110,7 @@ t_object *wrappedModularClass_new(t_symbol *name, long argc, t_atom *argv)
             attr_args_process(x, argc, argv);
         }
 
-        x->dumpOut = outlet_new((t_object*)x,NULL);
+        if ( !x->dumpOut ) x->dumpOut = outlet_new((t_object*)x,NULL);
 
         // call an object loadbang method if it exists
         method _method = (method)getfn((t_pd*)x,_sym_loadbang);

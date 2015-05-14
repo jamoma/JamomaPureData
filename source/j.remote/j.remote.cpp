@@ -92,6 +92,7 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2eremote(void)
 	spec->_new = &WrappedViewerClass_new;
 	spec->_free = &WrappedViewerClass_free;
 	spec->_any = &WrappedViewerClass_anything;
+    spec->_notify = NULL;
 	
 	return (void)wrapTTModularClassAsPdClass(kTTSym_Viewer, "j.remote", NULL, spec);
 }

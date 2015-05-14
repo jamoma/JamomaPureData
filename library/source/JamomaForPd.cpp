@@ -97,25 +97,21 @@ void jamoma_init(void)
             JamomaApplication = out[0];
         
         // Edit the path to the JamomaConfiguration.xml file
-        long size = TTFoundationBinaryPath.size()-6;
-        if ( size > 0 )
-            strncpy(name, TTFoundationBinaryPath.data(), size);
-        else name[0] = '\0';
-
-        JamomaConfigurationFilePath = name;
+        long size = TTFoundationBinaryPath.size() - std::string("support").size();
+        size = size > 0 ? size : 0;
+        JamomaConfigurationFilePath = TTFoundationBinaryPath.substr(0,size);
         JamomaConfigurationFilePath += "misc/JamomaConfiguration.xml";
         
         // check if the JamomaConfiguration.xml file exists
-        strncpy(name, JamomaConfigurationFilePath.data(), MAX_PATH_CHARS);
-        // TODO : rewrite locatefile_extended fn
         //if (locatefile_extended(name, &outvol, &outtype, &filetype, 1))
             //return error("Jamoma not loaded : can't find %s", JamomaConfigurationFilePath.data());
-        
+
         // JamomaApplication have to read JamomaConfiguration.xml
         TTObject anXmlHandler(kTTSym_XmlHandler);
         anXmlHandler.set(kTTSym_object, JamomaApplication);
-        v = TTSymbol(JamomaConfigurationFilePath);
-        anXmlHandler.send(kTTSym_Read, v, out);
+        err = anXmlHandler.send(kTTSym_Read, TTSymbol(JamomaConfigurationFilePath));
+        if ( err )
+             post("error %d : can't load configuration file  \"%s\"", err, JamomaConfigurationFilePath.c_str() );
 
 		// Initialize common symbols
         common_symbols_init();

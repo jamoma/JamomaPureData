@@ -74,7 +74,7 @@ void jamoma_init(void)
             strncpy(mainBundleStr, info.dli_fname, 4096);
             c = strrchr(mainBundleStr, '/');
             if (c)
-                *c = 0; // chop the "/JamomaFoundation.dylib/so off of the path
+                *c = 0; // chop the filename off of the path
             strcat(mainBundleStr,"/../support");
         }
 
@@ -133,14 +133,8 @@ void jamoma_init(void)
 		HelpPatcherFormat = new TTString("%s.model");
 		RefpageFormat = new TTString("%s.model");
 		DocumentationFormat = new TTString("%s.model.html");
-		
-		// now the jamoma object
-		{
-            // t_symbol *jamomaSymbol = SymbolGen("jamoma");
 
-			jamoma_object_initclass();
-           // jamomaSymbol->s_thing = jamoma_object_new();
-		}
+        jamoma_object_initclass();
 		
         post("Jamoma for Pd version %s - %s | jamoma.org",JAMOMA_PD_VERSION, JAMOMA_PD_REV);
 

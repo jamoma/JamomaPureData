@@ -68,7 +68,7 @@ void        remote_return_model_address(TTPtr self, t_symbol *msg, long argc, t_
 void        remote_return_description(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
 void        remote_bang(TTPtr self);
-void        remote_float(TTPtr self, double value);
+void        remote_float(TTPtr self, t_float value);
 TTErr       remote_list(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
 void        remote_set(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
@@ -392,7 +392,7 @@ void remote_bang(TTPtr self)
 	remote_list(self, _sym_bang, 0, NULL);
 }
 
-void remote_float(TTPtr self, double value)
+void remote_float(TTPtr self, t_float value)
 {
 	t_atom a;
 	

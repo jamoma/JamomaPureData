@@ -1,5 +1,5 @@
-#N canvas 858 430 533 467 10;
-#N canvas 284 446 547 454 Basic 0;
+#N canvas 854 462 533 467 10;
+#N canvas 282 462 547 454 Basic 0;
 #X obj 54 120 j.model @tag control @description this model doesn t
 do anything;
 #X floatatom 116 69 5 0 0 0 - - -, f 5;
@@ -24,8 +24,8 @@ A parameter for demo purpose;
 #X text 49 97 [j.model] is the central brain in a jamoma model. It
 parses input \, distribute messages to parameters \, generates documentation
 \, etc.;
-#N canvas 638 445 1069 480 Priorities 0;
-#N canvas 1 144 450 300 mySimpleModel 0;
+#N canvas 694 306 1069 480 Priorities 0;
+#N canvas 1 160 450 300 mySimpleModel 0;
 #X obj 117 36 inlet;
 #X obj 117 84 j.model @priority 1;
 #X obj 117 146 outlet;
@@ -40,7 +40,7 @@ parses input \, distribute messages to parameters \, generates documentation
 #X obj 66 295 print FIRST;
 #X msg 256 203 myParameter \$1;
 #X floatatom 256 185 5 0 0 0 - - -, f 5;
-#N canvas 1 144 450 300 anotherModel 0;
+#N canvas 1 160 450 300 anotherModel 0;
 #X obj 117 36 inlet;
 #X obj 117 84 j.model @priority 1;
 #X obj 117 146 outlet;
@@ -63,6 +63,10 @@ parses input \, distribute messages to parameters \, generates documentation
 store state as a cue.;
 #X text 90 108 One can devine priorities in which model state will
 ve stored/recall by j.cue \, for example.;
+#X obj 105 360 j.remote /anotherModel/myParameter;
+#X floatatom 65 361 5 0 0 0 - - -, f 5;
+#X floatatom 64 398 5 0 0 0 - - -, f 5;
+#X obj 104 397 j.remote /mySimpleModel/myParameter;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 2 0 1 0;
@@ -74,8 +78,12 @@ ve stored/recall by j.cue \, for example.;
 #X connect 11 0 8 0;
 #X connect 12 0 8 0;
 #X connect 13 0 8 0;
+#X connect 17 0 18 0;
+#X connect 18 0 17 0;
+#X connect 19 0 20 0;
+#X connect 20 0 19 0;
 #X restore 170 220 pd Priorities;
-#N canvas 752 629 809 300 Aliases 1;
+#N canvas 612 535 809 300 Aliases 0;
 #X obj 11 103 j.model;
 #X text 4 12 1 Set an alias name;
 #X msg 11 47 alias /anotherName;
@@ -98,10 +106,8 @@ ve stored/recall by j.cue \, for example.;
 -1;
 #X obj 49 187 list prepend set;
 #X obj 49 209 list trim;
-#X msg 49 231 no;
+#X msg 49 231 yes;
 #X msg 343 53 loadbang;
-#X text 511 85 THIS DOESN'T WORK FOR NOW;
-#X text 530 100 AV 2015/03/24;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
 #X connect 4 0 0 0;
@@ -163,3 +169,10 @@ ve stored/recall by j.cue \, for example.;
 #X connect 19 0 17 0;
 #X connect 20 0 21 0;
 #X restore 170 310 pd Presets;
+#X floatatom 46 435 5 0 0 0 - - -, f 5;
+#X obj 46 400 j.remote /Basic/freq;
+#X floatatom 46 369 5 0 0 0 - - -, f 5;
+#X text 177 397 you can use a j.remote outside of a model with an absolute
+address;
+#X connect 9 0 8 0;
+#X connect 10 0 9 0;

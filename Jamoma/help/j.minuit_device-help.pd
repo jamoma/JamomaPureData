@@ -1,0 +1,2 @@
+#N canvas 725 417 450 300 10;
+#X obj 104 135 j.minuit_device;

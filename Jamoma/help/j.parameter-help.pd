@@ -1,0 +1,240 @@
+#N canvas 558 447 1114 479 10;
+#N canvas 212 287 1055 464 Basic 0;
+#X floatatom 80 287 5 0 0 0 - - -, f 5;
+#X obj 51 312 osc~;
+#X obj 51 343 *~;
+#X obj 52 379 dac~ 1 2;
+#X obj 450 204 j.remote frequency;
+#X floatatom 569 206 5 0 0 1 Hz - -, f 5;
+#X obj 450 264 j.remote frequency;
+#X obj 574 265 hsl 128 15 100 10000 1 0 empty empty empty -2 -8 0 10
+-262144 -1 -1 0 1;
+#X text 727 263 Several j.remote can control the same parameter.;
+#X floatatom 415 326 5 0 0 0 - - -, f 5;
+#X obj 451 327 j.remote frequency @unit midinote;
+#X obj 408 161 print left;
+#X msg 51 58 type;
+#X msg 95 58 range;
+#X obj 51 108 j.parameter frequency @type decimal @range 65 1000 @clipmode
+both @dataspace time @unit Hz @description "The frequency value of
+my patch";
+#X msg 143 59 description;
+#X obj 584 115 j.remote frequency;
+#X obj 689 137 print;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 2 0 3 1;
+#X connect 4 0 5 0;
+#X connect 5 0 4 0;
+#X connect 6 0 7 0;
+#X connect 7 0 6 0;
+#X connect 9 0 10 0;
+#X connect 10 0 9 0;
+#X connect 12 0 14 0;
+#X connect 13 0 14 0;
+#X connect 14 0 0 0;
+#X connect 14 0 1 0;
+#X connect 14 1 11 0;
+#X connect 15 0 14 0;
+#X connect 16 3 17 0;
+#X restore 41 27 pd Basic;
+#N canvas 716 518 958 408 Type 0;
+#X floatatom 32 39 5 0 0 0 - - -, f 5;
+#X floatatom 32 79 5 0 0 0 - - -, f 5;
+#X floatatom 34 141 5 0 0 0 - - -, f 5;
+#X floatatom 34 181 5 0 0 0 - - -, f 5;
+#X obj 34 160 j.parameter my_integer @type integer;
+#X obj 32 58 j.parameter my_decimal @type decimal;
+#X floatatom 35 222 5 0 0 0 - - -, f 5;
+#X floatatom 35 262 5 0 0 0 - - -, f 5;
+#X obj 35 241 j.parameter my_boolean @type boolean;
+#X msg 82 139 12.4;
+#X text 114 139 decimal are rounded;
+#X obj 374 77 j.parameter my_array @array;
+#X msg 386 54 1 23 9.478 blabla;
+#X msg 374 31 1 2 3.4;
+#X obj 374 101 print my_array;
+#X obj 387 188 j.parameter whaetever @type generic;
+#X msg 387 154 apple 1 2;
+#X msg 475 154 hello world !;
+#X msg 573 155 1 2;
+#X obj 387 209 print whatever;
+#X obj 383 296 j.parameter my_string @string;
+#X msg 383 272 blabla;
+#X obj 383 320 print string;
+#X msg 432 269 one two check;
+#X obj 694 267 j.model;
+#X obj 694 293 print j.model;
+#X connect 0 0 5 0;
+#X connect 2 0 4 0;
+#X connect 4 0 3 0;
+#X connect 5 0 1 0;
+#X connect 6 0 8 0;
+#X connect 8 0 7 0;
+#X connect 9 0 4 0;
+#X connect 11 0 14 0;
+#X connect 12 0 11 0;
+#X connect 13 0 11 0;
+#X connect 15 0 19 0;
+#X connect 16 0 15 0;
+#X connect 17 0 15 0;
+#X connect 18 0 15 0;
+#X connect 20 0 22 0;
+#X connect 21 0 20 0;
+#X connect 23 0 20 0;
+#X connect 24 0 25 0;
+#X restore 41 48 pd Type;
+#N canvas 82 642 1392 335 clipmode 0;
+#X obj 117 66 j.parameter clip_none @type integer @range 25 75 @clipmode
+none, f 35;
+#X obj 120 44 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 120 102 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 120 137 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 120 195 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 117 159 j.parameter clip_low @type integer @range 25 75 @clipmode
+low, f 35;
+#X obj 120 227 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 120 285 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 404 43 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 404 101 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 401 65 j.parameter clip_both @type integer @range 25 75 @clipmode
+both, f 35;
+#X obj 399 135 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 399 192 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 117 250 j.parameter clip_high @type integer @range 25 75 @clipmode
+high, f 35;
+#X obj 396 156 j.parameter clip_wrap @type integer @range 25 75 @clipmode
+wrap, f 35;
+#X obj 397 226 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 397 283 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 394 247 j.parameter clip_fold @type integer @range 25 75 @clipmode
+fold, f 35;
+#X obj 731 74 j.parameter my_generic @type generic @range 2 4 @clipmode
+both, f 36;
+#X obj 731 109 print clip_generic;
+#X msg 731 50 0 1 2 3 4 5 6 7 tet;
+#X text 722 18 Clipping works on type integer \, decimal \, array and
+generic;
+#X text 720 156 Range and mapping;
+#X floatatom 755 182 5 0 0 0 - - -, f 5;
+#X floatatom 755 297 5 0 0 0 - - -, f 5;
+#X obj 755 203 j.parameter from @type decimal @range 32 96 @clipmode
+both;
+#X obj 755 273 j.parameter to @type decimal @range 0 1 @clipmode both
+;
+#X obj 1142 234 j.map @input /from @output /to;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 3 0 5 0;
+#X connect 5 0 4 0;
+#X connect 6 0 13 0;
+#X connect 8 0 10 0;
+#X connect 10 0 9 0;
+#X connect 11 0 14 0;
+#X connect 13 0 7 0;
+#X connect 14 0 12 0;
+#X connect 15 0 17 0;
+#X connect 17 0 16 0;
+#X connect 18 0 19 0;
+#X connect 20 0 18 0;
+#X connect 23 0 25 0;
+#X connect 26 0 24 0;
+#X restore 41 69 pd clipmode;
+#N canvas 875 589 818 432 ramp/ease 1;
+#X obj 54 70 metro 4000;
+#X obj 54 41 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+;
+#X msg 54 96 0 \, 1 ramp 3000;
+#X obj 54 120 j.parameter my_line @type decimal;
+#X floatatom 74 150 5 0 0 0 - - -, f 5;
+#X obj 162 93 r \$0-to-parameter;
+#X obj 419 317 j.remote my_line:ramp/function;
+#N canvas 1 112 751 300 oscillo 0;
+#N canvas 0 50 450 300 (subpatch) 0;
+#X array \$0-_ 300 float 2;
+#X coords 0 1 300 0 200 127 1;
+#X restore 100 118 graph;
+#X obj 362 104 inlet;
+#X obj 478 103 inlet;
+#X obj 478 190 pack f \$0;
+#X obj 362 232 s \$0-_;
+#X msg 478 217 \; \$2-_ resize \$1;
+#X text 405 104 data;
+#X obj 362 211 pack f f;
+#X text 520 105 size of the array (default = 100);
+#X obj 362 147 f;
+#X obj 361 167 + 1;
+#X obj 362 126 t b f;
+#X obj 361 189 % 300;
+#X connect 1 0 11 0;
+#X connect 2 0 3 0;
+#X connect 3 0 5 0;
+#X connect 7 0 4 0;
+#X connect 9 0 10 0;
+#X connect 9 0 7 0;
+#X connect 10 0 12 0;
+#X connect 11 0 9 0;
+#X connect 11 1 7 1;
+#X connect 12 0 9 1;
+#X coords 0 -1 1 1 200 145 1 100 100;
+#X restore 54 182 pd oscillo;
+#X msg 429 57 easeInBack;
+#X msg 419 36 linear;
+#X msg 439 77 easeInOutBack;
+#X msg 459 117 easeInBounce;
+#X msg 469 137 easeInOutBounce;
+#X msg 449 97 easeOutBack;
+#X msg 479 157 easeOutBounce;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 5 0 3 0;
+#X connect 8 0 6 0;
+#X connect 9 0 6 0;
+#X connect 10 0 6 0;
+#X connect 11 0 6 0;
+#X connect 12 0 6 0;
+#X connect 13 0 6 0;
+#X connect 14 0 6 0;
+#X restore 41 90 pd ramp/ease;
+#N canvas 817 406 450 300 dataspace 0;
+#X text 131 62 Todo;
+#X restore 41 111 pd dataspace;
+#N canvas 819 390 450 300 dataspace&ramp 0;
+#X text 131 62 Todo;
+#X restore 41 131 pd dataspace&ramp;
+#N canvas 396 267 785 733 priority 0;
+#X obj 86 58 j.parameter aaa @priority 1;
+#X obj 86 89 j.parameter bbb @priority 2;
+#X obj 86 121 j.parameter ccc_a @priority 3;
+#X obj 85 153 j.parameter ccc_b @priority 3;
+#X obj 84 206 j.parameter zzz @priority 0;
+#X obj 85 570 j.model;
+#X msg 85 528 preset:edit;
+#X msg 168 528 preset:new default;
+#X obj 85 497 t b b;
+#X obj 85 464 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 102 463 create and view cue;
+#X obj 85 597 print, f 6;
+#X connect 5 0 11 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 8 0 6 0;
+#X connect 8 1 7 0;
+#X connect 9 0 8 0;
+#X restore 41 152 pd priority;

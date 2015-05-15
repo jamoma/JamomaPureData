@@ -503,7 +503,7 @@ void WrappedInputClass_anything(TTPtr self, t_symbol *msg, long argc, t_atom *ar
         if (!EXTRA->modelOrView)
             jamoma_patcher_get_model_or_view(x->patcherPtr, &EXTRA->modelOrView);
         
-        getfn((t_pd*)x,msg)((t_object*)EXTRA->modelOrView, argc, argv, NULL);
+        zgetfn((t_pd*)x,msg)((t_object*)EXTRA->modelOrView, argc, argv, NULL);
 //        object_method_typed(EXTRA->modelOrView, msg, argc, argv, NULL);
         return;
     }

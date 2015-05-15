@@ -89,7 +89,7 @@ void WrappedMapperClass_new(TTPtr self, long argc, t_atom *argv)
 	else
 		relativeAddress = _sym_nothing;
 	
-    x->address = TTAddress(relativeAddress->s_name);
+    if (relativeAddress) x->address = TTAddress(relativeAddress->s_name);
 	
 	jamoma_mapper_create((t_object*)x, x->wrappedObject);
 	

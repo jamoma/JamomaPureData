@@ -297,18 +297,18 @@ void attr_args_process(void *x, short ac, t_atom *av)
 
 method object_getmethod(void* x, t_symbol* s)
 {
-	return (method)getfn((t_pd *)x, s);
+    return (method)zgetfn((t_pd *)x, s);
 }
 
 void* object_method_typed(void* x, t_symbol* method, t_symbol* s, long argc, t_atom* argv)
 {
-	rmethod nrmethod = (rmethod)getfn((t_pd *)x, method);
+    rmethod nrmethod = (rmethod)zgetfn((t_pd *)x, method);
 	return nrmethod(x, s, argc, argv);
 }
 
 void* object_method(void *x, t_symbol *s)
 {
-	rmethod nrmethod = (rmethod)getfn((t_pd *)x, s);
+    rmethod nrmethod = (rmethod)zgetfn((t_pd *)x, s);
 	return nrmethod(x);
 }
 

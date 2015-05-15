@@ -1474,7 +1474,7 @@ void jamoma_patcher_share_info(t_canvas *patcher, t_canvas **returnedPatcher, TT
 		_sym_j_context = obj->g_pd->c_name;
 		if (_sym_j_context == _sym_j_model || _sym_j_context == _sym_j_view) {
 
-			rmethod _method = (rmethod)getfn(&obj->g_pd,_sym_share_patcher_info);
+            rmethod _method = (rmethod)zgetfn(&obj->g_pd,_sym_share_patcher_info);
 			if ( _method )
 				_method(&obj->g_pd, &patcherInfo);
 
@@ -1599,7 +1599,7 @@ void jamoma_patcher_share_node(t_canvas *patcher, TTNodePtr *patcherNode)
 		_sym_j_context = obj->g_pd->c_name;
 
 		if (_sym_j_context == _sym_j_model || _sym_j_context == _sym_j_view) {
-			rmethod _method = (rmethod)getfn(&obj->g_pd,_sym_share_patcher_info);
+            rmethod _method = (rmethod)zgetfn(&obj->g_pd,_sym_share_patcher_info);
 			if ( _method )
 				_method(&obj->g_pd, patcherNode);
 			if (*patcherNode)

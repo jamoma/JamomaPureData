@@ -113,7 +113,7 @@ t_object *wrappedModularClass_new(t_symbol *name, long argc, t_atom *argv)
         if ( !x->dumpOut ) x->dumpOut = outlet_new((t_object*)x,NULL);
 
         // call an object loadbang method if it exists
-        method _method = (method)getfn((t_pd*)x,_sym_loadbang);
+        method _method = (method)zgetfn((t_pd*)x,_sym_loadbang);
         if (_method)
             _method(x);
 	}

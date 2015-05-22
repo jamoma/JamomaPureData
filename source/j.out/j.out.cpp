@@ -100,21 +100,14 @@ void       out_connect(TTPtr self, TTAudioGraphObjectBasePtr audioSourceObject, 
 
 /** bang handler for j.out 
  @param self		Pointer to this object.
- @see				out_int, out_float, out_list, WrappedOutputClass_anything
+ @see				out_float, out_list, WrappedOutputClass_anything
  */
 void		out_bang(TTPtr self);
-
-/** int handler for j.out 
- @param self		Pointer to this object.
- @param value		The value sent to this object.
- @see				out_bang, out_float, out_list, WrappedOutputClass_anything
- */
-void		out_int(TTPtr self, long value);
 
 /** float handler for j.out 
  @param self		Pointer to this object.
  @param value		The value sent to this object.
- @see				out_bang, out_int, out_list, WrappedOutputClass_anything
+ @see				out_bang, out_list, WrappedOutputClass_anything
  */
 void		out_float(TTPtr self, t_float value);
 
@@ -123,7 +116,7 @@ void		out_float(TTPtr self, t_float value);
  @param msg			The message sent to this object.
  @param argc		The number of arguments passed to the object.
  @param argv		Pointer to an array of atoms passed to the object.
- @see				out_bang, out_int, out_float, WrappedOutputClass_anything
+ @see				out_bang, out_float, WrappedOutputClass_anything
  */
 void		out_list(TTPtr self, t_symbol* msg, long argc, t_atom* argv);
 
@@ -132,7 +125,7 @@ void		out_list(TTPtr self, t_symbol* msg, long argc, t_atom* argv);
  @param msg			The message sent to this object.
  @param argc		The number of arguments passed to the object.
  @param argv		Pointer to an array of atoms passed to the object.
- @see				out_bang, out_int, out_float, out_list
+ @see				out_bang, out_float, out_list
  */
 void		WrappedOutputClass_anything(TTPtr self, t_symbol* msg, long argc, t_atom* argv);
 
@@ -194,7 +187,6 @@ void WrapTTOutputClass(WrappedClassPtr c)
     eclass_addmethod(c->pdClass, (method)out_return_signal,					"return_signal",		A_CANT, 0);
 	
     eclass_addmethod(c->pdClass, (method)out_bang,							"bang", 				A_NULL, 0L);
-    eclass_addmethod(c->pdClass, (method)out_int,							"int", 					A_LONG, 0L);
     eclass_addmethod(c->pdClass, (method)out_float,							"float", 				A_FLOAT, 0L);
     eclass_addmethod(c->pdClass, (method)out_list,							"list", 				A_GIMME, 0L);
 
@@ -439,14 +431,6 @@ void out_connect(TTPtr self, TTAudioGraphObjectBasePtr audioSourceObject, long s
 void out_bang(TTPtr self)
 {
 	out_list(self, _sym_bang, 0, NULL);
-}
-
-void out_int(TTPtr self, long value)
-{
-	t_atom a;
-	
-	atom_setlong(&a, value);
-	out_list(self, _sym_int, 1, &a);
 }
 
 void out_float(TTPtr self, t_float value)

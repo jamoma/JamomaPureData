@@ -110,7 +110,7 @@ void		in_int(TTPtr self, long value);
  @param value		The value sent to this object.
  @see				in_bang, in_int, in_list, WrappedInputClass_anything
  */
-void		in_float(TTPtr self, double value);
+void		in_float(TTPtr self, t_float value);
 
 /** list handler for j.in 
  @param self		Pointer to this object.
@@ -463,7 +463,7 @@ void in_int(TTPtr self, long value)
 	in_list(self, _sym_int, 1, &a);
 }
 
-void in_float(TTPtr self, double value)
+void in_float(TTPtr self, t_float value)
 {
 	t_atom a;
 	

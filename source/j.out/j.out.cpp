@@ -116,7 +116,7 @@ void		out_int(TTPtr self, long value);
  @param value		The value sent to this object.
  @see				out_bang, out_int, out_list, WrappedOutputClass_anything
  */
-void		out_float(TTPtr self, double value);
+void		out_float(TTPtr self, t_float value);
 
 /** list handler for j.out 
  @param self		Pointer to this object.
@@ -449,7 +449,7 @@ void out_int(TTPtr self, long value)
 	out_list(self, _sym_int, 1, &a);
 }
 
-void out_float(TTPtr self, double value)
+void out_float(TTPtr self, t_float value)
 {
 	t_atom a;
 	

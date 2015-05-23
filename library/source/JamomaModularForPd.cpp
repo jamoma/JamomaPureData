@@ -894,9 +894,8 @@ void jamoma_callback_return_value(const TTValue& baton, const TTValue& v)
         
         p_method = object_getmethod(x, s_method);
         
-        // there is no 'defer_low' paradigm in pd
         if (p_method)
-            p_method(x, (method)p_method, _sym_nothing, argc, argv);
+            p_method(x, _sym_nothing, argc, argv);
     }
 	
     sysmem_freeptr(argv);

@@ -1,0 +1,27 @@
+#N canvas 98 396 668 493 10;
+#X obj 49 171 osc~;
+#X floatatom 49 139 5 0 0 0 - - -, f 5;
+#X obj 50 330 *~;
+#X obj 51 370 outlet~;
+#X obj 94 246 line~;
+#X obj 94 269 dbtorms~;
+#X floatatom 94 199 5 0 0 0 - - -, f 5;
+#X msg 94 217 \$1 10;
+#X obj 277 277 j.model @description "Very simple oscillator";
+#X obj 49 97 j.parameter freq @type decimal @dataspace time @unit Hz
+@default 440 @range 20 15000;
+#X obj 277 253 inlet;
+#X obj 277 299 outlet;
+#X obj 94 157 j.parameter gain @type decimal @dataspace gain @unit
+dB @default 440 @range -144 0 @clipmode both @default -144;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 4 0 5 0;
+#X connect 5 0 2 1;
+#X connect 6 0 7 0;
+#X connect 7 0 4 0;
+#X connect 8 0 11 0;
+#X connect 9 0 1 0;
+#X connect 10 0 8 0;
+#X connect 12 0 6 0;

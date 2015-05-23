@@ -1,0 +1,11 @@
+#N canvas 668 151 450 300 10;
+#X obj 99 203 oscillator.model leftOscillator;
+#X obj 99 248 dac~ 1 2;
+#X msg 105 24 model:address /rightOscillator;
+#X msg 95 4 model:address /leftOscillator;
+#X obj 95 64 oscillator.view;
+#X obj 144 223 oscillator.model rightOscillator;
+#X connect 0 0 1 0;
+#X connect 2 0 4 0;
+#X connect 3 0 4 0;
+#X connect 5 0 1 1;

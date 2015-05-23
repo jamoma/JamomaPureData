@@ -1,0 +1,21 @@
+JamomaPuredata bug report : 
+
+
+# j.loader 
+
+When instanciating `[Jamoma]` I got : 
+"trying to load too much depth ..."
+
+# j.message_array
+put a `[j.message_array]` in a patch and Pd crash
+in TTString.h:167
+
+
+but `[j.message_array foo.[4]]` works
+
+# j.modular
+Carsh when loading at TTHash.cpp:213 : 	if (mThreadProtection)
+
+
+# j.send 
+Create a `[j.send foo]` and Pd goes in an infinite loop

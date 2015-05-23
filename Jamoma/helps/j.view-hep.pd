@@ -1,0 +1,2 @@
+#N canvas 1 96 450 300 10;
+#X obj 175 88 j.view foo;

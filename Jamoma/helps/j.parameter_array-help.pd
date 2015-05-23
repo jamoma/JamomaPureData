@@ -1,0 +1,2 @@
+#N canvas 1 96 450 300 10;
+#X obj 196 112 j.parameter_array foo.[3];

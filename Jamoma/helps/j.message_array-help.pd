@@ -1,0 +1,2 @@
+#N canvas 533 397 450 300 10;
+#X obj 157 89 j.message_array foo.[4];

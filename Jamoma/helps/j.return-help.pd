@@ -1,0 +1,2 @@
+#N canvas 858 250 450 300 10;
+#X obj 247 164 j.return foo;

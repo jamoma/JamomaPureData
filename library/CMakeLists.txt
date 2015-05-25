@@ -47,42 +47,22 @@ $<TARGET_OBJECTS:PdCommonSyms>
 
 include_directories("${PROJECT_SOURCE_DIR}/includes")
 
-if(JAMOMA_UMBRELLA)
-
     file(GLOB_RECURSE PROJECT_HDRS
         ${CMAKE_CURRENT_SOURCE_DIR}/includes/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}../../../Core/Foundation/library/includes/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}../../../Core/Modular/library/includes/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}../../../Core/Modular/library/PeerObject/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}../../../Core/Modular/library/ProtocolLib/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}../../../Core/Modular/library/SchedulerLib/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../Core/Graph/library/includes/*.h
+        ${JAMOMA_CORE_SRC_PATH}/Foundation/library/includes/*.h
+        ${JAMOMA_CORE_SRC_PATH}/Modular/library/includes/*.h
+        ${JAMOMA_CORE_SRC_PATH}/Modular/library/PeerObject/*.h
+        ${JAMOMA_CORE_SRC_PATH}/Modular/library/ProtocolLib/*.h
+        ${JAMOMA_CORE_SRC_PATH}/Modular/library/SchedulerLib/*.h
+        ${JAMOMA_CORE_SRC_PATH}/Graph/library/includes/*.h
     )
-    include_directories("${PROJECT_SOURCE_DIR}/../../../Core/Foundation/library/includes")
-    include_directories("${PROJECT_SOURCE_DIR}/../../../Core/Modular/library/includes")
-    include_directories("${PROJECT_SOURCE_DIR}/../../../Core/Modular/library/PeerObject")
-    include_directories("${PROJECT_SOURCE_DIR}/../../../Core/Modular/library/ProtocolLib")
-    include_directories("${PROJECT_SOURCE_DIR}/../../../Core/Modular/library/SchedulerLib")
-    include_directories("${PROJECT_SOURCE_DIR}/../../../Core/DSP/library/includes")
-    include_directories("${PROJECT_SOURCE_DIR}/../../../Core/Graph/library/includes")
-else()
-    file(GLOB_RECURSE PROJECT_HDRS
-        ${CMAKE_CURRENT_SOURCE_DIR}/includes/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../JamomaCore/Foundation/library/includes/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../JamomaCore/Modular/library/includes/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../JamomaCore/Modular/library/PeerObject/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../JamomaCore/Modular/library/ProtocolLib/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../JamomaCore/Modular/library/SchedulerLib/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../JamomaCore/Graph/library/includes/*.h
-    )
-    include_directories("${PROJECT_SOURCE_DIR}/../JamomaCore/Foundation/library/includes")
-    include_directories("${PROJECT_SOURCE_DIR}/../JamomaCore/Modular/library/includes")
-    include_directories("${PROJECT_SOURCE_DIR}/../JamomaCore/Modular/library/PeerObject")
-    include_directories("${PROJECT_SOURCE_DIR}/../JamomaCore/Modular/library/ProtocolLib")
-    include_directories("${PROJECT_SOURCE_DIR}/../JamomaCore/Modular/library/SchedulerLib")
-    include_directories("${PROJECT_SOURCE_DIR}/../JamomaCore/DSP/library/includes")
-    include_directories("${PROJECT_SOURCE_DIR}/../JamomaCore/Graph/library/includes")
-endif()
+    include_directories("${JAMOMA_CORE_SRC_PATH}/Foundation/library/includes")
+    include_directories("${JAMOMA_CORE_SRC_PATH}/Modular/library/includes")
+    include_directories("${JAMOMA_CORE_SRC_PATH}/Modular/library/PeerObject")
+    include_directories("${JAMOMA_CORE_SRC_PATH}/Modular/library/ProtocolLib")
+    include_directories("${JAMOMA_CORE_SRC_PATH}/Modular/library/SchedulerLib")
+    include_directories("${JAMOMA_CORE_SRC_PATH}/DSP/library/includes")
+    include_directories("${JAMOMA_CORE_SRC_PATH}/Graph/library/includes")
 
     include_directories("${PROJECT_SOURCE_DIR}/../source/CicmWrapper/Sources")
     include_directories("${PROJECT_SOURCE_DIR}/../source/")

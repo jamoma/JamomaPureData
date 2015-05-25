@@ -15,14 +15,14 @@ include(${PROJECT_SOURCE_DIR}/Shared/CMake/JamomaConfiguration.cmake NO_POLICY_S
 include(${PROJECT_SOURCE_DIR}/Shared/CMake/JamomaUtilFunctions.cmake NO_POLICY_SCOPE)
 
 if(NOT JAMOMA_UMBRELLA)
-    option(FAT_BINARY "fat" OFF)
-    option(BUILD_JAMOMAPD "BUILD_JAMOMAPD" ON)
+    option(FAT_BINARY "Build a fat binary (32bit and 64bit)" OFF)
+    option(BUILD_JAMOMAPD "Build Jamoma for PureData package" OFF)
 
     if(FAT_BINARY)
         set(CMAKE_OSX_ARCHITECTURES "i386;x86_64")
     endif(FAT_BINARY)
 
-    set(JAMOMAPD_INSTALL_FOLDER "lib/pd-externals")
+    set(JAMOMAPD_INSTALL_FOLDER "JamomaPd" CACHE STRING "PD Package Install folder")
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Jamoma"
         DESTINATION ${JAMOMAPD_INSTALL_FOLDER}
             COMPONENT JamomaPd)

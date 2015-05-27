@@ -1,0 +1,17 @@
+language: cpp
+env:
+  matrix:
+  - ARCH=
+  - ARCH=i386
+os:
+  - linux
+  - osx
+
+before_install:
+- "./script/depinstall.sh"
+
+script:
+- "./script/build.sh"
+
+after_success:
+- "./script/deploy-git.sh"

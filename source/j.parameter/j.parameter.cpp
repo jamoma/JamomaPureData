@@ -342,8 +342,8 @@ void data_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
 	
 	// avoid blank before data
-	if (msg == _sym_nothing)
-		outlet_anything((t_outlet*)x->outlets[data_out], _sym_list, argc, argv);
+    if ( msg == _sym_nothing)
+        outlet_anything((t_outlet*)x->outlets[data_out], NULL, argc, argv);
 	else
 		outlet_anything((t_outlet*)x->outlets[data_out], msg, argc, argv);
 }

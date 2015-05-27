@@ -55,6 +55,7 @@ void		cue_dowrite_again(TTPtr self);
 void		cue_dorecall(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
 void		cue_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
+void		cue_edit_click(TTPtr self);
 void		cue_edclose(TTPtr self, char **text, long size);
 void		cue_doedit(TTPtr self);
 
@@ -91,7 +92,7 @@ void WrapTTCueManagerClass(WrappedClassPtr c)
 	eclass_addmethod(c->pdClass, (method)cue_read,					"cue_read",				A_CANT, 0);
 	eclass_addmethod(c->pdClass, (method)cue_write,					"cue_write",			A_CANT, 0);
 	
-	eclass_addmethod(c->pdClass, (method)cue_edit,					"dblclick",				A_CANT, 0);
+    eclass_addmethod(c->pdClass, (method)cue_edit_click,            "click",				A_GIMME, 0);
 	eclass_addmethod(c->pdClass, (method)cue_edclose,				"edclose",				A_CANT, 0);
     
 	eclass_addmethod(c->pdClass, (method)cue_get,					"get",					A_GIMME, 0);
@@ -537,6 +538,10 @@ void cue_dorecall(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 	}
 }
 
+void cue_edit_click(TTPtr self){
+    cue_edit(self, gensym("edit"), 0L, (t_atom*) NULL);
+}
+
 void cue_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
@@ -612,10 +617,8 @@ void cue_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 			
 			aTextHandler = o[0];
 			
-			critical_enter(0);
 			aTextHandler.set(kTTSym_object, *EXTRA->toEdit);
 			tterr = aTextHandler.send(kTTSym_Write, (TTPtr)buffer, none);
-			critical_exit(0);
 		}
 		
 		// pass the buffer to the editor

@@ -1,6 +1,6 @@
 #!/bin/sh
 
 mkdir build
-pushd build 
-debug cmake ..
+cd build 
+cmake ..
 make

@@ -31,8 +31,6 @@ void WrapTTMapperClass(WrappedClassPtr c);
 void WrappedMapperClass_new(TTPtr self, long argc, t_atom *argv);
 void WrappedMapperClass_free(TTPtr self);
 
-void map_assist(TTPtr self, void *b, long msg, long arg, char *dst);
-
 void map_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void map_return_input_going_down(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void map_return_input_going_up(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
@@ -60,9 +58,7 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2emap(void)
 }
 
 void WrapTTMapperClass(WrappedClassPtr c)
-{
-    eclass_addmethod(c->pdClass, (method)map_assist, "assist", A_CANT, 0L);
-	
+{	
     eclass_addmethod(c->pdClass, (method)map_return_value, "return_value", A_CANT, 0);
     eclass_addmethod(c->pdClass, (method)map_return_input_going_down, "return_input_going_down", A_CANT, 0);
     eclass_addmethod(c->pdClass, (method)map_return_input_going_up, "return_input_going_up", A_CANT, 0);
@@ -122,23 +118,6 @@ void WrappedMapperClass_free(TTPtr self)
     x->wrappedObject.set("output", kTTAdrsEmpty);
     
 	free(EXTRA);
-}
-
-// Method for Assistance Messages
-void map_assist(TTPtr self, void *b, long msg, long arg, char *dst)
-{
-	if (msg==1) // Inlets
-		strcpy(dst, "");
-	else { // Outlets
-		switch(arg) {
-			case data_out:
-				strcpy(dst, "mapping output");
-				break;
-			case dump_out:
-				strcpy(dst, "dumpout");
-				break;
-		}
-	}
 }
 
 void map_subscribe(TTPtr self)

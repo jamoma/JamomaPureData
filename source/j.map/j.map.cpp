@@ -37,8 +37,6 @@ void map_return_input_going_up(TTPtr self, t_symbol *msg, long argc, t_atom *arg
 void map_return_output_going_down(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void map_return_output_going_up(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
-void map_int(TTPtr self, long value);
-void map_float(TTPtr self, double value);
 void map_list(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
 void map_reset(TTPtr self);
@@ -65,7 +63,6 @@ void WrapTTMapperClass(WrappedClassPtr c)
     eclass_addmethod(c->pdClass, (method)map_return_output_going_down, "return_output_going_down", A_CANT, 0);
     eclass_addmethod(c->pdClass, (method)map_return_output_going_up, "return_output_going_up", A_CANT, 0);
 	
-    eclass_addmethod(c->pdClass, (method)map_int, "int", A_LONG, 0L);
     eclass_addmethod(c->pdClass, (method)map_float, "float", A_FLOAT, 0L);
     eclass_addmethod(c->pdClass, (method)map_list, "list", A_GIMME, 0L);
     
@@ -203,13 +200,6 @@ void map_bang(TTPtr self)
 	map_list(self, _sym_bang, 0, NULL);
 }
 
-void map_int(TTPtr self, long value)
-{
-	t_atom a;
-	
-	atom_setlong(&a, value);
-	map_list(self, _sym_int, 1, &a);
-}
 
 void map_float(TTPtr self, double value)
 {

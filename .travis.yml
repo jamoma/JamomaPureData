@@ -2,7 +2,6 @@ language: cpp
 env:
   matrix:
   - ARCH=
-  - ARCH=i386
 os:
   - linux
 #  - osx

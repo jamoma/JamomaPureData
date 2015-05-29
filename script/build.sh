@@ -2,5 +2,5 @@
 
 mkdir build
 cd build 
-./cmake-*/bin/cmake ..
+../cmake-*/bin/cmake ..
 make

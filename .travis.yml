@@ -4,11 +4,7 @@ env:
   - ARCH=
 os:
   - linux
-#  - osx
-
-branches:
-  only:
-    - feature/travis-build
+  - osx
 
 before_install:
 - "./script/depinstall.sh"

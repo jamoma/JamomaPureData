@@ -1,0 +1,20 @@
+language: cpp
+env:
+  matrix:
+  - ARCH=
+os:
+  - linux
+#  - osx
+
+branches:
+  only:
+    - feature/travis-build
+
+before_install:
+- "./script/depinstall.sh"
+
+script:
+- "./script/build.sh"
+
+after_success:
+- "./script/deploy-git.sh"

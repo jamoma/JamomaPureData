@@ -169,7 +169,7 @@ void map_subscribe(TTPtr self)
 void map_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 {
 	WrappedModularInstancePtr x = (WrappedModularInstancePtr)self;
-    outlet_anything((t_outlet*)x->outlets[data_out], NULL, argc, argv);
+    outlet_anything((t_outlet*)x->outlets[data_out], _sym_list, argc, argv);
 }
 
 void map_return_input_going_down(TTPtr self, t_symbol *msg, long argc, t_atom *argv)

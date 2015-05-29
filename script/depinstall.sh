@@ -3,7 +3,7 @@
 case "$TRAVIS_OS_NAME" in
     linux)
 		sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-		sudo apt-get -qy update
+		sudo apt-get -qq update
 		sudo apt-get -y install gcc-4.9 g++-4.9
 		if [ "x${ARCH}" == "xi386" ]; then
 			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz

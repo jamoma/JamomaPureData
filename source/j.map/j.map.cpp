@@ -37,6 +37,7 @@ void map_return_input_going_up(TTPtr self, t_symbol *msg, long argc, t_atom *arg
 void map_return_output_going_down(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void map_return_output_going_up(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
+void map_float(TTPtr self, t_float value);
 void map_list(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
 void map_reset(TTPtr self);
@@ -200,8 +201,7 @@ void map_bang(TTPtr self)
 	map_list(self, _sym_bang, 0, NULL);
 }
 
-
-void map_float(TTPtr self, double value)
+void map_float(TTPtr self, t_float value)
 {
 	t_atom a;
 	

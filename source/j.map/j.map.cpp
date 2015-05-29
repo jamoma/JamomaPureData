@@ -88,7 +88,7 @@ void WrappedMapperClass_new(TTPtr self, long argc, t_atom *argv)
 	jamoma_mapper_create((t_object*)x, x->wrappedObject);
 	
 	// Make two outlets
-	x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 1);
+    x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr));
     x->outlets[data_out] = outlet_new((t_object*)x, NULL); // anything outlet to output data
     x->dumpOut = outlet_new((t_object*)x, NULL);
 

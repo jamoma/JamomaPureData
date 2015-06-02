@@ -2,6 +2,7 @@ language: cpp
 env:
   matrix:
   - ARCH=
+  - ARCH=rpi
 os:
   - linux
   - osx

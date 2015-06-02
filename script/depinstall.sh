@@ -6,6 +6,9 @@ case "$TRAVIS_OS_NAME" in
 		sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 		sudo apt-get -qq update
 		sudo apt-get -qq install gcc-4.9 g++-4.9
+		if [ "x$ARCH" = "xrpi" ]; then
+			git clone -b Jamoma https://github.com/avilleret/tools.git
+		fi
 		if [ "x$(uname -m)" = "xi386" ]; then
 			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz
 			tar -xzf cmake-3.2.2-Linux-i386.tar.gz -C /tmp/cmake --strip-components=1

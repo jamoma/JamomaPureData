@@ -5,8 +5,9 @@ cd build
 if [ "x$ARCH" = "xrpi" ]; then
 	if [ "$TRAVIS_OS_NAME" != "osx" ]; then
 		/tmp/cmake/bin/cmake -DCMAKE_TOOLCHAIN_FILE=../Shared/CMake/toolchains/arm-linux-gnueabihf.cmake -DJAMOMAPD_INSTALL_FOLDER=${PWD}/RPi-bin -DCROSS_COMPILER_PATH=${PWD}/../tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/ .. 
+		make
 	fi		
 else
 	/tmp/cmake/bin/cmake .. -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF
+	make
 fi
-make

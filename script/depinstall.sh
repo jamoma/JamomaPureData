@@ -18,8 +18,10 @@ case "$TRAVIS_OS_NAME" in
 		fi
 	;;
 	osx)
-		wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Darwin-x86_64.tar.gz
-		tar -xf cmake-3.2.2-Darwin-x86_64.tar.gz -C /tmp/cmake --strip-components=1
-		ln -s /tmp/cmake/CMake.app/Contents/bin /tmp/cmake/bin
+		if [ "x$ARCH" != "xrpi" ]; then
+			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Darwin-x86_64.tar.gz
+			tar -xf cmake-3.2.2-Darwin-x86_64.tar.gz -C /tmp/cmake --strip-components=1
+			ln -s /tmp/cmake/CMake.app/Contents/bin /tmp/cmake/bin
+		fi
 	;;
 esac

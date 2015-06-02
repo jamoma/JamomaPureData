@@ -19,6 +19,7 @@ case "$TRAVIS_OS_NAME" in
 	;;
 	osx)
 		wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Darwin-x86_64.tar.gz
-		sudo tar -xf cmake-3.2.2-Darwin-x86_64.tar.gz -C /tmp/cmake --strip-components=1
+		tar -xf cmake-3.2.2-Darwin-x86_64.tar.gz -C /tmp/cmake --strip-components=1
+		ln -s /tmp/cmake/CMake.app/Contents/bin /tmp/cmake/bin
 	;;
 esac

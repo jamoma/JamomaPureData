@@ -9,6 +9,8 @@ SET(CMAKE_CXX_COMPILER ${CROSS_COMPILER_PATH}/bin/arm-linux-gnueabihf-g++)
 SET(CMAKE_ASM_COMPILER ${CROSS_COMPILER_PATH}/bin/arm-linux-gnueabihf-gcc)
 SET(CMAKE_SYSTEM_PROCESSOR arm)
 
+SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE armhf)
+
 SET(CMAKE_FIND_ROOT_PATH ${CROSS_COMPILER_PATH}/arm-linux-gnueabihf/libc)
 
 # search for programs in the build host directories

@@ -48,7 +48,7 @@ void		data_edit_array(TTPtr self, TTValue& array);
 
 void		WrappedDataArrayClass_anything(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void		data_bang(TTPtr self);
-void		data_float(TTPtr self, double value);
+void		data_float(TTPtr self, t_float value);
 void		data_list(TTPtr self, t_symbol *msg, long argc, const t_atom *argv);
 
 void		data_array(TTPtr self, t_symbol *msg, long argc, const t_atom *argv);
@@ -445,7 +445,7 @@ void data_bang(TTPtr self)
 		object_error((t_object*)x, "bang : the array is empty");
 }
 
-void data_float(TTPtr self, double value)
+void data_float(TTPtr self, t_float value)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
 	t_atom a;

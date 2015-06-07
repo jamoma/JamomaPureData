@@ -69,6 +69,7 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2eparameter_array(void)
     spec->_new = &WrappedDataArrayClass_new;
     spec->_free = &WrappedDataArrayClass_free;
     spec->_any = &WrappedDataArrayClass_anything;
+    spec->_notify = NULL;
 	
 #if defined(JMOD_MESSAGE)
     return (void)wrapTTModularClassAsPdClass(kTTSym_Data, "j.message_array", NULL, spec);

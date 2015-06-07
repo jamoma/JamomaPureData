@@ -101,7 +101,7 @@ void		send_int(TTPtr self, long value);
  @param value		The value sent to this object.
  @see				send_bang, send_int, send_list, WrappedSenderClass_anything
  */
-void		send_float(TTPtr self, double value);
+void		send_float(TTPtr self, t_float value);
 
 /** list handler for j.send 
  @param self		Pointer to this object.
@@ -383,7 +383,7 @@ void send_int(TTPtr self, long value)
 	send_list(self, _sym_int, 1, &a);
 }
 
-void send_float(TTPtr self, double value)
+void send_float(TTPtr self, t_float value)
 {
 	t_atom a;
 	

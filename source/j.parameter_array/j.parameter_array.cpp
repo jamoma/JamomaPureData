@@ -48,7 +48,6 @@ void		data_edit_array(TTPtr self, TTValue& array);
 
 void		WrappedDataArrayClass_anything(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void		data_bang(TTPtr self);
-void		data_int(TTPtr self, long value);
 void		data_float(TTPtr self, double value);
 void		data_list(TTPtr self, t_symbol *msg, long argc, const t_atom *argv);
 
@@ -85,7 +84,6 @@ void WrapTTDataArrayClass(WrappedClassPtr c)
     eclass_addmethod(c->pdClass, (method)data_assist,						"assist",				A_CANT, 0L);
 		
     eclass_addmethod(c->pdClass, (method)data_bang,							"bang",					A_NULL, 0L);
-    eclass_addmethod(c->pdClass, (method)data_int,							"int",					A_LONG, 0);
     eclass_addmethod(c->pdClass, (method)data_float,						"float",				A_FLOAT, 0);
     eclass_addmethod(c->pdClass, (method)data_list,							"list",					A_GIMME, 0);
     
@@ -445,25 +443,6 @@ void data_bang(TTPtr self)
 	}
 	else
 		object_error((t_object*)x, "bang : the array is empty");
-}
-
-void data_int(TTPtr self, long value)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	t_atom a;
-	
-    if (x->inlets[0]) {
-		atom_setlong(&a, value);
-		wrappedModularClass_ArraySelect(self, _sym_nothing, 1, &a);
-	}
-	else {
-		if (!x->internals->isEmpty()) {
-			atom_setlong(&a, value);
-			data_list(self, _sym_int, 1, &a);
-		}
-		else
-			object_error((t_object*)x, "int : the array is empty");
-	}
 }
 
 void data_float(TTPtr self, double value)

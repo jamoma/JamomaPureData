@@ -1,6 +1,10 @@
 JamomaPureData
 ==============
-![build status](https://travis-ci.org/jamoma/JamomaPureData.svg?branch=master)
+[![Build Status](https://travis-ci.org/jamoma/JamomaPureData.svg?branch=master)](https://travis-ci.org/jamoma/JamomaPureData)
+<a href="https://scan.coverity.com/projects/5514">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/5514/badge.svg"/>
+</a>
 
 This is a port of [JamomaMax](https://github.com/jamoma/JamomaMax) library to [Puredata](http://puradata.info).
 For reference, it's based on https://github.com/jamoma/JamomaMax/commit/957d817c508a69de06538cc9ac17a197279ff9fe.

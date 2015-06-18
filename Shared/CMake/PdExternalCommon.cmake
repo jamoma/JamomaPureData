@@ -1,6 +1,8 @@
 set(PROJECT_SRCS ${PROJECT_SRCS} $<TARGET_OBJECTS:PdCommonSyms>)
 
 add_library(${PROJECT_NAME} MODULE ${PROJECT_SRCS})
+cotire(${PROJECT_NAME})
+set_target_properties(${PROJECT_NAME} PROPERTIES COTIRE_PREFIX_HEADER_IGNORE_PATH "")
 
 #[[ block comment
 set_property(TARGET ${PROJECT_NAME}

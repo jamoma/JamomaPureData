@@ -91,3 +91,5 @@ setOutput()
 
 ### Tests ###
 addTestTarget()
+
+cotire(${PROJECT_NAME})

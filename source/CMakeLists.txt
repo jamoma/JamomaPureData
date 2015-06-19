@@ -21,14 +21,17 @@ include_directories(${PROJECT_SOURCE_DIR})
 add_library(PdCommonSyms OBJECT
 			${CMAKE_CURRENT_SOURCE_DIR}/commonsyms.cpp)
 cotire(PdCommonSyms)
+set_target_properties(PdCommonSyms PROPERTIES COTIRE_PREFIX_HEADER_IGNORE_PATH "")
 
 add_library(TTClassWrapperPd OBJECT
                         ${CMAKE_CURRENT_SOURCE_DIR}/classwrapper/TTClassWrapperPd.cpp)
 cotire(TTClassWrapperPd)
+set_target_properties(TTClassWrapperPd PROPERTIES COTIRE_PREFIX_HEADER_IGNORE_PATH "")
 
 add_library(TTModularClassWrapperPd OBJECT
                         ${CMAKE_CURRENT_SOURCE_DIR}/classwrapper/TTModularClassWrapperPd.cpp)
 cotire(TTModularClassWrapperPd)
+set_target_properties(TTModularClassWrapperPd PROPERTIES COTIRE_PREFIX_HEADER_IGNORE_PATH "")
 
 add_library(TTModularClassWrapperPdArray OBJECT
                         ${CMAKE_CURRENT_SOURCE_DIR}/classwrapper/TTModularClassWrapperPd.cpp)
@@ -36,6 +39,7 @@ add_library(TTModularClassWrapperPdArray OBJECT
 set_property(TARGET TTModularClassWrapperPdArray
                          PROPERTY COMPILE_DEFINITIONS ARRAY_EXTERNAL)
 cotire(TTModularClassWrapperPdArray)
+set_target_properties(TTModularClassWrapperPdArray PROPERTIES COTIRE_PREFIX_HEADER_IGNORE_PATH "")
 
 #addMaxsupport()
 

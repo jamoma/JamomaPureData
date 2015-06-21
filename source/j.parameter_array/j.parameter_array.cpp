@@ -268,6 +268,10 @@ void data_array_build(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
     jamoma_ttvalue_to_Atom(x->arrayArgs, &ac, &av);
     if (ac && av)
         attr_args_process(x, ac, av);
+    if (av){
+        delete[] av;
+        av=NULL;
+    }
     
     // Starts iteration on internals
     x->iterateInternals = YES;

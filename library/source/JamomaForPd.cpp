@@ -65,13 +65,14 @@ void jamoma_init(void)
         // Init the Modular library
         Dl_info		info;
         char		mainBundleStr[4096];
+        mainBundleStr[0]='\0';
 
         // Use the path of JamomaFoundation
         if (dladdr((const void*)jamoma_init, &info))
         {
             char *c = 0;
 
-            strncpy(mainBundleStr, info.dli_fname, 4096);
+            strncpy(mainBundleStr, info.dli_fname, 4095);
             c = strrchr(mainBundleStr, '/');
             if (c)
                 *c = 0; // chop the filename off of the path

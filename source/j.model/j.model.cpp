@@ -288,9 +288,12 @@ void model_subscribe(TTPtr self)
 			av = NULL;
 			
 			// If x is in a bpatcher, the patcher is NULL
+            // AV : the patcher can't be NULL since it is check in the if statement above
+            /*
 			if (!aPatcher)
 				aPatcher = (t_canvas*)object_attr_getobj(x, _sym_parentpatcher);
-			
+            */
+
 			jamoma_patcher_get_args(aPatcher, &ac, &av);
 			
 			// check if it's a sub model

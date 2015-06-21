@@ -370,7 +370,7 @@ void model_preset_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 				name = v[atom_getlong(argv)-1];
 			
 			else {
-				object_error((t_object*)x, "%d does'nt exist", atom_getlong(argv));
+                object_error((t_object*)x, "%ld doesn't exist", atom_getlong(argv));
 				return;
 			}
 		}
@@ -393,7 +393,7 @@ void model_preset_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 					EXTRA->presetName = name;
 				}
 				else {
-					object_error((t_object*)x, "%s does'nt exist", atom_getsym(argv)->s_name);
+                    object_error((t_object*)x, "%s doesn't exist", atom_getsym(argv)->s_name);
 					return;
 				}
 			}

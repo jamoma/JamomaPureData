@@ -20,3 +20,13 @@ script:
 
 after_success:
 - "./script/deploy-git.sh"
+
+addons:
+  coverity_scan:
+    project:
+      name: jamoma/JamomaPureData
+      description: Build submitted via Travis CI
+    build_script_url: https://github.com/jamoma/JamomaPureData/blob/feature/coverity_scan/script/travis-ci_build_coverity_scan.sh
+    notification_email: jamoma-devel@lists.sourceforge.net
+    build_command: make -j 4
+    branch_pattern: master

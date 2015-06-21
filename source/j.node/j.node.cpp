@@ -114,8 +114,9 @@ void node_subscribe(TTPtr self, t_symbol* relativeAddress, long argc, t_atom* ar
 	// for relative address
 	if (TTAddress(relativeAddress->s_name).getType() == kAddressRelative) {
         
-        jamoma_subscriber_create((t_eobj*)x, x->wrappedObject, TTAddress(relativeAddress->s_name), x->subscriberObject, returnedAddress, &returnedNode, &returnedContextNode);
-	}
+        if(!jamoma_subscriber_create((t_eobj*)x, x->wrappedObject, TTAddress(relativeAddress->s_name), x->subscriberObject, returnedAddress, &returnedNode, &returnedContextNode))
+            object_error((t_object*)x, "error when registering %s", relativeAddress->s_name);
+    }
 	else
 		object_error((t_object*)x, "can't register because %s is not a relative address", relativeAddress->s_name);
 }

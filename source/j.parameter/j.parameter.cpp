@@ -249,7 +249,8 @@ void data_subscribe(TTPtr self, t_symbol *relativeAddress)
 	// for relative address
 	if (TTAddress(relativeAddress->s_name).getType() == kAddressRelative) {
         
-		jamoma_subscriber_create((t_eobj*)x, x->wrappedObject, relativeAddress->s_name, x->subscriberObject, returnedAddress, &returnedNode, &returnedContextNode);
+        if(!jamoma_subscriber_create((t_eobj*)x, x->wrappedObject, relativeAddress->s_name, x->subscriberObject, returnedAddress, &returnedNode, &returnedContextNode))
+            object_error((t_object*)x, "error when registering %s", relativeAddress->s_name);
         
 #ifndef JMOD_MESSAGE
 #ifndef JMOD_RETURN

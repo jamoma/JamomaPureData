@@ -20,7 +20,8 @@
 #define thisTTClassTags		"model info"
 
 TT_MODULAR_CONSTRUCTOR,
-mClass(kTTSymEmpty)
+mClass(kTTSymEmpty),
+mObject(NULL)
 {
     if (arguments.size() == 1)
         if (arguments[0].type() == kTypePointer)

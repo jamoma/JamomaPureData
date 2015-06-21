@@ -368,7 +368,7 @@ void receive_bang(TTPtr self)
 void receive_loadbang(TTPtr self)
 {
     WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-    t_atom * a;
+    t_atom * a=NULL;
     // for absolute address
     if (x->address.getType() == kAddressAbsolute) {
 

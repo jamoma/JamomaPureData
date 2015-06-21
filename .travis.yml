@@ -3,6 +3,8 @@ env:
   matrix:
   - ARCH=
   - ARCH=rpi
+  global:
+  - secure: "JGkLKSaVlkQ/D4hHoXEmbHrSzhGus60NLZ+jscvqS0tuwxwot1EMsi++YLaNNZjNSojXHmWd1A3Hu1276E/bKJ6XIXnDEIRmuuOfWfB5BGCIXAVzigC7cpltRwZyhqgRqRCbOqUMY7/sGnlT5zGOMQUm/F8UPb6DAnY+ZBZrr2s="
 os:
   - linux
   - osx
@@ -29,4 +31,4 @@ addons:
     build_script_url: https://github.com/jamoma/JamomaPureData/blob/feature/coverity_scan/script/travis-ci_build_coverity_scan.sh
     notification_email: jamoma-devel@lists.sourceforge.net
     build_command: make -j 4
-    branch_pattern: master
+    branch_pattern: feature/coverity_scan

@@ -439,7 +439,7 @@ TTErr wrapTTClassAsPdClass(TTSymbol ttblueClassName, const char* pdClassName, Wr
         wrappedPdClass->pdNamesToTTNames[namePdSymbol->s_name] = (t_object*)name.rawpointer();
         eclass_addmethod((t_eclass*)wrappedPdClass->pdClass, (method)wrappedClass_anything, nameCString, A_GIMME, 0);
 		
-		delete nameCString;
+        delete[] nameCString;
 		nameCString = NULL;
 	}
 	
@@ -484,7 +484,7 @@ TTErr wrapTTClassAsPdClass(TTSymbol ttblueClassName, const char* pdClassName, Wr
 			CLASS_ATTR_STYLE(wrappedPdClass->pdClass,	(char*)"fontFace", 0, (char*)"font");
 		*/
     
-		delete nameCString;
+        delete[] nameCString;
 		nameCString = NULL;
 	}
 			

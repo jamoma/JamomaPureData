@@ -313,7 +313,7 @@ void in_subscribe(TTPtr self)
         
         // notify the model there is something new concerning signal processing
         if (EXTRA->modelOrView)
-            object_method_typed(EXTRA->modelOrView, gensym("input_created"), 0, NULL, NULL);
+            object_method_typed(EXTRA->modelOrView, gensym("input_created"), NULL, 0, NULL);
 	}
 }
 

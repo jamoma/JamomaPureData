@@ -1260,14 +1260,9 @@ void jamoma_patcher_get_context(t_canvas *patcher, TTSymbol& returnedContext)
 			
 			jamoma_patcher_get_context(upperPatcher, returnedContext);
 			
-			// if the context is still NULL and there is a j.model|view at this level
-			// the default case would be to set it as a model patcher by default
-			if (returnedContext == kTTSymEmpty && found)
-				returnedContext = kTTSym_model;
 			// keep the upperPatcher if no j.model|view around
-			// because it is where the context is defined
-			else if (!found)
-				patcher = upperPatcher;
+            // because it is where the context is defined
+            patcher = upperPatcher;
 		}
 		// default case : a patcher has no type
 		else if (hierarchy == _sym_topmost)

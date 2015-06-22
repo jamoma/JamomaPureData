@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "x${TRAVIS_BRANCH}" == "xfeature/travis-build" ]; then
+if [ "x${TRAVIS_BRANCH}" = "xfeature/travis-build" ]; then
   ARCHIVE_NAME="${TRAVIS_BUILD_DIR}/JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}.tgz"
 
   cd ${TRAVIS_BUILD_DIR}/build

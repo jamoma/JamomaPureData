@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ "x${TRAVIS_BRANCH}" = "xfeature/travis-build" ]; then
-  ARCHIVE_NAME="${TRAVIS_BUILD_DIR}/JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}.tgz"
+  ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}.tgz"
 
   cd ${TRAVIS_BUILD_DIR}/build
   cmake -DCMAKE_INSTALL_COMPONENT=JamomaPd -P cmake_install.cmake
@@ -10,6 +10,10 @@ if [ "x${TRAVIS_BRANCH}" = "xfeature/travis-build" ]; then
   tar cvzf "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}" Jamoma/
 
   cd ${TRAVIS_BUILD_DIR}
+
+  error "setting up user-identity"
+  git config user.email "travis-ci@jamoma.org"
+  git config user.name "Travis CI"
 
   git checkout gh-pages
   mv ${ARCHIVE_NAME} content/download/nightly-builds/

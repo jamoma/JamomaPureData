@@ -4,8 +4,9 @@ env:
   - ARCH=
   - ARCH=rpi
   global:
-  - secure: "JGkLKSaVlkQ/D4hHoXEmbHrSzhGus60NLZ+jscvqS0tuwxwot1EMsi++YLaNNZjNSojXHmWd1A3Hu1276E/bKJ6XIXnDEIRmuuOfWfB5BGCIXAVzigC7cpltRwZyhqgRqRCbOqUMY7/sGnlT5zGOMQUm/F8UPb6DAnY+ZBZrr2s="
-os:
+    - secure: "JGkLKSaVlkQ/D4hHoXEmbHrSzhGus60NLZ+jscvqS0tuwxwot1EMsi++YLaNNZjNSojXHmWd1A3Hu1276E/bKJ6XIXnDEIRmuuOfWfB5BGCIXAVzigC7cpltRwZyhqgRqRCbOqUMY7/sGnlT5zGOMQUm/F8UPb6DAnY+ZBZrr2s="
+
+  os:
   - linux
   - osx
 
@@ -28,7 +29,7 @@ addons:
     project:
       name: jamoma/JamomaPureData
       description: Build submitted via Travis CI
-    build_script_url: https://github.com/jamoma/JamomaPureData/blob/feature/coverity_scan/script/travis-ci_build_coverity_scan.sh
     notification_email: jamoma-devel@lists.sourceforge.net
+    build_command_prepend: "cmake .. -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF; make clean"
     build_command: make -j 4
-    branch_pattern: feature/coverity_scan
+    branch_pattern: coverity_scan

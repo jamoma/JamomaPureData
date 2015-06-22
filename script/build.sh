@@ -1,13 +1,13 @@
 #!/bin/sh
 
 mkdir -p build
-cd build 
+cd build
 if [ "x$ARCH" = "xrpi" ]; then
 	if [ "$TRAVIS_OS_NAME" != "osx" ]; then
-		/tmp/cmake/bin/cmake -DCMAKE_TOOLCHAIN_FILE=../Shared/CMake/toolchains/arm-linux-gnueabihf.cmake -DJAMOMAPD_INSTALL_FOLDER=${PWD}/RPi-bin -DCROSS_COMPILER_PATH=${PWD}/../tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/ .. 
+		/tmp/cmake/bin/cmake -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package -DCMAKE_TOOLCHAIN_FILE=../Shared/CMake/toolchains/arm-linux-gnueabihf.cmake -DJAMOMAPD_INSTALL_FOLDER=${PWD}/RPi-bin -DCROSS_COMPILER_PATH=${PWD}/../tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/ ..
 		make
-	fi		
+	fi
 else
-	/tmp/cmake/bin/cmake .. -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF
+	/tmp/cmake/bin/cmake -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package ..
 	make
 fi

@@ -11,14 +11,15 @@ if [ "x${TRAVIS_BRANCH}" = "xfeature/travis-build" ]; then
 
   cd ${TRAVIS_BUILD_DIR}
 
-  git config user.email "travis-ci@jamoma.org"
-  git config user.name "Travis CI"
+  git config credential.helper "store --file=.git/credentials"
+  echo "https://${GH_TOKEN}:@github.com" > .git/credentials
 
-  git checkout gh-pages
-  mv ${ARCHIVE_NAME} content/download/nightly-builds/
-  git add -f content/download/nightly-builds/${ARCHIVE_NAME}
+  git clone -b master --depth=1 https://github.com/jamoma/nightly-builds
+  mv ${ARCHIVE_NAME} nightly-builds/
+  cd nightly-builds/
+  git add -f ${ARCHIVE_NAME}
   git commit -m "Add built output"
-  git push https://${GH_USER}:${GH_PASSWORD}@github.com/${TRAVIS_REPO_SLUG} gh-pages
+  git push
 fi
 
 return 0

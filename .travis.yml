@@ -5,7 +5,7 @@ env:
   - ARCH=rpi
   global:
   - secure: JGkLKSaVlkQ/D4hHoXEmbHrSzhGus60NLZ+jscvqS0tuwxwot1EMsi++YLaNNZjNSojXHmWd1A3Hu1276E/bKJ6XIXnDEIRmuuOfWfB5BGCIXAVzigC7cpltRwZyhqgRqRCbOqUMY7/sGnlT5zGOMQUm/F8UPb6DAnY+ZBZrr2s=
-  - secure: ancOGXIF6jHoV/fX94ox9ASy9Q4f3OHSB2YojQoekHjwrWeCMfgdED1pM/OJyWQGbODmoPZHVOggjiHGuoOz8gJh+xVKz5t6n32hsD9aCsBwYt86/pOANTK5zISy1QUDmC9ojuCQsgi7N4/9M/621ZsIwpqGsTP5uoqHsOvAvII=
+  - secure: CT+JN/eRbQuMmiQH/wfwcMXSDNDkwGGBOjRlocUYCh1mvrOF6v/+gQ6cq+QK7mzci7XUlWbVCurA94c8EGvVYDnOvzCxmmS5f3zU4AVd19A2DxqiHfSqqYIC3NTm4GNiy9t9lgm/hVyj3wsBmQS9p1bLAcguYN99GMepXKiioEU=
   os:
   - linux
   - osx

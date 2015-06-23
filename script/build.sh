@@ -11,7 +11,7 @@ CMAKE_OPTIONS="-DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLD
 
 if [ "x$ARCH" = "xrpi" ]; then
   CMAKE_OPTIONS+=" -DCMAKE_TOOLCHAIN_FILE=../Shared/CMake/toolchains/arm-linux-gnueabihf.cmake -DCROSS_COMPILER_PATH=${PWD}/../tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/"
-else if [ "x$ARCH" = "xmingw-64" ]; then
+elif [ "x$ARCH" = "xmingw-64" ]; then
   CMAKE_OPTIONS+="  -DCMAKE_TOOLCHAIN_FILE=../PureData/Shared/CMake/toolchains/mingw-64.cmake -DJAMOMA_CORE_SRC_PATH=`realpath ${PWD}/../JamomaCore`"
 fi
 

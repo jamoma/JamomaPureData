@@ -5,7 +5,7 @@ case "$TRAVIS_OS_NAME" in
     linux)
   		if [ "x$ARCH" = "xrpi" ]; then
   			git clone -b Jamoma https://github.com/avilleret/tools.git
-      else if [ "x$ARCH" = "xmingw-64" ]; then
+      elif [ "x$ARCH" = "xmingw-64" ]; then
         sudo apt-get install mingw-w64
       else
         sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test

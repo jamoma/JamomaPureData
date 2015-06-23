@@ -10,13 +10,13 @@ fi
 CMAKE_OPTIONS="-DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package"
 
 if [ "x$ARCH" = "xrpi" ]; then
-  CMAKE_OPTIONS+=" -DCMAKE_TOOLCHAIN_FILE=../Shared/CMake/toolchains/arm-linux-gnueabihf.cmake -DCROSS_COMPILER_PATH=${PWD}/../tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/"
+  CMAKE_OPTIONS="${CMAKE_OPTIONS} -DCMAKE_TOOLCHAIN_FILE=../Shared/CMake/toolchains/arm-linux-gnueabihf.cmake -DCROSS_COMPILER_PATH=${PWD}/../tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/"
 elif [ "x$ARCH" = "xmingw-64" ]; then
-  CMAKE_OPTIONS+="  -DCMAKE_TOOLCHAIN_FILE=../PureData/Shared/CMake/toolchains/mingw-64.cmake -DJAMOMA_CORE_SRC_PATH=`realpath ${PWD}/../JamomaCore`"
+  CMAKE_OPTIONS="${CMAKE_OPTIONS}  -DCMAKE_TOOLCHAIN_FILE=../PureData/Shared/CMake/toolchains/mingw-64.cmake -DJAMOMA_CORE_SRC_PATH=`readlink -f ${PWD}/../JamomaCore`"
 fi
 
 if [ "x$ARCH" = "xosx" ]; then
-  CMAKE_OPTIONS+=" -DFAT_BINARY=ON"
+  CMAKE_OPTIONS="${CMAKE_OPTIONS} -DFAT_BINARY=ON"
 fi
 
 mkdir -p build

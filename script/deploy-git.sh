@@ -11,7 +11,6 @@ if [ "x${TRAVIS_BRANCH}" = "xfeature/travis-build" ]; then
 
   cd ${TRAVIS_BUILD_DIR}
 
-  error "setting up user-identity"
   git config user.email "travis-ci@jamoma.org"
   git config user.name "Travis CI"
 

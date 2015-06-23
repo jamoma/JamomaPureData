@@ -74,6 +74,11 @@ target_link_libraries(${PROJECT_NAME} Foundation)
 target_link_libraries(${PROJECT_NAME} Modular)
 target_link_libraries(${PROJECT_NAME} CicmWrapper)
 
+if (WIN32)
+	link_directories(${CMAKE_CURRENT_SOURCE_DIR}/source/CicmWrapper/Sources/ecommon/)
+	target_link_libraries(${PROJECT_NAME} pd)
+endif()
+
 install(TARGETS ${PROJECT_NAME}
     DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma/externals"
     COMPONENT JamomaPd)

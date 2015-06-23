@@ -1,6 +1,6 @@
-
 #
 # CMake defines to cross-compile to ARM/Linux on BCM2708 using glibc.
+# It's used on the well known Raspberry Pi platform.
 #
 
 SET(CMAKE_SYSTEM_NAME Linux)
@@ -15,7 +15,7 @@ SET(CMAKE_FIND_ROOT_PATH ${CROSS_COMPILER_PATH}/arm-linux-gnueabihf/libc)
 
 # search for programs in the build host directories
 SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
- 
+
 # for libraries and headers in the target directories
 SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)

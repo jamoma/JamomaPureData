@@ -8,8 +8,11 @@ if [ "x${COVERITY_SCAN_BRANCH}" = "x1" ]; then
 fi
 
 CMAKE_OPTIONS="-DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package"
+
 if [ "x$ARCH" = "xrpi" ]; then
   CMAKE_OPTIONS+=" -DCMAKE_TOOLCHAIN_FILE=../Shared/CMake/toolchains/arm-linux-gnueabihf.cmake -DCROSS_COMPILER_PATH=${PWD}/../tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/"
+else if [ "x$ARCH" = "xmingw-64" ]; then
+  CMAKE_OPTIONS+="  -DCMAKE_TOOLCHAIN_FILE=../PureData/Shared/CMake/toolchains/mingw-64.cmake -DJAMOMA_CORE_SRC_PATH=`realpath ${PWD}/../JamomaCore`"
 fi
 
 if [ "x$ARCH" = "xosx" ]; then

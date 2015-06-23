@@ -15,7 +15,9 @@ if [ "x${TRAVIS_BRANCH}" = "xfeature/travis-build" ]; then
 
   cd ${TRAVIS_BUILD_DIR}
 
-  git config credential.helper "store --file=.git/credentials"
+  git config --global user.email "travis-ci@jamoma.org"
+  git config --global user.name "Travis CI"
+  git config --global credential.helper "store --file=.git/credentials"
   echo "https://${GH_TOKEN}:@github.com" > .git/credentials
 
   git clone -b master --depth=1 https://github.com/jamoma/nightly-builds

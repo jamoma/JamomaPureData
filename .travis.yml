@@ -3,7 +3,7 @@ env:
   matrix:
   - ARCH=
   - ARCH=rpi
-  - ARCH=mingw-64
+  - ARCH=mingw-32
   global:
   - secure: JGkLKSaVlkQ/D4hHoXEmbHrSzhGus60NLZ+jscvqS0tuwxwot1EMsi++YLaNNZjNSojXHmWd1A3Hu1276E/bKJ6XIXnDEIRmuuOfWfB5BGCIXAVzigC7cpltRwZyhqgRqRCbOqUMY7/sGnlT5zGOMQUm/F8UPb6DAnY+ZBZrr2s=
   - secure: ancOGXIF6jHoV/fX94ox9ASy9Q4f3OHSB2YojQoekHjwrWeCMfgdED1pM/OJyWQGbODmoPZHVOggjiHGuoOz8gJh+xVKz5t6n32hsD9aCsBwYt86/pOANTK5zISy1QUDmC9ojuCQsgi7N4/9M/621ZsIwpqGsTP5uoqHsOvAvII=
@@ -16,10 +16,10 @@ matrix:
   - os: osx
     env: ARCH=rpi
   - os: osx
-    env: ARCH=mingw-64
+    env: ARCH=mingw-32
   allow_failures:
    - os: linux
-     env: ARCH=mingw-64
+     env: ARCH=mingw-32
 
 before_install:
 - "./script/depinstall.sh"

@@ -11,7 +11,7 @@ case "$TRAVIS_OS_NAME" in
   		if [ "x$ARCH" = "xrpi" ]; then
   			git clone -b Jamoma https://github.com/avilleret/tools.git
       elif [ "x$ARCH" = "xmingw-64" ]; then
-        sudo apt-get install gcc-mingw-w64 g++-mingw-w64
+        sudo apt-get install gcc-mingw-w64* g++-mingw-w64* mingw-w64
       fi
 
   		if [ "x$(uname -m)" = "xi386" ]; then

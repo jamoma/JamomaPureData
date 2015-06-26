@@ -10,9 +10,22 @@ case "$TRAVIS_OS_NAME" in
 
   		if [ "x$ARCH" = "xrpi" ]; then
   			git clone -b Jamoma https://github.com/avilleret/tools.git
-      elif [ "x$ARCH" = "xmingw-64" ]; then
-        sudo apt-get install gcc-mingw-w64* g++-mingw-w64* mingw-w64
-        sudo apt-get install mingw32
+      elif [ "x$ARCH" = "xmingw-w64" ]; then
+        # mingw-w64 shipped with Ubuntu 15.04 is buggy
+        # download the latest release for 15.10 with our Dolorean !
+
+        wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-common_4.0.2-4_all.deb
+        sudo dpkg -i mingw-w64-common_4.0.2-4_all.deb
+
+        wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-i686-dev_4.0.2-4_all.deb
+        sudo dpkg -i mingw-w64-i686-dev_4.0.2-4_all.deb
+
+        wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-tools_4.0.2-4_amd64.deb
+        sudo dpkg -i mingw-w64-tools_4.0.2-4_amd64.deb
+
+        # mingw-w64 are not available on 12.04 server (which runs on Travis-CI VM)
+        # sudo apt-get install gcc-mingw-w64* g++-mingw-w64* mingw-w64
+        # sudo apt-get install mingw32
       fi
 
   		if [ "x$(uname -m)" = "xi386" ]; then

@@ -18,6 +18,7 @@ include(${PROJECT_SOURCE_DIR}/Shared/CMake/JamomaUtilFunctions.cmake NO_POLICY_S
 
 if(NOT JAMOMA_UMBRELLA)
     option(FAT_BINARY "Build a fat binary (32bit and 64bit)" OFF)
+    include(${PROJECT_SOURCE_DIR}/Shared/CMake/JamomaPlatformSpecific.cmake NO_POLICY_SCOPE)
     option(BUILD_JAMOMAPD "Build Jamoma for PureData package" OFF)
     set(JAMOMA_CORE_SRC_PATH "${PROJECT_SOURCE_DIR}/JamomaCore" CACHE STRING "Path to JamomaCore source folder")
 

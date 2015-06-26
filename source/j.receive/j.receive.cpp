@@ -275,7 +275,7 @@ void receive_subscribe(TTPtr self)
 	
 	x->index++; // the index member is usefull to count how many time the external tries to bind
 	if (x->index > 100) {
-		object_error((t_object*)x, "tries to bind too many times on %s", x->address.c_str());
+		pd_error((t_object*)x, "tries to bind too many times on %s", x->address.c_str());
 		object_obex_dumpout((t_object*)x, gensym("error"), 0, NULL);
 		return;
 	}

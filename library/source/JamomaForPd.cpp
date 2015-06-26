@@ -333,13 +333,13 @@ method object_getmethod(void* x, t_symbol* s)
 
 void* object_method_typed(void* x, t_symbol* method, t_symbol* s, long argc, t_atom* argv)
 {
-    rmethod nrmethod = (rmethod)zgetfn((t_pd *)x, method);
+    t_ret_method nrmethod = (t_ret_method)zgetfn((t_pd *)x, method);
 	return nrmethod(x, s, argc, argv);
 }
 
 void* object_method(void *x, t_symbol *s)
 {
-    rmethod nrmethod = (rmethod)zgetfn((t_pd *)x, s);
+    t_ret_method nrmethod = (t_ret_method)zgetfn((t_pd *)x, s);
 	return nrmethod(x);
 }
 

@@ -268,7 +268,7 @@ void model_preset_default(TTPtr self)
 		else if (x->patcherContext == kTTSym_view)
 			jamoma_edit_filename(*ViewPresetFormat, x->patcherClass, &textfile);
 		else
-			return object_error((t_object*)x, "preset_default : can't get the context of the patcher");
+			return pd_error((t_object*)x, "preset_default : can't get the context of the patcher");
 		
 		if (locatefile_extended((char*)textfile->s_name, &outvol, &outtype, &filetype, 1)) {
 			//object_warn((t_object*)x, "preset_default : can't find %s file in the Max search path", textfile.data());
@@ -298,7 +298,7 @@ void model_preset_default(TTPtr self)
 		*/
 	}
 	else
-		object_error((t_object*)x, "preset_default : can't get the class of the patcher");
+		pd_error((t_object*)x, "preset_default : can't get the class of the patcher");
 }
 
 void model_preset_filechanged(TTPtr self, char *filename, short path)
@@ -370,7 +370,7 @@ void model_preset_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 				name = v[atom_getlong(argv)-1];
 			
 			else {
-                object_error((t_object*)x, "%ld doesn't exist", atom_getlong(argv));
+                pd_error((t_object*)x, "%ld doesn't exist", atom_getlong(argv));
 				return;
 			}
 		}
@@ -393,7 +393,7 @@ void model_preset_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 					EXTRA->presetName = name;
 				}
 				else {
-                    object_error((t_object*)x, "%s doesn't exist", atom_getsym(argv)->s_name);
+                    pd_error((t_object*)x, "%s doesn't exist", atom_getsym(argv)->s_name);
 					return;
 				}
 			}

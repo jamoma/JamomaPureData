@@ -124,7 +124,7 @@ void WrappedApplicationClass_new(TTPtr self, long argc, t_atom *argv)
                 TTModularApplicationManager->sendMessage("ProtocolInstantiate", protocolName, out);
             } catch ( TTException & e )
             {
-                object_error((t_object*)x, "Can't instantiate protocole %s. Reason : %s", protocolName.c_str(),e.getReason());
+                pd_error((t_object*)x, "Can't instantiate protocole %s. Reason : %s", protocolName.c_str(),e.getReason());
                 return;
             }
 
@@ -222,13 +222,13 @@ void modular_protocol_setup(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
                 // select this application
                 x->wrappedObject.get(kTTSym_name, applicationName);
                 if (aProtocol.send("ApplicationSelect", applicationName, out))
-                    object_error((t_object*)x, "%s is not registered to the %s protocol", applicationName.c_str(), EXTRA->protocolName.c_str());
+                    pd_error((t_object*)x, "%s is not registered to the %s protocol", applicationName.c_str(), EXTRA->protocolName.c_str());
                 
                 // set parameters
                 parameterName = TTSymbol(atom_getsym(argv)->s_name);
                 jamoma_ttvalue_from_Atom(parameterValue, _sym_nothing, argc-1, argv+1);
                 if (aProtocol.set(parameterName, parameterValue))
-                    object_error((t_object*)x, "%s is not a parameter of %s protocol", parameterName.c_str(), EXTRA->protocolName.c_str());
+                    pd_error((t_object*)x, "%s is not a parameter of %s protocol", parameterName.c_str(), EXTRA->protocolName.c_str());
                 
                 // run protocol
                 aProtocol.send("Run");
@@ -239,7 +239,7 @@ void modular_protocol_setup(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
                 // select this application
                 x->wrappedObject.get(kTTSym_name, applicationName);
                 if (aProtocol.send("ApplicationSelect", applicationName, out))
-                    object_error((t_object*)x, "%s is not registered to the %s protocol", applicationName.c_str(), EXTRA->protocolName.c_str());
+                    pd_error((t_object*)x, "%s is not registered to the %s protocol", applicationName.c_str(), EXTRA->protocolName.c_str());
                 
                 aProtocol.get("parameterNames", out);
                 for (TTElementIter it = out.begin() ; it != out.end() ; it++) {
@@ -255,7 +255,7 @@ void modular_protocol_setup(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
             }
         }
 		else
-			object_error((t_object*)x, "doesn't handle any application");
+			pd_error((t_object*)x, "doesn't handle any application");
 	}
 }
 

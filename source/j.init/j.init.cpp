@@ -186,7 +186,7 @@ void init_subscribe(t_init *x)
 		}
 	}
 	else
-		object_error((t_object*)x, "can't bind because %s is not a relative address", x->address.c_str());
+		pd_error((t_object*)x, "can't bind because %s is not a relative address", x->address.c_str());
 }
 
 void init_return_address(t_init *x, t_symbol *msg, long argc, t_atom *argv)

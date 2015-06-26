@@ -112,7 +112,7 @@ void WrappedDataArrayClass_new(TTPtr self, long argc, t_atom *argv)
 			relativeAddress = atom_getsym(argv);
 	
 	if (relativeAddress == _sym_nothing) {
-        object_error((t_object*)x, "j.parameter|j.message need a name as first argument" );
+        pd_error((t_object*)x, "j.parameter|j.message need a name as first argument" );
 		x->extra = NULL;
 		return;
 	}
@@ -162,7 +162,7 @@ void WrappedDataArrayClass_new(TTPtr self, long argc, t_atom *argv)
     if (x->arrayAddress.getType() != kAddressRelative)
     {
         x->arrayAddress = kTTAdrsEmpty;
-        object_error((t_object*)x, "can't register because %s is not a relative address", relativeAddress->s_name);
+        pd_error((t_object*)x, "can't register because %s is not a relative address", relativeAddress->s_name);
     }
     
     t_atom number;
@@ -198,7 +198,7 @@ void data_array_build(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
     
     if (newSize > MAX_ARRAY_SIZE)
     {
-        object_error((t_object*)x, "the size is greater than the maximum array size (%d)", MAX_ARRAY_SIZE);
+        pd_error((t_object*)x, "the size is greater than the maximum array size (%d)", MAX_ARRAY_SIZE);
         return;
     }
     
@@ -254,7 +254,7 @@ void data_array_build(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
             cache.clear();
             
             if (anObject.instance()->getReferenceCount() > 1)
-                object_error((t_object*)x, "there are still unreleased reference of a %s wrappedObject(refcount = %d)", instanceAddress->s_name, anObject.instance()->getReferenceCount() - 1);
+                pd_error((t_object*)x, "there are still unreleased reference of a %s wrappedObject(refcount = %d)", instanceAddress->s_name, anObject.instance()->getReferenceCount() - 1);
         }
     }
     
@@ -351,7 +351,7 @@ void data_address(TTPtr self, t_symbol *address)
                 if (x->arrayAddress.getType() != kAddressRelative)
                 {
                     x->arrayAddress = kTTAdrsEmpty;
-                    object_error((t_object*)x, "can't register because %s is not a relative address", address->s_name);
+                    pd_error((t_object*)x, "can't register because %s is not a relative address", address->s_name);
                 }
                 
                 t_atom number;
@@ -408,7 +408,7 @@ void data_address(TTPtr self, t_symbol *address)
         return;
 	}
 	
-    object_error((t_object*)x, "can't change to %s address. Please defer low", address->s_name);
+    pd_error((t_object*)x, "can't change to %s address. Please defer low", address->s_name);
 }
 
 // Method for Assistance Messages
@@ -447,7 +447,7 @@ void data_bang(TTPtr self)
 		data_list(self, _sym_bang, 0, NULL);
 	}
 	else
-		object_error((t_object*)x, "bang : the array is empty");
+		pd_error((t_object*)x, "bang : the array is empty");
 }
 
 void data_float(TTPtr self, t_float value)
@@ -460,7 +460,7 @@ void data_float(TTPtr self, t_float value)
 		data_list(self, _sym_float, 1, &a);
 	}
 	else
-		object_error((t_object*)x, "float : the array is empty");
+		pd_error((t_object*)x, "float : the array is empty");
 }
 
 void data_list(TTPtr self, t_symbol *msg, long argc, const t_atom *argv)
@@ -492,7 +492,7 @@ void data_list(TTPtr self, t_symbol *msg, long argc, const t_atom *argv)
 		
 	}
 	else
-		object_error((t_object*)x, "list : the array is empty");
+		pd_error((t_object*)x, "list : the array is empty");
 }
 
 void WrappedDataArrayClass_anything(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
@@ -533,11 +533,11 @@ void data_array(TTPtr self, t_symbol *msg, long argc, const t_atom *argv)
             x->cursor = memoCursor;
         }
         else
-            object_error((t_object*)x, "array : the array message size have to be a multiple of the array size");
+            pd_error((t_object*)x, "array : the array message size have to be a multiple of the array size");
 		
 	}
 	else
-		object_error((t_object*)x, "array : the array is empty");
+		pd_error((t_object*)x, "array : the array is empty");
 }
 
 void data_inc(TTPtr self, t_symbol *msg, long argc, const t_atom *argv)

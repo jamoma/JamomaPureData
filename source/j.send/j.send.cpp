@@ -320,7 +320,7 @@ void send_subscribe(TTPtr self)
 	
 	x->argc++; // the index member is usefull to count how many time the external tries to bind
 	if (x->argc > 100) {
-		object_error((t_object*)x, "j.send : tries to bind too many times on %s", x->address.c_str());
+		pd_error((t_object*)x, "j.send : tries to bind too many times on %s", x->address.c_str());
 		outlet_anything((t_outlet*)x->dumpOut, gensym("error"), 0, NULL);
 		return;
 	}

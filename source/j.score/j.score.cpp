@@ -486,7 +486,7 @@ void score_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
             
             if (!found)
             {
-                object_error((t_object*)x, "%s event does'nt exist", atom_getsym(argv)->s_name);
+                pd_error((t_object*)x, "%s event does'nt exist", atom_getsym(argv)->s_name);
                 return;
             }
 		}

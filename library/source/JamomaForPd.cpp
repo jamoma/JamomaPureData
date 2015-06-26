@@ -15,7 +15,11 @@
  */
 
 #include "JamomaForPd.h"
-#include <dlfcn.h>
+#if defined(TT_PLATFORM_WIN)
+	#include <ShlObj.h>
+#else
+	#include <dlfcn.h>
+#endif
 #include <map>
 
 // statics and globals
@@ -63,10 +67,32 @@ void jamoma_init(void)
         TTErr       err;
         
         // Init the Modular library
-        Dl_info		info;
+
         char		mainBundleStr[4096];
         mainBundleStr[0]='\0';
 
+#if defined(TT_PLATFORM_WIN)
+		TTString	fullpath{};
+		char		temppath[4096];
+		LONG		lRes;
+
+		LPCSTR moduleName = "JamomaFoundation.dll";
+		HMODULE	hmodule = GetModuleHandle(moduleName);
+		// get the path
+		GetModuleFileName(hmodule, (LPSTR)temppath, 4096);
+
+		if (!FAILED(hmodule) && temppath[0])
+		{
+			fullpath = temppath;
+
+			// get support folder path
+			fullpath = fullpath.substr(0, fullpath.length() - (strlen(moduleName) + 1));
+			lRes = SHCreateDirectory(NULL, (LPCWSTR)fullpath.c_str());
+		}
+
+		strncpy(mainBundleStr, fullpath.c_str(), 4095);
+#else
+		Dl_info		info;
         // Use the path of JamomaFoundation
         if (dladdr((const void*)jamoma_init, &info))
         {
@@ -78,7 +104,8 @@ void jamoma_init(void)
                 *c = 0; // chop the filename off of the path
             strcat(mainBundleStr,"/../support");
         }
-
+#endif
+		TTLogError("support folder : %s \n", mainBundleStr);
         TTModularInit(mainBundleStr);
 
         // prepare a symbol for Jamoma
@@ -306,13 +333,13 @@ method object_getmethod(void* x, t_symbol* s)
 
 void* object_method_typed(void* x, t_symbol* method, t_symbol* s, long argc, t_atom* argv)
 {
-    rmethod nrmethod = (rmethod)zgetfn((t_pd *)x, method);
+    t_ret_method nrmethod = (t_ret_method)zgetfn((t_pd *)x, method);
 	return nrmethod(x, s, argc, argv);
 }
 
 void* object_method(void *x, t_symbol *s)
 {
-    rmethod nrmethod = (rmethod)zgetfn((t_pd *)x, s);
+    t_ret_method nrmethod = (t_ret_method)zgetfn((t_pd *)x, s);
 	return nrmethod(x);
 }
 

@@ -136,7 +136,7 @@ TTErr jamoma_subscriber_create(t_eobj *x, TTObject& anObject, TTAddress relative
         pd_error(x, "Jamoma cannot registers %s", relativeAddress.c_str());
 	else
 		// don't display this message because the objects can try many times before to binds
-		; //object_error(x, "Jamoma cannot binds %s", relativeAddress->s_name);
+		; //pd_error(x, "Jamoma cannot binds %s", relativeAddress->s_name);
 	
 	return kTTErrGeneric;
 }
@@ -1310,7 +1310,7 @@ void jamoma_patcher_get_class(t_canvas *patcher, TTSymbol context, TTSymbol& ret
 		// parse jmod.
 		if (!ttRegexForJmod->parse(begin, end)) {
 			
-			object_error(patcher, "jmod. prefix in %s is a 0.5 convention. Please use .module suffix instead", patcherName->s_name);
+			pd_error(patcher, "jmod. prefix in %s is a 0.5 convention. Please use .module suffix instead", patcherName->s_name);
 			
 			s_toParse = TTString(ttRegexForJmod->end(), end);
 			begin = s_toParse.begin();
@@ -1468,7 +1468,7 @@ void jamoma_patcher_share_info(t_canvas *patcher, t_canvas **returnedPatcher, TT
 		_sym_j_context = obj->g_pd->c_name;
 		if (_sym_j_context == _sym_j_model || _sym_j_context == _sym_j_view) {
 
-            rmethod _method = (rmethod)zgetfn(&obj->g_pd,_sym_share_patcher_info);
+            t_ret_method _method = (t_ret_method)zgetfn(&obj->g_pd,_sym_share_patcher_info);
 			if ( _method )
 				_method(&obj->g_pd, &patcherInfo);
 
@@ -1593,7 +1593,7 @@ void jamoma_patcher_share_node(t_canvas *patcher, TTNodePtr *patcherNode)
 		_sym_j_context = obj->g_pd->c_name;
 
 		if (_sym_j_context == _sym_j_model || _sym_j_context == _sym_j_view) {
-            rmethod _method = (rmethod)zgetfn(&obj->g_pd,_sym_share_patcher_info);
+            t_ret_method _method = (t_ret_method)zgetfn(&obj->g_pd,_sym_share_patcher_info);
 			if ( _method )
 				_method(&obj->g_pd, patcherNode);
 			if (*patcherNode)
@@ -1723,7 +1723,7 @@ TTErr jamoma_patcher_get_info(t_canvas *obj, t_canvas **returnedPatcher, TTSymbo
 	}
 		// if no patcher : stop the subscription process
 	else {
-		object_error(obj, "Can't get the patcher. Subscription failed");
+		pd_error(obj, "Can't get the patcher. Subscription failed");
 		return kTTErrGeneric;
 	}
 
@@ -1898,7 +1898,7 @@ TTSymbol jamoma_file_read(t_object *x, long argc, t_atom *argv, t_fourcc filetyp
 //                strcpy(filepath, userpath->s_name);    // must copy symbol before calling locatefile_extended
 //                if (locatefile_extended(filepath, &path, &outtype, &filetype, 1)) {     // Returns 0 if successful
                     
-//                    object_error(x, "%s : not found", filepath);
+//                    pd_error(x, "%s : not found", filepath);
 //                    return result;
 //                }
 			}

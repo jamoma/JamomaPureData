@@ -10,6 +10,11 @@ case "$TRAVIS_OS_NAME" in
 
   		if [ "x$ARCH" = "xrpi" ]; then
   			git clone -b Jamoma https://github.com/avilleret/tools.git
+
+        wget http://msp.ucsd.edu/Software/pd-0.46-6.rpi.tar.gz
+        tar xvf pd-0.46-6.rpi.tar.gz
+        mv pd-0.46-6 pd
+
       elif [ "x$ARCH" = "xmingw-w64" ]; then
         # mingw-w64 shipped with Ubuntu 15.04 is buggy
         # download the latest release for 15.10 with our Dolorean !
@@ -23,6 +28,9 @@ case "$TRAVIS_OS_NAME" in
         wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-tools_4.0.2-4_amd64.deb
         sudo dpkg -i mingw-w64-tools_4.0.2-4_amd64.deb
 
+        wget http://msp.ucsd.edu/Software/pd-0.46-6.msw.zip
+        unzip pd-*.zip
+
         # mingw-w64 are not available on 12.04 server (which runs on Travis-CI VM)
         # sudo apt-get install gcc-mingw-w64* g++-mingw-w64* mingw-w64
         # sudo apt-get install mingw32
@@ -31,16 +39,27 @@ case "$TRAVIS_OS_NAME" in
   		if [ "x$(uname -m)" = "xi386" ]; then
   			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz
   			tar -xzf cmake-3.2.2-Linux-i386.tar.gz -C /tmp/cmake --strip-components=1
+
+        wget http://msp.ucsd.edu/Software/pd-0.46-6.src.tar.gz
+        tar xvf pd-0.46-6.src.tar.gz
+        mv pd-0.46-6 pd
   		else
   			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
   			tar -xzf cmake-3.2.2-Linux-x86_64.tar.gz -C /tmp/cmake --strip-components=1
+
+        wget http://msp.ucsd.edu/Software/pd-0.46-6.src.tar.gz
+        tar xvf pd-0.46-6.src.tar.gz
+        mv pd-0.46-6 pd
+
   		fi
 	 ;;
 	osx)
-		if [ "x$ARCH" != "xrpi" ]; then
 			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Darwin-x86_64.tar.gz
 			tar -xf cmake-3.2.2-Darwin-x86_64.tar.gz -C /tmp/cmake --strip-components=1
 			ln -s /tmp/cmake/CMake.app/Contents/bin /tmp/cmake/bin
-		fi
+
+      wget http://msp.ucsd.edu/Software/pd-0.46-6.mac.tar.gz
+      tar xvf pd-0.46-6.mac.tar.gz
+      ln -s Pd-0.46-6.app/Contents/Resources/ pd
 	;;
 esac

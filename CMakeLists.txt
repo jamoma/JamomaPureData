@@ -41,7 +41,6 @@ endif()
 
 find_package(Pd REQUIRED)
 include_directories(${PD_INCLUDE_DIRS})
-set(LIBS ${LIBS} ${PD_LIBRARY})
 
 add_subdirectory(library)
 add_subdirectory(source)

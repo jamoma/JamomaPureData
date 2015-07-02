@@ -75,8 +75,7 @@ target_link_libraries(${PROJECT_NAME} Modular)
 target_link_libraries(${PROJECT_NAME} CicmWrapper)
 
 if (WIN32)
-	link_directories(${CMAKE_CURRENT_SOURCE_DIR}/source/CicmWrapper/Sources/ecommon/)
-	target_link_libraries(${PROJECT_NAME} pd)
+	target_link_libraries(${PROJECT_NAME} ${PD_LIBRARY})
 endif()
 
 install(TARGETS ${PROJECT_NAME}

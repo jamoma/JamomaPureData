@@ -13,7 +13,7 @@ SET(CMAKE_RC_COMPILER i686-w64-mingw32-windres)
 # here is the target environment located
 #SET(CMAKE_FIND_ROOT_PATH  /usr/i586-mingw32msvc /home/alex/mingw-install )
 SET(CMAKE_FIND_ROOT_PATH /usr/i686-w64-mingw32/
-                         ${JAMOMA_CORE_SRC_PATH}/Foundation/library/libxml2/win32
+                         ${JAMOMA_CORE_SRC_PATH}/Foundation/library/libxml2/win32/libmingw-w64
                          ${JAMOMA_CORE_SRC_PATH}/Foundation/library/libiconv2 )
 
 # adjust the default behaviour of the FIND_XXX() commands:

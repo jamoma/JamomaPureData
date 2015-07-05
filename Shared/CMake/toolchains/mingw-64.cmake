@@ -26,3 +26,7 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 add_definitions(-DTT_PLATFORM_WIN)
 add_definitions(-DTTSTATIC)
 
+install(FILES /usr/lib/gcc/i686-w64-mingw32/4.9-posix/libstdc++-6.dll
+              /usr/lib/gcc/i686-w64-mingw32/4.9-posix/libgcc_s_sjlj-1.dll
+              ${JAMOMA_CORE_SRC_PATH}/Foundation/library/libxml2/win32/libmingw-w64/bin/libxml2-2.dll
+        DESTINATION ${JAMOMAPD_INSTALL_FOLDER}/Jamoma)

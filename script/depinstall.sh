@@ -19,11 +19,11 @@ case "$TRAVIS_OS_NAME" in
         # mingw-w64 shipped with Ubuntu 15.04 is buggy
         # download the latest release for 15.10 with our Dolorean !
 
-        wget https://launchpad.net/ubuntu/+archive/primary/+files/gcc-mingw-w64-i686_4.9.2-20ubuntu1%2B15.4_amd64.deb
-        sudo dpkg -i gcc-mingw-w64-i686_4.9.2-20ubuntu1+15.4_amd64.deb
+        # wget https://launchpad.net/ubuntu/+archive/primary/+files/gcc-mingw-w64-i686_4.9.2-20ubuntu1%2B15.4_amd64.deb
+        # sudo dpkg -i gcc-mingw-w64-i686_4.9.2-20ubuntu1+15.4_amd64.deb
 
-        wget https://launchpad.net/ubuntu/+archive/primary/+files/g%2B%2B-mingw-w64-i686_4.9.2-20ubuntu1+15.4_amd64.deb
-        sudo dpkg -i g++-mingw-w64-i686_4.9.2-20ubuntu1%2B15.4_amd64.deb
+        # wget https://launchpad.net/ubuntu/+archive/primary/+files/g%2B%2B-mingw-w64-i686_4.9.2-20ubuntu1+15.4_amd64.deb
+        # sudo dpkg -i g++-mingw-w64-i686_4.9.2-20ubuntu1%2B15.4_amd64.deb
 
         wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-common_4.0.2-4_all.deb
         sudo dpkg -i mingw-w64-common_4.0.2-4_all.deb
@@ -33,6 +33,12 @@ case "$TRAVIS_OS_NAME" in
 
         wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-tools_4.0.2-4_amd64.deb
         sudo dpkg -i mingw-w64-tools_4.0.2-4_amd64.deb
+
+        wget http://ftp.us.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-i686_4.9.2-21+15.4_amd64.deb
+        sudo dpkg -i gcc-mingw-w64-i686_4.9.2-21+15.4_amd64.deb
+
+        wget http://ftp.us.debian.org/debian/pool/main/g/gcc-mingw-w64/g++-mingw-w64-i686_4.9.2-21+15.4_amd64.deb
+        sudo dpkg -i g++-mingw-w64-i686_4.9.2-21+15.4_amd64.deb
 
         wget http://msp.ucsd.edu/Software/pd-0.46-6.msw.zip
         unzip pd-*.zip

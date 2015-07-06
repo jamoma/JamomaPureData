@@ -17,7 +17,12 @@ include(${PROJECT_SOURCE_DIR}/Shared/CMake/JamomaConfiguration.cmake NO_POLICY_S
 include(${PROJECT_SOURCE_DIR}/Shared/CMake/JamomaUtilFunctions.cmake NO_POLICY_SCOPE)
 
 if(NOT JAMOMA_UMBRELLA)
-    option(FAT_BINARY "Build a fat binary (32bit and 64bit)" OFF)
+
+    include(${PROJECT_SOURCE_DIR}/Shared/CMake/JamomaPlatformSpecific.cmake NO_POLICY_SCOPE)
+
+    if (APPLE)
+        option(FAT_BINARY "Build a fat binary (32bit and 64bit)" OFF)
+    endif(APPLE)
     option(BUILD_JAMOMAPD "Build Jamoma for PureData package" OFF)
     set(JAMOMA_CORE_SRC_PATH "${PROJECT_SOURCE_DIR}/JamomaCore" CACHE STRING "Path to JamomaCore source folder")
 
@@ -33,6 +38,9 @@ if(NOT JAMOMA_UMBRELLA)
 else()
     set(JAMOMA_CORE_SRC_PATH "${PROJECT_SOURCE_DIR}/../../Core/")
 endif()
+
+find_package(Pd REQUIRED)
+include_directories(${PD_INCLUDE_DIRS})
 
 add_subdirectory(library)
 add_subdirectory(source)

@@ -346,7 +346,7 @@ void remote_subscribe(TTPtr self)
 	
 	x->index++; // the index member is usefull to count how many time the external tries to bind
 	if (x->index > 100) {
-		object_error((t_object*)x, "couldn't bind to j.parameter %s", x->address.c_str());
+		pd_error((t_object*)x, "couldn't bind to j.parameter %s", x->address.c_str());
 		outlet_anything((t_outlet*)x->dumpOut, gensym("error"), 0, NULL);
 		return;
 	}

@@ -3,39 +3,35 @@ env:
   matrix:
   - ARCH=
   - ARCH=rpi
-  - ARCH=mingw-32
+  - ARCH=mingw-w64
   global:
-  - secure: JGkLKSaVlkQ/D4hHoXEmbHrSzhGus60NLZ+jscvqS0tuwxwot1EMsi++YLaNNZjNSojXHmWd1A3Hu1276E/bKJ6XIXnDEIRmuuOfWfB5BGCIXAVzigC7cpltRwZyhqgRqRCbOqUMY7/sGnlT5zGOMQUm/F8UPb6DAnY+ZBZrr2s=
-  - secure: CT+JN/eRbQuMmiQH/wfwcMXSDNDkwGGBOjRlocUYCh1mvrOF6v/+gQ6cq+QK7mzci7XUlWbVCurA94c8EGvVYDnOvzCxmmS5f3zU4AVd19A2DxqiHfSqqYIC3NTm4GNiy9t9lgm/hVyj3wsBmQS9p1bLAcguYN99GMepXKiioEU=
+  - secure: Ffn6fRJXZQIcKlCsxAeyZBEfmo03nQxa2ECV/M2iTDuOitXRvM/Qx+7gchCMwDd9rrifvgkiGL4owjqWqvH5reDbfjgR7zoF6Gi8HTn3IQ0eDRfU1CUZ24a/sjS9p29102K7r5t+N82DBJfrWYoVOJ/QjjCZaOBc9TSKLouyZA8=
+  - secure: XPyh+19YkFfixR13pRl7a+nO77a/ynD5xPdV/E6LRWcmRhsdcYZM1H8V73zUcNm+O9d5QibcUv1nsYs1s06KPjNzh6SmEgh6jsKIxb2SpLzI5brZKMgQreZI4l90/RePNH5icXsgh3l+Azq3l8hTVVNVrolpWHfZUDM7n6mczHw=
   os:
   - linux
   - osx
-
 matrix:
   exclude:
   - os: osx
     env: ARCH=rpi
   - os: osx
-    env: ARCH=mingw-32
+    env: ARCH=mingw-w64
   allow_failures:
-   - os: linux
-     env: ARCH=mingw-32
-
+  - os: linux
+    env: ARCH=mingw-w64
 before_install:
 - "./script/depinstall.sh"
-
 script:
 - "./script/build.sh"
-
 after_success:
 - "./script/deploy-git.sh"
-
 addons:
   coverity_scan:
     project:
       name: jamoma/JamomaPureData
       description: Build submitted via Travis CI
     notification_email: jamoma-devel@lists.sourceforge.net
-    build_command_prepend: "mkdir build && cd build && /tmp/cmake/bin/cmake .. -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF; make clean"
+    build_command_prepend: mkdir build && cd build && /tmp/cmake/bin/cmake .. -DBUILD_JAMOMAPD=ON
+      -DBUILD_JAMOMAMAX=OFF; make clean
     build_command: make -j 4
     branch_pattern: coverity_scan

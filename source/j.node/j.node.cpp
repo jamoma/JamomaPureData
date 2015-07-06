@@ -72,7 +72,7 @@ void WrappedNodeInfoClass_new(TTPtr self, long argc, t_atom* argv)
 			relativeAddress = atom_getsym(argv);
 	
 	if (relativeAddress == _sym_nothing) {
-		object_error((t_object*)x, "needs a name as first argument");
+		pd_error((t_object*)x, "needs a name as first argument");
 		return;
 	}
     
@@ -88,7 +88,7 @@ void WrappedNodeInfoClass_new(TTPtr self, long argc, t_atom* argv)
         relativeAddress == gensym("model")          ||
         relativeAddress == gensym("preset")         ) {
         
-        object_error((t_object*)x, "%s address is reserved by j.model", relativeAddress->s_name);
+        pd_error((t_object*)x, "%s address is reserved by j.model", relativeAddress->s_name);
 		return;
     }
     
@@ -115,10 +115,10 @@ void node_subscribe(TTPtr self, t_symbol* relativeAddress, long argc, t_atom* ar
 	if (TTAddress(relativeAddress->s_name).getType() == kAddressRelative) {
         
         if(!jamoma_subscriber_create((t_eobj*)x, x->wrappedObject, TTAddress(relativeAddress->s_name), x->subscriberObject, returnedAddress, &returnedNode, &returnedContextNode))
-            object_error((t_object*)x, "error when registering %s", relativeAddress->s_name);
+            pd_error((t_object*)x, "error when registering %s", relativeAddress->s_name);
     }
 	else
-		object_error((t_object*)x, "can't register because %s is not a relative address", relativeAddress->s_name);
+		pd_error((t_object*)x, "can't register because %s is not a relative address", relativeAddress->s_name);
 }
 
 // Method for Assistance Messages

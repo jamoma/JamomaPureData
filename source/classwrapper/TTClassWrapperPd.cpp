@@ -238,7 +238,7 @@ t_max_err wrappedClass_attrSet(TTPtr self, t_object* attr, long argc, t_atom* ar
 			else if (atom_gettype(argv+i) == A_SYM)
 				v[i] = TT(atom_getsym(argv+i)->s_name);
 			else
-				object_error((t_object*)x, "bad type for attribute setter");
+				pd_error((t_object*)x, "bad type for attribute setter");
 		}
 		x->wrappedObject->set(ttAttrName, v);
         return 0; // MAX_ERR_NONE;
@@ -271,7 +271,7 @@ void wrappedClass_anything(TTPtr self, t_symbol* s, long argc, t_atom* argv)
 			else if (atom_gettype(argv+i) == A_SYM)
 				v_in[i] = TT(atom_getsym(argv+i)->s_name);
 			else
-				object_error((t_object*)x, "bad type for message arg");
+				pd_error((t_object*)x, "bad type for message arg");
 		}
 	}
 	x->wrappedObject->send(ttName, v_in, v_out);

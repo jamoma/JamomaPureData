@@ -1,27 +1,47 @@
-# - Try to find Pd
-# Once done this will define
-#  PD_FOUND - System has Pd
-#  PD_INCLUDE_DIRS - The Pd include directories
-#  PD_LIBRARIES - The libraries needed to use Pd
-#  PD_DEFINITIONS - Compiler switches required for using Pd
+# find_path(PD_MAIN_PATH /pd/)
+message("PD_MAIN_PATH : ${PD_MAIN_PATH}")
 
-find_package(PkgConfig)
-pkg_check_modules(PC_PD pd)
-set(PD_DEFINITIONS ${PC_PD_CFLAGS_OTHER})
+if (PD_MAIN_PATH)
+	message("finding m_pd.h")
+	#find_path(PD_INCLUDE_DIRS m_pd.h "${PD_MAIN_PATH}/src/")
+	if(EXISTS "${PD_MAIN_PATH}/src/m_pd.h" )
+		set(PD_INCLUDE_DIRS "${PD_MAIN_PATH}/src/")
+	else()
+		set(PD_INCLUDE_DIRS PD_INCLUDE_DIRS-NOT_FOUND)
+	endif()
 
-find_path(PD_INCLUDE_DIR m_pd.h
-          HINTS ${PC_PD_INCLUDEDIR} ${PC_PD_INCLUDE_DIRS}
-          PATH_SUFFIXES pd )
+	#pd.lib is needed in Win32
+	#find_library(PD_LIBRARY NAMES pd.lib HINTS "${PD_MAIN_PATH}/bin/")
+	if (WIN32)
+		if(EXISTS "${PD_MAIN_PATH}/bin/pd.dll")
+			set(PD_LIBRARY "${PD_MAIN_PATH}/bin/pd.dll")
+		else()
+			set(PD_LIBRARY PD_LIBRARY-NOT_FOUND)
+		endif()
+	endif(WIN32)
+else(PD_MAIN_PATH)
+	if (LINUX)
+		find_path(PD_INCLUDE_DIRS m_pd.h HINTS "/usr/local/include/pd"  "/usr/include/pd" "/usr/include/pdextended")
+	elseif (APPLE)
+		find_path(PD_INCLUDE_DIRS m_pd.h HINTS "/Applications/Pd-*.app/Contents/Resources/include" "/Applications/Pd-extended.app/Contents/Resources/include")
+	endif (LINUX)
+endif()
 
-find_library(PD_LIBRARY NAMES pd
-             HINTS ${PC_PD_LIBDIR} ${PC_PD_LIBRARY_DIRS} )
+if (PD_INCLUDE_DIRS)
+	set(PD_FOUND TRUE)
+endif (PD_INCLUDE_DIRS)
 
-set(PD_LIBRARIES ${PD_LIBRARY} )
-set(PD_INCLUDE_DIRS ${PD_INCLUDE_DIR} )
+if (PD_FOUND)
+	if (NOT PD_FIND_QUIETLY)
+		message (STATUS "Found PD: ${PD_INCLUDE_DIRS}")
+		if (WIN32)
+			message (STATUS "Found PD lib: ${PD_LIBRARY}")
+		endif (WIN32)
+	endif (NOT PD_FIND_QUIETLY)
+else (PD_FOUND)
+	if (PD_FIND_REQUIRED)
+		message (FATAL_ERROR "Could not find PD")
+	endif (PD_FIND_REQUIRED)
+endif (PD_FOUND)
 
-include(FindPackageHandleStandardArgs)
-# handle the QUIETLY and REQUIRED arguments and set PD_FOUND to TRUE
-# if all listed variables are TRUE
-find_package_handle_standard_args(Pd  DEFAULT_MSG PD_INCLUDE_DIR)
-
-mark_as_advanced(PD_INCLUDE_DIR)
+mark_as_advanced(PD_INCLUDE_DIRS)

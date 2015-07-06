@@ -129,7 +129,7 @@ void WrappedCueManagerClass_new(TTPtr self, long argc, t_atom *argv)
 			x->wrappedObject.set(kTTSym_namespace, TTSymbol(name->s_name));
 		}
 		else
-			object_error((t_object*)x, "argument not expected");
+			pd_error((t_object*)x, "argument not expected");
 	}
 	
 	// Make two outlets
@@ -301,10 +301,10 @@ void cue_get(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 						outlet_anything((t_outlet*)x->dumpOut, atom_getsym(argv), ac, av);
                     }
                     else
-                        object_error((t_object*)x, "%s attribute doesn't exist", atom_getsym(argv)->s_name);
+                        pd_error((t_object*)x, "%s attribute doesn't exist", atom_getsym(argv)->s_name);
                 }
                 else
-                    object_error((t_object*)x, "%s cue doesn't exist", atom_getsym(argv+1)->s_name);
+                    pd_error((t_object*)x, "%s cue doesn't exist", atom_getsym(argv+1)->s_name);
             }
         }
     }
@@ -340,10 +340,10 @@ void cue_set(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
                     jamoma_ttvalue_from_Atom(v, _sym_nothing, argc-2, argv+2);
                     
                     if (cue.set(attribute, v))
-                        object_error((t_object*)x, "%s attribute doesn't exist", atom_getsym(argv)->s_name);
+                        pd_error((t_object*)x, "%s attribute doesn't exist", atom_getsym(argv)->s_name);
                 }
                 else
-                    object_error((t_object*)x, "%s cue doesn't exist", atom_getsym(argv+1)->s_name);
+                    pd_error((t_object*)x, "%s cue doesn't exist", atom_getsym(argv+1)->s_name);
             }
         }
     }
@@ -566,7 +566,7 @@ void cue_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 				v.get(index-1, name);
 			else
             {
-                object_error((t_object*)x, "%ld doesn't exist", atom_getlong(argv));
+                pd_error((t_object*)x, "%ld doesn't exist", atom_getlong(argv));
 				return;
 			}
 		}
@@ -590,7 +590,7 @@ void cue_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 				}
 				else
                 {
-                    object_error((t_object*)x, "%s doesn't exist", atom_getsym(argv)->s_name);
+                    pd_error((t_object*)x, "%s doesn't exist", atom_getsym(argv)->s_name);
 					return;
 				}
 			}

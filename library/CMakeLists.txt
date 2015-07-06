@@ -74,6 +74,10 @@ target_link_libraries(${PROJECT_NAME} Foundation)
 target_link_libraries(${PROJECT_NAME} Modular)
 target_link_libraries(${PROJECT_NAME} CicmWrapper)
 
+if (WIN32)
+	target_link_libraries(${PROJECT_NAME} ${PD_LIBRARY})
+endif()
+
 install(TARGETS ${PROJECT_NAME}
     DESTINATION "${JAMOMAPD_INSTALL_FOLDER}/Jamoma/externals"
     COMPONENT JamomaPd)

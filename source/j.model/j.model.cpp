@@ -108,7 +108,7 @@ void WrappedContainerClass_new(TTPtr self, long argc, t_atom *argv)
 	jamoma_patcher_get_model_or_view(x->obj.o_canvas, &aPatcher);
     
     if (aPatcher) {
-        object_error((t_object*)x, "can't have two models or views in the same patcher");
+        pd_error((t_object*)x, "can't have two models or views in the same patcher");
         return;
     }
 		
@@ -272,7 +272,7 @@ void model_subscribe(TTPtr self)
             args = TTValue(adrs, *EXTRA->modelInfo, x->patcherPtr);
             
             if (JamomaApplication.send("ObjectRegister", args, none))
-                object_error((t_object*)x, "can't subscribe model object");
+                pd_error((t_object*)x, "can't subscribe model object");
             
             // In model patcher : set model:address with the model address
 			if (x->patcherContext == kTTSym_model) {

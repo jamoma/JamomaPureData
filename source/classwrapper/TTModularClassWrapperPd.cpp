@@ -140,7 +140,7 @@ void wrappedModularClass_unregister(WrappedModularInstancePtr x)
         if (!(x->wrappedObject.instance() == accessApplicationLocal)) {
             
             if (x->wrappedObject.instance()->getReferenceCount() > 1)
-                object_error((t_object*)x, "there are still unreleased reference of the wrappedObject (refcount = %d)", x->wrappedObject.instance()->getReferenceCount() - 1);
+                pd_error((t_object*)x, "there are still unreleased reference of the wrappedObject (refcount = %d)", x->wrappedObject.instance()->getReferenceCount() - 1);
             
             // this line should release the last instance of the wrapped object
             // otherwise there is something wrong
@@ -1251,7 +1251,7 @@ void wrappedModularClass_ArraySelect(TTPtr self, t_symbol *msg, long ac, t_atom 
 					x->cursor = TTSymbol(instanceAddress->s_name);
 				}
 				else
-                    object_error((t_object*)x, "array/select : %d is not a valid index", i);
+                    pd_error((t_object*)x, "array/select : %d is not a valid index", i);
 			}
 			else if (atom_gettype(av) == A_SYM) {
 				
@@ -1261,7 +1261,7 @@ void wrappedModularClass_ArraySelect(TTPtr self, t_symbol *msg, long ac, t_atom 
 					x->cursor = TTSymbol(instanceAddress->s_name);
 				}
 				else
-					object_error((t_object*)x, "array/select : %s is not a valid index", atom_getsym(av)->s_name);
+					pd_error((t_object*)x, "array/select : %s is not a valid index", atom_getsym(av)->s_name);
 			}
 		}
 		else {
@@ -1271,11 +1271,11 @@ void wrappedModularClass_ArraySelect(TTPtr self, t_symbol *msg, long ac, t_atom 
 				x->cursor = TTSymbol(instanceAddress->s_name);
 			}
 			else
-				object_error((t_object*)x, "array/select : %s is not a valid index", msg->s_name);
+				pd_error((t_object*)x, "array/select : %s is not a valid index", msg->s_name);
 		}
 	}
 	else
-		object_error((t_object*)x, "array/select : the array is empty");
+		pd_error((t_object*)x, "array/select : the array is empty");
 }
 
 
@@ -1302,7 +1302,7 @@ void wrappedModularClass_ArrayResize(TTPtr self, long newSize)
         JamomaDebug logpost((t_object*)x, 3,"array/resize : to %s address", instanceAddress->s_name);
     }
     else
-        object_error((t_object*)x, "array/resize : %ld is not a valid size", newSize);
+        pd_error((t_object*)x, "array/resize : %ld is not a valid size", newSize);
 }
 #endif
 

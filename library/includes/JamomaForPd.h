@@ -142,14 +142,14 @@ bool JAMOMA_EXPORT jamoma_string_compare(char *s1, char *s2);
 bool JAMOMA_EXPORT jamoma_loadextern(t_symbol *objectname, long argc, t_atom *argv, t_object **object);
 
 // prototype for some Max specific functions wrapped
-t_symbol* object_attr_getsym(void *x, t_symbol *s); // Retrieves the value of an attribute, given its parent object and name.
-void* object_attr_getobj(void *x, t_symbol *s);
-method object_getmethod(void* x, t_symbol* s);
-void* object_method(void *x, t_symbol *s);
-void* object_method_typed(void* x, t_symbol* method, t_symbol* s, long argc, t_atom* argv);
+t_symbol* JAMOMA_EXPORT object_attr_getsym(void *x, t_symbol *s); // Retrieves the value of an attribute, given its parent object and name.
+void* JAMOMA_EXPORT object_attr_getobj(void *x, t_symbol *s);
+method JAMOMA_EXPORT object_getmethod(void* x, t_symbol* s);
+void* JAMOMA_EXPORT object_method(void *x, t_symbol *s);
+void* JAMOMA_EXPORT object_method_typed(void* x, t_symbol* method, t_symbol* s, long argc, t_atom* argv);
 // void* object_method_dsp64(void* x, t_symbol* method, void* s, void method2, long argc, void* argv);
-short locatefile_extended(char *name, short *outvol, t_fourcc *outtype, const t_fourcc *filetypelist, short numtypes);
-short path_topathname(const short path, const char *file, char *name);
+short JAMOMA_EXPORT locatefile_extended(char *name, short *outvol, t_fourcc *outtype, const t_fourcc *filetypelist, short numtypes);
+short JAMOMA_EXPORT path_topathname(const short path, const char *file, char *name);
 
 #endif //__JAMOMA_FOR_PD__
 

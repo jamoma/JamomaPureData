@@ -117,7 +117,7 @@ void WrappedExplorerClass_new(TTPtr self, long argc, t_atom *argv)
 			x->wrappedObject.set(kTTSym_namespace, TTSymbol(name->s_name));
 		}
 		else
-			object_error((t_object*)x, "argument not expected");
+			pd_error((t_object*)x, "argument not expected");
 	}
 	
 	// Make two outlets
@@ -472,7 +472,7 @@ void nmspc_symbol(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 			v.append(absoluteAddress);
 		}
 		else {
-			object_error((t_object*)x, "set relative attribute on before to send relative address");
+			pd_error((t_object*)x, "set relative attribute on before to send relative address");
 			return;
 		}
 	}

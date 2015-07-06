@@ -15,7 +15,11 @@
  */
 
 #include "JamomaForPd.h"
-#include <dlfcn.h>
+#if defined(TT_PLATFORM_WIN)
+	#include <shlobj.h>
+#else
+	#include <dlfcn.h>
+#endif
 #include <map>
 
 // statics and globals
@@ -53,20 +57,42 @@ void jamoma_init(void)
     t_fourcc	outtype, filetype = 'TEXT';
     char        name[MAX_PATH_CHARS];
     //char 		fullpath[MAX_PATH_CHARS];
-    
+
 	if (!initialized) {
-        
+
         t_object	*pd_obj = (t_object *) SymbolGen("pd")->s_thing;
         TTString    JamomaConfigurationFilePath;
 		t_atom		a[4];
 		TTValue		v, out;
         TTErr       err;
-        
+
         // Init the Modular library
-        Dl_info		info;
+
         char		mainBundleStr[4096];
         mainBundleStr[0]='\0';
 
+#if defined(TT_PLATFORM_WIN)
+		TTString	fullpath{};
+		char		temppath[4096];
+		LONG		lRes;
+
+		LPCSTR moduleName = "JamomaFoundation.dll";
+		HMODULE	hmodule = GetModuleHandle(moduleName);
+		// get the path
+		GetModuleFileName(hmodule, (LPSTR)temppath, 4096);
+
+		if (!FAILED(hmodule) && temppath[0])
+		{
+			fullpath = temppath;
+
+			// get support folder path
+			fullpath = fullpath.substr(0, fullpath.length() - (strlen(moduleName) + 1));
+			lRes = SHCreateDirectory(NULL, (LPCWSTR)fullpath.c_str());
+		}
+
+		strncpy(mainBundleStr, fullpath.c_str(), 4095);
+#else
+		Dl_info		info;
         // Use the path of JamomaFoundation
         if (dladdr((const void*)jamoma_init, &info))
         {
@@ -78,31 +104,32 @@ void jamoma_init(void)
                 *c = 0; // chop the filename off of the path
             strcat(mainBundleStr,"/../support");
         }
-
+#endif
+		TTLogError("support folder : %s \n", mainBundleStr);
         TTModularInit(mainBundleStr);
 
         // prepare a symbol for Jamoma
         kTTSym_Jamoma = TTSymbol(JAMOMA);
-        
+
         // Create an application manager
         JamomaApplicationManager = TTObject("ApplicationManager");
-        
+
         // Create a local application called "Jamoma" and get it back
         err = JamomaApplicationManager.send("ApplicationInstantiateLocal", kTTSym_Jamoma, out);
-        
+
         if (err) {
             TTLogError("Error : can't create Jamoma application \n");
             return;
         }
         else
             JamomaApplication = out[0];
-        
+
         // Edit the path to the JamomaConfiguration.xml file
         long size = TTFoundationBinaryPath.size() - std::string("support").size();
         size = size > 0 ? size : 0;
         JamomaConfigurationFilePath = TTFoundationBinaryPath.substr(0,size);
         JamomaConfigurationFilePath += "misc/JamomaConfiguration.xml";
-        
+
         // check if the JamomaConfiguration.xml file exists
         //if (locatefile_extended(name, &outvol, &outtype, &filetype, 1))
             //return error("Jamoma not loaded : can't find %s", JamomaConfigurationFilePath.data());
@@ -117,7 +144,7 @@ void jamoma_init(void)
 		// Initialize common symbols
         common_symbols_init();
 		jamomaSymbolsInit();
-		
+
 		// Initialize common regex
 		ttRegexForJmod = new TTRegex("(jmod.)");
 		ttRegexForJcom = new TTRegex("(j\\.)");
@@ -127,7 +154,7 @@ void jamoma_init(void)
         ttRegexForPdpat = new TTRegex("(.pd)");
         ttRegexForPdhelp = new TTRegex("(-help.pd)");
 		ttRegexForBracket = new TTRegex("\\[(\\d|\\d\\d|\\d\\d\\d)\\]");	// parse until 999
-		
+
 		ModelPatcherFormat = new TTString("%s.model.pd");
 		ModelPresetFormat = new TTString("%s.model.presets.txt");
 		ViewPresetFormat = new TTString("%s.view.presets.txt");
@@ -136,7 +163,7 @@ void jamoma_init(void)
 		DocumentationFormat = new TTString("%s.model.html");
 
         jamoma_object_initclass();
-		
+
         post("Jamoma for Pd version %s - %s | jamoma.org",JAMOMA_PD_VERSION, JAMOMA_PD_REV);
 
 		initialized = true;
@@ -158,7 +185,7 @@ bool jamoma_atom_compare(t_symbol *type, t_atom *a1, t_atom *a2)
 {
 	if (!a1 || !a2)
 		return 0;
-    
+
 	if (type == jps_decimal) {				// float is first so that it gets process the most quickly
 		if (atom_getfloat(a1) == atom_getfloat(a2))
 			return 1;
@@ -212,10 +239,10 @@ bool jamoma_string_compare(char *s1, char *s2)
 	short len2 = strlen(s2);
 	bool result = false;
 	bool keepgoing = true;
-	
+
 	if (len2 < len1)
 		len1 = len2;	// only compare the characters of the short string
-    
+
 	for (i =0 ; i < len1 && keepgoing; i++) {
 		if (s1[i] < s2[i]) {
 			result = true;
@@ -234,7 +261,7 @@ bool jamoma_loadextern(t_symbol *objectname, long argc, t_atom *argv, t_object *
 {
 	t_class 	*c = NULL;
 	t_object	*p = NULL;
-    
+
 	c = class_findbyname(jps_box, objectname);
 	if (!c) {
 		p = (t_object *)newinstance(objectname, 0, NULL);
@@ -248,12 +275,12 @@ bool jamoma_loadextern(t_symbol *objectname, long argc, t_atom *argv, t_object *
 			return false;
 		}
 	}
-    
+
 	if (*object != NULL) {			// if there was an object set previously, free it first...
 		object_free(*object);
 		*object = NULL;
 	}
-    
+
 	*object = (t_object *)object_new_typed(CLASS_BOX, objectname, argc, argv);
 	return true;
 }
@@ -306,13 +333,13 @@ method object_getmethod(void* x, t_symbol* s)
 
 void* object_method_typed(void* x, t_symbol* method, t_symbol* s, long argc, t_atom* argv)
 {
-    rmethod nrmethod = (rmethod)zgetfn((t_pd *)x, method);
+    t_ret_method nrmethod = (t_ret_method)zgetfn((t_pd *)x, method);
 	return nrmethod(x, s, argc, argv);
 }
 
 void* object_method(void *x, t_symbol *s)
 {
-    rmethod nrmethod = (rmethod)zgetfn((t_pd *)x, s);
+    t_ret_method nrmethod = (t_ret_method)zgetfn((t_pd *)x, s);
 	return nrmethod(x);
 }
 

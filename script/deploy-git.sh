@@ -1,5 +1,15 @@
 #!/bin/sh
 
+if [ "x${TRAVIS_BRANCH}" != "xmaster" ]; then
+  echo "We are not on master branch, don't upload build."
+  exit 0
+fi
+
+if [ ${TRAVIS_PULL_REQUEST} ]; then
+  echo "We don't deploy pull-request."
+  exit 0
+fi
+
 GITDEPLOYTARGET=git@github.com:jamoma/JamomaWebSite.
 
 if [ "x${GITDEPLOYTARGET}" = "x" ]; then

@@ -3,7 +3,7 @@
 GITDEPLOYTARGET=git@github.com:jamoma/JamomaWebSite.
 
 if [ "x${GITDEPLOYTARGET}" = "x" ]; then
- error "no git-deploytarget defined; skipping deployment"
+ echo "no git-deploytarget defined; skipping deployment"
  exit 0
 fi
 GITDEPLOYHOST="${GITDEPLOYTARGET##*@}"
@@ -22,7 +22,7 @@ if [ ! -e "${KEYFILE}" ]; then
  openssl aes-256-cbc -K $encrypted_key -iv $encrypted_iv -in ${0%/*}/id_rsa.enc -out "${KEYFILE}" -d
 fi
 if [ ! -e "${KEYFILE}" ]; then
- error "couldn't find ${KEYFILE}; skipping deployment"
+ echo "couldn't find ${KEYFILE}; skipping deployment"
  exit 0
 fi
 

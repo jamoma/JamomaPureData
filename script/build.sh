@@ -25,5 +25,3 @@ else
 fi
 
 make -j 4
-
-exit 0

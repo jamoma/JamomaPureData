@@ -26,10 +26,25 @@ if [ ! -e "${KEYFILE}" ]; then
  exit 0
 fi
 
+## config done
+
+## password-less authentication to deploy host
+
+# make sure our remote host is known
+# (so we are not asked to accept it)
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
 ssh-keyscan -H ${GITDEPLOYHOST} >> ~/.ssh/known_hosts
 echo "ssh-keyscanned ${GITDEPLOYHOST}"
+
+# and use the (encrypted) auth key
+if [ -e "${KEYFILE}" ]; then
+ chmod 600 "${KEYFILE}"
+ ssh-add "${KEYFILE}"
+ error "ssh-added ${KEYFILE}"
+else
+ error "missing ${KEYFILE}"
+fi
 
 ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}.tgz"
 

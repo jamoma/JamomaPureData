@@ -56,14 +56,14 @@ tar cvzf "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}" Jamoma/
 
 cd ${TRAVIS_BUILD_DIR}
 
-git config user.email "travis-ci@jamoma.org"
-git config user.name "Travis CI"
-
 git clone git@github.com:jamoma/JamomaWebSite.git --depth=1 JamomaWebSite
 mv ${ARCHIVE_NAME} JamomaWebSite/content/download/0.6/nightly-builds/
 cd JamomaWebSite
+
+git config user.email "travis-ci@jamoma.org"
+git config user.name "Travis CI"
+git config push.default matching
+
 git add -f content/download/0.6/nightly-builds/${ARCHIVE_NAME}
 git commit -m "Add JamomaPuredata built output"
 git push
-
-return 0

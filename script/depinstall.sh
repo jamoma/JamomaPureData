@@ -22,7 +22,17 @@ case "$TRAVIS_OS_NAME" in
 
       elif [ "x$ARCH" = "xmingw-w64" ]; then
 
-        sudo apt-get install binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 wine
+        cat <<\EOF | sudo tee '/etc/apt/sources.list'
+deb http://gb.archive.ubuntu.com/ubuntu/ trusty main restricted universe
+deb http://gb.archive.ubuntu.com/ubuntu/ trusty-updates main restricted universe
+deb http://gb.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe
+deb http://security.ubuntu.com/ubuntu trusty-security main restricted universe
+EOF
+        sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 3B4FE6ACC0B21F32
+        sudo apt-get update -qq
+        sudo apt-get install -y $UBUNTU_DEPS
+
+        sudo apt-get install gcc-mingw-w64-x86-64 g++-mingw-w64-x86_64
         # mingw-w64 shipped with Ubuntu 15.04 is buggy
         # download the latest release for 15.10 with our Dolorean !
 
@@ -35,14 +45,14 @@ case "$TRAVIS_OS_NAME" in
         #wget http://ftp.us.debian.org/debian/pool/main/b/binutils-mingw-w64/binutils-mingw-w64-i686_2.25-8+6.2_amd64.deb
         #sudo dpkg -i binutils-mingw-w64-i686_2.25-8+6.2_amd64.deb
 
-        wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-common_4.0.2-4_all.deb
-        sudo dpkg -i mingw-w64-common_4.0.2-4_all.deb
+        #wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-common_4.0.2-4_all.deb
+        #sudo dpkg -i mingw-w64-common_4.0.2-4_all.deb
 
-        wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-i686-dev_4.0.2-4_all.deb
-        sudo dpkg -i mingw-w64-i686-dev_4.0.2-4_all.deb
+        #wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-i686-dev_4.0.2-4_all.deb
+        #sudo dpkg -i mingw-w64-i686-dev_4.0.2-4_all.deb
 
-        wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-tools_4.0.2-4_amd64.deb
-        sudo dpkg -i mingw-w64-tools_4.0.2-4_amd64.deb
+        #wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-tools_4.0.2-4_amd64.deb
+        #sudo dpkg -i mingw-w64-tools_4.0.2-4_amd64.deb
 
         #wget http://ftp.us.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-i686_4.9.2-21+15.4_amd64.deb
         #sudo dpkg -i gcc-mingw-w64-i686_4.9.2-21+15.4_amd64.deb

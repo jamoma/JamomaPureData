@@ -93,5 +93,7 @@ EOF
       wget http://msp.ucsd.edu/Software/pd-0.46-6.mac.tar.gz
       tar xvf pd-0.46-6.mac.tar.gz
       ln -s Pd-0.46-6.app/Contents/Resources/ pd
+
+      brew install coreutils
 	;;
 esac

@@ -24,7 +24,7 @@ elif [ "x$ARCH" = "xmingw-w64" ]; then
 elif [ "x$ARCH" = "xmingw-w32" ]; then
   /tmp/cmake/bin/cmake -DPD_MAIN_PATH=`readlink -f ${PWD}/../pd` -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package -DCMAKE_TOOLCHAIN_FILE=`readlink -f ../Shared/CMake/toolchains/mingw-32.cmake` -DJAMOMA_CORE_SRC_PATH=`readlink -f ${PWD}/../JamomaCore` ..
 elif [ "x$ARCH" = "xosx" ]; then
-  /tmp/cmake/bin/cmake -DPD_MAIN_PATH=`readlink -f ${PWD}/../pd` -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package -DFAT_BINARY=ON  ..
+  /tmp/cmake/bin/cmake -DPD_MAIN_PATH=../pd -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package -DFAT_BINARY=ON  ..
 else
   /tmp/cmake/bin/cmake -DPD_MAIN_PATH=`readlink -f ${PWD}/../pd` -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package ..
 fi

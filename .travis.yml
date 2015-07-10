@@ -15,7 +15,15 @@ matrix:
   - os: osx
     env: ARCH=rpi
   - os: osx
-    env: ARCH=mingw-w64
+    env: ARCH=mingw-
+  - os: linux
+    arch: rpi
+    branch: feature/mingw-w64
+  - os: linux
+    arch:
+    branch: feature/mingw-w64
+  - os: osx
+    branch: feature/mingw-w64
   allow_failures:
   - os: linux
     env: ARCH=mingw-w64

@@ -17,6 +17,9 @@ cd build
 
 # CMAKE_OPTIONS="-DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package"
 
+export CC=gcc-4.9
+export CXX=g++-4.9
+
 if [ "x$ARCH" = "xrpi" ]; then
   /tmp/cmake/bin/cmake -DPD_MAIN_PATH=`readlink -f ${PWD}/../pd` -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package -DCMAKE_TOOLCHAIN_FILE=`readlink -f ../Shared/CMake/toolchains/arm-linux-gnueabihf.cmake` -DCROSS_COMPILER_PATH=`readlink -f ${PWD}/../tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/` ..
 elif [ "x$ARCH" = "xmingw-w64" ]; then

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -v
+
 if [ "x${TRAVIS_BRANCH}" = "xfeature/mingw-w64" -a "x${ARCH}" != "xmingw-w64" ]; then
   echo "We are on feature/mingw-w64 branch, don't build for other arch"
   exit 0

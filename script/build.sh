@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -ev
+
 ## coverity does a double build: 1x for coverity, 1x the ordinary build
 ## let's suppress the 2nd one
 if [ "x${COVERITY_SCAN_BRANCH}" = "x1" ]; then

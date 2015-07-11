@@ -100,7 +100,7 @@ if [ ! -d mpc-build ]; then
     echo "***************"
     mkdir -p mpc-build
     cd mpc-build
-    ../mpc-1.0.3/configure --prefix=$GCCDEPS
+    ../mpc-1.0.3/configure --prefix=$GCCDEPS --with-gmp=$GCCDEPS --with-mpfr=$GCCDEPS
     make && make install
     cd ..
 fi

@@ -1,12 +1,9 @@
 #!/bin/sh
 
+set -v
+
 if [ "x${TRAVIS_BRANCH}" != "xmaster" ]; then
   echo "We are not on master branch, don't upload build."
-  exit 0
-fi
-
-if [ ${TRAVIS_PULL_REQUEST} ]; then
-  echo "We don't deploy pull-request."
   exit 0
 fi
 
@@ -75,5 +72,5 @@ git config user.name "Travis CI"
 git config push.default matching
 
 git add -f content/download/0.6/nightly-builds/${ARCHIVE_NAME}
-git commit -m "Add JamomaPuredata built output"
+git commit -m "JamomaPuredata ${TRAVIS_COMMIT} ${TRAVIS_OS_NAME}/${ARCH}"
 git push

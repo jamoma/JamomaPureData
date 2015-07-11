@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -v
+
 if [ "x${TRAVIS_BRANCH}" = "xfeature/mingw-w64" -a "x${ARCH}" != "xmingw-w64" ]; then
   echo "We are on feature/mingw-w64 branch, don't build for other arch"
   exit 0
@@ -8,10 +10,10 @@ fi
 mkdir -p /tmp/cmake
 case "$TRAVIS_OS_NAME" in
     linux)
-      sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-      sudo apt-get -qq update
-      sudo apt-get -qq install gcc-4.9 g++-4.9
-      sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
+      #sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+      #sudo apt-get -qq update
+      #sudo apt-get -qq install gcc-4.9 g++-4.9
+      #sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
 
   		if [ "x$ARCH" = "xrpi" ]; then
   			git clone -b Jamoma https://github.com/avilleret/tools.git
@@ -208,5 +210,7 @@ case "$TRAVIS_OS_NAME" in
       wget http://msp.ucsd.edu/Software/pd-0.46-6.mac.tar.gz
       tar xvf pd-0.46-6.mac.tar.gz
       ln -s Pd-0.46-6.app/Contents/Resources/ pd
+
+      brew install coreutils
 	;;
 esac

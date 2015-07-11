@@ -22,44 +22,127 @@ case "$TRAVIS_OS_NAME" in
 
       elif [ "x$ARCH" = "xmingw-w64" ]; then
 
-        cat <<\EOF | sudo tee '/etc/apt/sources.list'
-deb http://gb.archive.ubuntu.com/ubuntu/ trusty main restricted universe
-deb http://gb.archive.ubuntu.com/ubuntu/ trusty-updates main restricted universe
-deb http://gb.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe
-deb http://security.ubuntu.com/ubuntu trusty-security main restricted universe
-EOF
-        sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 3B4FE6ACC0B21F32
-        sudo apt-get update -qq
-        sudo apt-get install -y $UBUNTU_DEPS
+        # Look at http://dlbeer.co.nz/articles/mingw64.html
+        # for a detailed explanation
 
-        sudo apt-get install gcc-mingw-w64-x86-64 g++-mingw-w64-x86_64
-        # mingw-w64 shipped with Ubuntu 15.04 is buggy
-        # download the latest release for 15.10 with our Dolorean !
+        MINGW="${HOME}/mingw64"
+        mkdir -p ${MINGW}
+        export PATH=$PATH:$MINGW/bin
 
-        # wget https://launchpad.net/ubuntu/+archive/primary/+files/gcc-mingw-w64-i686_4.9.2-20ubuntu1%2B15.4_amd64.deb
-        # sudo dpkg -i gcc-mingw-w64-i686_4.9.2-20ubuntu1+15.4_amd64.deb
+        wget http://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.bz2
+        wget http://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2
+        wget http://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v4.0.2.tar.bz2
 
-        # wget https://launchpad.net/ubuntu/+archive/primary/+files/g%2B%2B-mingw-w64-i686_4.9.2-20ubuntu1+15.4_amd64.deb
-        # sudo dpkg -i g++-mingw-w64-i686_4.9.2-20ubuntu1%2B15.4_amd64.deb
+        # The first step is to build and install binutils:
+        tar xfj binutils-2.25.tar.bz2
+        mkdir binutils-build
+        cd binutils-build
+        ../binutils-2.25/configure \
+            --target=x86_64-w64-mingw32 \
+            --enable-targets=x86_64-w64-mingw32,i686-w64-mingw32 \
+            --prefix=$MINGW \
+            --with-sysroot=$MINGW
+        make && make install
+        cd ..
 
-        #wget http://ftp.us.debian.org/debian/pool/main/b/binutils-mingw-w64/binutils-mingw-w64-i686_2.25-8+6.2_amd64.deb
-        #sudo dpkg -i binutils-mingw-w64-i686_2.25-8+6.2_amd64.deb
+        # Double-check before proceeding that binutils is in your PATH:
+        which x86_64-w64-mingw32-ld
 
-        #wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-common_4.0.2-4_all.deb
-        #sudo dpkg -i mingw-w64-common_4.0.2-4_all.deb
+        # Before the next step, create the following directories and symbolic links in your installation prefix:
+        mkdir -p $MINGW/x86_64-w64-mingw32/lib32
+        ln -s x86_64-w64-mingw32 $MINGW/mingw
+        ln -s lib $MINGW/mingw/lib64
 
-        #wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-i686-dev_4.0.2-4_all.deb
-        #sudo dpkg -i mingw-w64-i686-dev_4.0.2-4_all.deb
+        # Unpack, configure, and install MinGW-w64 headers for the Windows API and C runtime:
+        tar xfj mingw-w64-v4.0.2.tar.bz2
+        mkdir mingw-headers-build
+        cd mingw-headers-build
+        ../mingw-w64-v4.0.2/mingw-w64-headers/configure \
+            --prefix=$MINGW/x86_64-w64-mingw32 \
+            --host=x86_64-w64-mingw32 \
+            --build=$(gcc -dumpmachine)
+        make install
+        cd ..
 
-        #wget https://launchpad.net/ubuntu/+archive/primary/+files/mingw-w64-tools_4.0.2-4_amd64.deb
-        #sudo dpkg -i mingw-w64-tools_4.0.2-4_amd64.deb
+        # Next we unpack, configure and build GCC -- but only the core compiler. We can't build libgcc and the C++ library yet:
+        tar xfj gcc-4.9.2.tar.bz2
+        mkdir gcc-build
+        cd gcc-build
+        ../gcc-4.9.2/configure \
+            --target=x86_64-w64-mingw32 \
+            --enable-targets=all \
+            --prefix=$MINGW \
+            --with-sysroot=$MINGW \
+            --enable-threads=posix
+        make all-gcc && make install-gcc
+        cd ..
 
-        #wget http://ftp.us.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-i686_4.9.2-21+15.4_amd64.deb
-        #sudo dpkg -i gcc-mingw-w64-i686_4.9.2-21+15.4_amd64.deb
+        # We've already unpacked the MinGW-w64 package. Now we use it to build and install the C runtime:
+        mkdir mingw-crt-build
+        cd mingw-crt-build
+        ../mingw-w64-v4.0.1/mingw-w64-crt/configure \
+            --prefix=$MINGW/x86_64-w64-mingw32 \
+            --with-sysroot=$MINGW \
+            --enable-lib32 \
+            --enable-lib64 \
+            --host=x86_64-w64-mingw32 \
+            --build=$(gcc -dumpmachine)
+        make && make install
+        cd ..
 
-        #wget http://ftp.us.debian.org/debian/pool/main/g/gcc-mingw-w64/g++-mingw-w64-i686_4.9.2-21+15.4_amd64.deb
-        #sudo dpkg -i g++-mingw-w64-i686_4.9.2-21+15.4_amd64.deb
+        # First, build and install a 64-bit version. We need to move the DLL after installation so that it's not clobbered by the 32-bit version later:
 
+        mkdir mingw-wpth-build64
+        cd mingw-wpth-build64
+        ../mingw-w64-v4.0.1/mingw-w64-libraries/winpthreads/configure \
+            --prefix=$MINGW/x86_64-w64-mingw32 \
+            --host=x86_64-w64-mingw32 \
+            --build=$(gcc -dumpmachine)
+        make
+
+        # At this point, the build will fail, due to the fact that we
+        # enabled POSIX threads in the compiler, but libpthread.a doesn't
+        # exist yet. Work around it and try again:
+        cp fakelib/libgcc.a fakelib/libpthread.a
+
+        make && make install
+
+        # Move the created DLL
+        mv $MINGW/x86_64-w64-mingw32/bin/libwinpthread-1.dll \
+           $MINGW/x86_64-w64-mingw32/lib64/
+
+        cd ..
+
+        # Now build the 32-bit version. This is almost the same, except for the configure arguments and the final destination for the DLL:
+
+        mkdir mingw-wpth-build32
+        cd mingw-wpth-build32
+        ../mingw-w64-v4.0.1/mingw-w64-libraries/winpthreads/configure \
+            --prefix=$MINGW/x86_64-w64-mingw32 \
+            --host=x86_64-w64-mingw32 \
+            --build=$(gcc -dumpmachine) \
+            --libdir=$MINGW/x86_64-w64-mingw32/lib32 \
+            CC='x86_64-w64-mingw32-gcc -m32' \
+            CCAS='x86_64-w64-mingw32-gcc -m32' \
+            DLLTOOL='x86_64-w64-mingw32-dlltool -m i386' \
+            RC='x86_64-w64-mingw32-windres -F pe-i386'
+        make
+
+        cp fakelib/libgcc.a fakelib/libpthread.a
+
+        make && make install
+
+        mv $MINGW/x86_64-w64-mingw32/bin/libwinpthread-1.dll \
+           $MINGW/x86_64-w64-mingw32/lib32/
+        cd ..
+
+        # Now, we can finish the GCC build:
+
+        cd gcc-build
+        make && make install
+        cd ..
+
+        # Download PureData for Windows
         wget http://msp.ucsd.edu/Software/pd-0.46-6.msw.zip
         unzip pd-*.zip
 

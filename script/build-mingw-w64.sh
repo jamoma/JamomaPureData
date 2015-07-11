@@ -9,6 +9,9 @@ MINGW="${HOME}/mingw64"
 mkdir -p ${MINGW}
 export PATH=$PATH:$MINGW/bin
 
+GCCDEPS="${HOME}/gccdeps"
+mkdir -p $GCCDEPS
+
 if [ ! -d binutils-2.25 ]; then
     wget http://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.bz2
     tar xfj binutils-2.25.tar.bz2
@@ -75,8 +78,8 @@ if [ ! -d gmp-build ]; then
     echo "***************"
     mkdir -p gmp-build
     cd gmp-build
-    ../gmp-4.3.2/configure --prefix=$MINGW
-    make install
+    ../gmp-4.3.2/configure --prefix=$GCCDEPS
+    make && make install
     cd ..
 fi
 
@@ -86,8 +89,8 @@ if [ ! -d mpfr-build ]; then
     echo "***************"
     mkdir -p mpfr-build
     cd mpfr-build
-    ../mpfr-2.4.2/configure --prefix=$MINGW --with-gmp=$MINGW
-    make install
+    ../mpfr-2.4.2/configure --prefix=$GCCDEPS --with-gmp=$GCCDEPS
+    make && make install
     cd ..
 fi
 
@@ -97,8 +100,8 @@ if [ ! -d mpc-build ]; then
     echo "***************"
     mkdir -p mpc-build
     cd mpc-build
-    ../mpc-1.0.3/configure --prefix=$MINGW
-    make install
+    ../mpc-1.0.3/configure --prefix=$GCCDEPS
+    make && make install
     cd ..
 fi
 

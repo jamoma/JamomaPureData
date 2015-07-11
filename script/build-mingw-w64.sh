@@ -17,9 +17,9 @@ if [ ! -d binutils-2.25 ]; then
     tar xfj binutils-2.25.tar.bz2
 fi
 
-if [ ! -d gmp-4.3.2 ]; then
-    wget http://ftp.gnu.org/gnu/gmp/gmp-4.3.2.tar.gz
-    tar xf gmp-4.3.2.tar.gz
+if [ ! -d gmp-4.2.4 ]; then
+    http://ftp.gnu.org/gnu/gmp/gmp-4.2.4.tar.gz
+    tar xf gmp-4.2.4.tar.gz
 fi
 
 if [ ! -d mpfr-2.4.2 ]; then
@@ -74,11 +74,11 @@ ln -sf lib $MINGW/mingw/lib64
 
 if [ ! -d gmp-build ]; then
     echo "***************"
-    echo "Build gmp-4.3.2"
+    echo "Build gmp-4.2.4"
     echo "***************"
     mkdir -p gmp-build
     cd gmp-build
-    ../gmp-4.3.2/configure --prefix=$GCCDEPS
+    ../gmp-4.2.4/configure --prefix=$GCCDEPS
     make && make install
     cd ..
 fi

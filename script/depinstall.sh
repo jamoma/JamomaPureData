@@ -183,23 +183,18 @@ case "$TRAVIS_OS_NAME" in
         # mingw-w64 are not available on 12.04 server (which runs on Travis-CI VM)
         # sudo apt-get install gcc-mingw-w64* g++-mingw-w64* mingw-w64
         # sudo apt-get install mingw32
+      else
+        wget http://msp.ucsd.edu/Software/pd-0.46-6.src.tar.gz
+        tar xvf pd-0.46-6.src.tar.gz
+        mv pd-0.46-6 pd
       fi
 
   		if [ "x$(uname -m)" = "xi386" ]; then
   			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz
   			tar -xzf cmake-3.2.2-Linux-i386.tar.gz -C /tmp/cmake --strip-components=1
-
-        wget http://msp.ucsd.edu/Software/pd-0.46-6.src.tar.gz
-        tar xvf pd-0.46-6.src.tar.gz
-        mv pd-0.46-6 pd
   		else
   			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
   			tar -xzf cmake-3.2.2-Linux-x86_64.tar.gz -C /tmp/cmake --strip-components=1
-
-        wget http://msp.ucsd.edu/Software/pd-0.46-6.src.tar.gz
-        tar xvf pd-0.46-6.src.tar.gz
-        mv pd-0.46-6 pd
-
   		fi
 	 ;;
 	osx)

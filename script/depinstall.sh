@@ -34,6 +34,10 @@ case "$TRAVIS_OS_NAME" in
         wget http://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v4.0.2.tar.bz2
 
         # The first step is to build and install binutils:
+        echo ***************
+        echo "Build and install binutils"
+        echo ***************
+
         tar xfj binutils-2.25.tar.bz2
         mkdir binutils-build
         cd binutils-build
@@ -53,7 +57,10 @@ case "$TRAVIS_OS_NAME" in
         ln -s x86_64-w64-mingw32 $MINGW/mingw
         ln -s lib $MINGW/mingw/lib64
 
-        # Unpack, configure, and install MinGW-w64 headers for the Windows API and C runtime:
+        echo ***************
+        echo "Unpack, configure, and install MinGW-w64 headers for the Windows API and C runtime"
+        echo ***************
+
         tar xfj mingw-w64-v4.0.2.tar.bz2
         mkdir mingw-headers-build
         cd mingw-headers-build
@@ -65,6 +72,9 @@ case "$TRAVIS_OS_NAME" in
         cd ..
 
         # Next we unpack, configure and build GCC -- but only the core compiler. We can't build libgcc and the C++ library yet:
+        echo ***************
+        echo "Unpack, configure and build GCC"
+        echo ***************
         tar xfj gcc-4.9.2.tar.bz2
         mkdir gcc-build
         cd gcc-build
@@ -78,6 +88,10 @@ case "$TRAVIS_OS_NAME" in
         cd ..
 
         # We've already unpacked the MinGW-w64 package. Now we use it to build and install the C runtime:
+        echo ***************
+        echo "Build and install the C runtime"
+        echo ***************
+
         mkdir mingw-crt-build
         cd mingw-crt-build
         ../mingw-w64-v4.0.1/mingw-w64-crt/configure \
@@ -91,6 +105,9 @@ case "$TRAVIS_OS_NAME" in
         cd ..
 
         # First, build and install a 64-bit version. We need to move the DLL after installation so that it's not clobbered by the 32-bit version later:
+        echo ***************
+        echo "Build and install a 64bit version"
+        echo ***************
 
         mkdir mingw-wpth-build64
         cd mingw-wpth-build64
@@ -114,7 +131,9 @@ case "$TRAVIS_OS_NAME" in
         cd ..
 
         # Now build the 32-bit version. This is almost the same, except for the configure arguments and the final destination for the DLL:
-
+        echo ***************
+        echo "Build and install a 32bit version"
+        echo ***************
         mkdir mingw-wpth-build32
         cd mingw-wpth-build32
         ../mingw-w64-v4.0.1/mingw-w64-libraries/winpthreads/configure \
@@ -137,10 +156,23 @@ case "$TRAVIS_OS_NAME" in
         cd ..
 
         # Now, we can finish the GCC build:
+        echo ***************
+        echo "Finish the GCC build"
+        echo ***************
 
         cd gcc-build
         make && make install
         cd ..
+
+        echo ***************
+        echo "Check if everything is OK"
+        echo ***************
+
+        echo "Path : $PATH"
+        echo "Find i686-w64-mingw32-gcc in PATH :"
+        which i686-w64-mingw32-gcc
+        echo "Find i686-w64-mingw32-g++ in PATH :"
+        which i686-w64-mingw32-g++
 
         # Download PureData for Windows
         wget http://msp.ucsd.edu/Software/pd-0.46-6.msw.zip

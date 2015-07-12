@@ -57,7 +57,7 @@ if [ ! -d binutils-build ]; then
     echo "***************"
     mkdir binutils-build
     cd binutils-build
-    ../binutils-2.25/configure \
+    ../binutils-src/configure \
         --target=x86_64-w64-mingw32 \
         --enable-targets=x86_64-w64-mingw32,i686-w64-mingw32 \
         --prefix=$MINGW \

@@ -20,6 +20,8 @@ fi
 if [ ! -d gmp-4.2.4 ]; then
     wget http://ftp.gnu.org/gnu/gmp/gmp-4.2.4.tar.gz
     tar xf gmp-4.2.4.tar.gz
+    wget http://ftp.gnu.org/gnu/gmp/gmp-4.3.2.tar.gz
+    tar xf gmp-4.3.2.tar.gz
 fi
 
 if [ ! -d mpfr-2.4.2 ]; then

@@ -11,6 +11,7 @@ export PATH=$PATH:$MINGW/bin
 
 GCCDEPS="${HOME}/gccdeps"
 mkdir -p $GCCDEPS
+export PATH=$PATH:$GCCDEPS
 
 if [ ! -d binutils-src ]; then
     wget http://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.bz2

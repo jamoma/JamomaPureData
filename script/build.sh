@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -ev
+set -e
 
 ## coverity does a double build: 1x for coverity, 1x the ordinary build
 ## let's suppress the 2nd one

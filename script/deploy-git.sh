@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -v
+set -e
 
 if [ "x${TRAVIS_BRANCH}" != "xmaster" ]; then
   echo "We are not on master branch, don't upload build."

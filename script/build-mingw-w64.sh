@@ -18,7 +18,7 @@ if [ ! -d binutils-2.25 ]; then
 fi
 
 if [ ! -d gmp-4.2.4 ]; then
-    http://ftp.gnu.org/gnu/gmp/gmp-4.2.4.tar.gz
+    wget http://ftp.gnu.org/gnu/gmp/gmp-4.2.4.tar.gz
     tar xf gmp-4.2.4.tar.gz
 fi
 

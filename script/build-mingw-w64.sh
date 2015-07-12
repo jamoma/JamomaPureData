@@ -58,6 +58,7 @@ if [ ! -d binutils-build ]; then
     echo "***************"
     mkdir binutils-build
     cd binutils-build
+    CFLAGS=-I"$MINGW/mingw-w64-src/mingw-w64-headers/crt"
     ../binutils-src/configure \
         --target=x86_64-w64-mingw32 \
         --enable-targets=x86_64-w64-mingw32,i686-w64-mingw32 \

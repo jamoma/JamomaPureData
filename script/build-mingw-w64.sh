@@ -12,36 +12,40 @@ export PATH=$PATH:$MINGW/bin
 GCCDEPS="${HOME}/gccdeps"
 mkdir -p $GCCDEPS
 
-if [ ! -d binutils-2.25 ]; then
+if [ ! -d binutils-src ]; then
     wget http://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.bz2
     tar xfj binutils-2.25.tar.bz2
+    mv binutils-2.25 binutils-src
 fi
 
-if [ ! -d gmp-4.2.4 ]; then
-    wget http://ftp.gnu.org/gnu/gmp/gmp-4.2.4.tar.gz
-    tar xf gmp-4.2.4.tar.gz
+if [ ! -d gmp-src ]; then
     wget http://ftp.gnu.org/gnu/gmp/gmp-4.3.2.tar.gz
     tar xf gmp-4.3.2.tar.gz
+    mv gmp-4.3.2 gmp-src
 fi
 
-if [ ! -d mpfr-2.4.2 ]; then
+if [ ! -d mpfr-src ]; then
     wget http://ftp.gnu.org/gnu/mpfr/mpfr-2.4.2.tar.gz
     tar xf mpfr-2.4.2.tar.gz
+    mv mpfr-2.4.2 mpfr-src
 fi
 
-if [ ! -d mpc-1.0.3 ]; then
+if [ ! -d mpc-src ]; then
     wget http://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz
     tar xf mpc-1.0.3.tar.gz
+    mv mpc-1.0.3 mpc-src
 fi
 
-if [ ! -d mingw-w64-v4.0.2 ]; then
+if [ ! -d mingw-w64-src ]; then
     wget http://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v4.0.2.tar.bz2
     tar xfj mingw-w64-v4.0.2.tar.bz2
+    mv mingw-w64-v4.0.2 mingw-w64-src
 fi
 
-if [ ! -d gcc-4.9.2 ]; then
+if [ ! -d gcc-src ]; then
     wget http://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2
     tar xfj gcc-4.9.2.tar.bz2
+    mv gcc-4.9.2 gcc-src
 fi
 
 
@@ -76,33 +80,33 @@ ln -sf lib $MINGW/mingw/lib64
 
 if [ ! -d gmp-build ]; then
     echo "***************"
-    echo "Build gmp-4.2.4"
+    echo "Build gmp"
     echo "***************"
     mkdir -p gmp-build
     cd gmp-build
-    ../gmp-4.2.4/configure --prefix=$GCCDEPS
+    ../gmp-src/configure --prefix=$GCCDEPS
     make && make install
     cd ..
 fi
 
 if [ ! -d mpfr-build ]; then
     echo "***************"
-    echo "Build mpfr-2.4.2"
+    echo "Build mpfr"
     echo "***************"
     mkdir -p mpfr-build
     cd mpfr-build
-    ../mpfr-2.4.2/configure --prefix=$GCCDEPS --with-gmp=$GCCDEPS
+    ../mpfr-src/configure --prefix=$GCCDEPS --with-gmp=$GCCDEPS
     make && make install
     cd ..
 fi
 
 if [ ! -d mpc-build ]; then
     echo "***************"
-    echo "Build mpc-1.0.3"
+    echo "Build mpc"
     echo "***************"
     mkdir -p mpc-build
     cd mpc-build
-    ../mpc-1.0.3/configure --prefix=$GCCDEPS --with-gmp=$GCCDEPS --with-mpfr=$GCCDEPS
+    ../mpc-src/configure --prefix=$GCCDEPS --with-gmp=$GCCDEPS --with-mpfr=$GCCDEPS
     make && make install
     cd ..
 fi
@@ -113,7 +117,7 @@ if [ ! -d mingw-headers-build ]; then
     echo "***************"
     mkdir mingw-headers-build
     cd mingw-headers-build
-    ../mingw-w64-v4.0.2/mingw-w64-headers/configure \
+    ../mingw-w64-src/mingw-w64-headers/configure \
         --prefix=$MINGW/x86_64-w64-mingw32 \
         --host=x86_64-w64-mingw32 \
         --build=$(gcc -dumpmachine)
@@ -127,7 +131,7 @@ echo "Unpack, configure and build GCC"
 echo "***************"
 mkdir -p gcc-build
 cd gcc-build
-../gcc-4.9.2/configure \
+../gcc-src/configure \
     --target=x86_64-w64-mingw32 \
     --enable-targets=all \
     --prefix=$MINGW \
@@ -146,7 +150,7 @@ echo "***************"
 
 mkdir mingw-crt-build
 cd mingw-crt-build
-../mingw-w64-v4.0.1/mingw-w64-crt/configure \
+../mingw-w64-src/mingw-w64-crt/configure \
     --prefix=$MINGW/x86_64-w64-mingw32 \
     --with-sysroot=$MINGW \
     --enable-lib32 \
@@ -163,7 +167,7 @@ echo "***************"
 
 mkdir mingw-wpth-build64
 cd mingw-wpth-build64
-../mingw-w64-v4.0.1/mingw-w64-libraries/winpthreads/configure \
+../mingw-w64-src/mingw-w64-libraries/winpthreads/configure \
     --prefix=$MINGW/x86_64-w64-mingw32 \
     --host=x86_64-w64-mingw32 \
     --build=$(gcc -dumpmachine)
@@ -188,7 +192,7 @@ echo "Build and install a 32bit version"
 echo "***************"
 mkdir mingw-wpth-build32
 cd mingw-wpth-build32
-../mingw-w64-v4.0.1/mingw-w64-libraries/winpthreads/configure \
+../mingw-w64-src/mingw-w64-libraries/winpthreads/configure \
     --prefix=$MINGW/x86_64-w64-mingw32 \
     --host=x86_64-w64-mingw32 \
     --build=$(gcc -dumpmachine) \

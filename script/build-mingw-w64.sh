@@ -131,9 +131,9 @@ cd gcc-build
     --prefix=$MINGW \
     --with-sysroot=$MINGW \
     --enable-threads=posix \
-    --with-gmp=$MINGW \
-    --with-mpc=$MINGW \
-    --with-mpfr=$MINGW
+    --with-gmp=$GCCDEPS \
+    --with-mpc=$GCCDEPS \
+    --with-mpfr=$GCCDEPS
 make all-gcc && make install-gcc
 cd ..
 

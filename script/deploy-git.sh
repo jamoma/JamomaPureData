@@ -2,7 +2,7 @@
 
 set -v
 
-if [[ "x${TRAVIS_BRANCH}" != "xmaster" && "x${TRAVIS_BRANCH}" != "xfeature/travis-build" ]]; then
+if [ "x${TRAVIS_BRANCH}" != "xmaster" ]; then
   echo "We are not on master branch, don't upload build."
   exit 0
 fi
@@ -58,7 +58,7 @@ ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}.tgz"
 cd ${TRAVIS_BUILD_DIR}/build
 cmake -DCMAKE_INSTALL_COMPONENT=JamomaPd -P cmake_install.cmake
 
-cd ${TRAVIS_BUILD_DIR}/JamomaInstall/jamoma/JamomaPd/
+cd ${TRAVIS_BUILD_DIR}/pd-package
 tar cvzf "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}" Jamoma/
 
 cd ${TRAVIS_BUILD_DIR}
@@ -73,9 +73,4 @@ git config push.default matching
 
 git add -f content/download/0.6/nightly-builds/${ARCHIVE_NAME}
 git commit -m "JamomaPuredata ${TRAVIS_COMMIT} ${TRAVIS_OS_NAME}/${ARCH}"
-
-if [ "x${TRAVIS_BRANCH}" = "xmaster" ]; then
-  git push
-else
-  echo "This was just a test, don't push it."
-fi
+git push

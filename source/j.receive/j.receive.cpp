@@ -55,7 +55,7 @@ void		receive_assist(TTPtr self, void *b, long msg, long arg, char *dst);
 /** Associate j.receive(~) with NodeLib. This is a prerequisit for communication with other Jamoma object in the module and beyond.  */
 void		receive_subscribe(TTPtr self);
 
-void receive_loadbang(TTPtr self);
+void        receive_loadbang(TTPtr self);
 
 void		receive_return_model_address(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
@@ -368,13 +368,13 @@ void receive_bang(TTPtr self)
 void receive_loadbang(TTPtr self)
 {
     WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-    t_atom * a=NULL;
+    t_atom a;
     // for absolute address
     if (x->address.getType() == kAddressAbsolute) {
 
         x->wrappedObject.set(kTTSym_address, x->address);
-        atom_setsym(a, gensym((char*)x->address.c_str()));
-        if(x->dumpOut) outlet_anything((t_outlet*)x->dumpOut, gensym("address"), 1, a);
+        atom_setsym(&a, gensym((char*)x->address.c_str()));
+        if(x->dumpOut) outlet_anything((t_outlet*)x->dumpOut, gensym("address"), 1, &a);
         else error("can't output anything ??? WTF ?");
 
         // JamomaDebug object_post((t_object*)x, "binds on %s", x->address.c_str());

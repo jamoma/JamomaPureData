@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -ev
+set -e
 
 ## coverity does a double build: 1x for coverity, 1x the ordinary build
 ## let's suppress the 2nd one
@@ -31,9 +31,11 @@ else
   export CXX=g++-4.9
 fi
 
-if [ "x$TRAVIS_OS_NAME" = "xlinux" ]; then
+if [ "x$TRAVIS_OS_NAME" != "xosx" ]; then
   CMAKE_OPTIONS="$CMAKE_OPTIONS -DPD_MAIN_PATH=`readlink -f ${PWD}/../pd`"
 fi
 
+echo "Configuring with CMAKE_OPTIONS=$CMAKE_OPTIONS"
 /tmp/cmake/bin/cmake .. "$CMAKE_OPTIONS"
+echo "Now make"
 make -j 4

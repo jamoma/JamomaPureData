@@ -36,6 +36,6 @@ if [ "x$TRAVIS_OS_NAME" != "xosx" ]; then
 fi
 
 echo "Configuring with CMAKE_OPTIONS=$CMAKE_OPTIONS"
-/tmp/cmake/bin/cmake .. "$CMAKE_OPTIONS"
+/tmp/cmake/bin/cmake .. $CMAKE_OPTIONS
 echo "Now make"
 make -j 4

@@ -36,8 +36,6 @@ typedef struct outlet {
 // This is used to store extra data
 typedef struct extra {
     TTAddress   name;           ///< the name to use for subscription
-    // TTPtr		ui_qelem;		///< to output "qlim'd" data for ui object
-    t_clock*    ui_clock;
 	t_object*	connected;		// our ui object
 	long		x;				// our ui object x presentation
 	long		y;				// our ui object y presentation
@@ -82,8 +80,6 @@ void        remote_mouseleave(TTPtr self, t_object *patcherview, t_pt pt, long m
 void        remote_mousedown(TTPtr self, t_object *patcherview, t_pt pt, long modifiers);
 
 void        remote_subscribe(TTPtr self);
-
-void        remote_ui_queuefn(TTPtr self);
 
 extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2eremote(void)
 {
@@ -169,14 +165,10 @@ void WrappedViewerClass_new(TTPtr self, long argc, t_atom *argv)
 	x->outlets[value_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output data
     x->outlets[attach_out] = outlet_new((t_object*)x, NULL);					// anything outlet to select ui
 	
-	// Make qelem object
-    //EXTRA->ui_qelem = qelem_new(x, (method)remote_ui_queuefn);
-    EXTRA->ui_clock = clock_new(x,(t_method)remote_ui_queuefn);
-
     // clear support for qelem value
     x->argc = 0;
     x->argv = NULL;
-	
+
 	// handle attribute args
 	attr_args_process(x, argc, argv);
 
@@ -213,9 +205,6 @@ void remote_assist(TTPtr self, void *b, long msg, long arg, char *dst)
 void WrappedViewerClass_free(TTPtr self)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-    
-    clock_unset(EXTRA->ui_clock);
-    clock_free(EXTRA->ui_clock);
     
     x->wrappedObject.set(kTTSym_address, kTTAdrsEmpty);
     
@@ -369,23 +358,14 @@ void remote_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
     }
 	
 	// avoid blank before data
-	if (msg == _sym_nothing)
+    if (msg == _sym_nothing) {
         outlet_anything((t_outlet*)x->outlets[value_out], NULL, argc, argv);
-	else
+        outlet_anything((t_outlet*)x->outlets[set_out], _sym_set, argc, argv);
+    } else {
         outlet_anything((t_outlet*)x->outlets[value_out], msg, argc, argv);
+        outlet_anything((t_outlet*)x->outlets[set_out], _sym_set, argc, argv);
+    }
 	
-    // Copy msg and atom in order to avoid losing data
-    copy_msg_argc_argv(self, msg, argc, argv);
-	
-    clock_set(EXTRA->ui_clock,10);
-}
-
-void remote_ui_queuefn(TTPtr self)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-    
-    if (x->argc && x->argv)
-        outlet_anything((t_outlet*)x->outlets[set_out], _sym_set, x->argc, x->argv);
 }
 
 void remote_bang(TTPtr self)

@@ -35,7 +35,7 @@ TTErr jamoma_subscriber_create(t_eobj *x, TTObject& anObject, TTAddress relative
 	TTList		aContextList;
 	TTAddress	newRelativeAddress, newContextAddress;
 	TTBoolean	newInstance, newContextInstance;
-    TTErr       err;
+    TTErr       err = kTTErrNone;
 		
 	// prepare arguments
 	args.append(anObject);
@@ -109,7 +109,8 @@ TTErr jamoma_subscriber_create(t_eobj *x, TTObject& anObject, TTAddress relative
                 }
                 
                 // free args
-                free(argv);
+                if (argv) free(argv);
+                argv=NULL;
                 
                 // warn the user that it should provide unique name
                 
@@ -138,7 +139,7 @@ TTErr jamoma_subscriber_create(t_eobj *x, TTObject& anObject, TTAddress relative
 		// don't display this message because the objects can try many times before to binds
 		; //pd_error(x, "Jamoma cannot binds %s", relativeAddress->s_name);
 	
-	return kTTErrGeneric;
+    return err;
 }
 
 

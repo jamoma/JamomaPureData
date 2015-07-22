@@ -59,7 +59,11 @@ cd ${TRAVIS_BUILD_DIR}/build
 cmake -DCMAKE_INSTALL_COMPONENT=JamomaPd -P cmake_install.cmake
 
 cd ${TRAVIS_BUILD_DIR}/pd-package
-tar cvzf "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}" Jamoma/
+if (MINGW)
+ zip -r "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}" Jamoma/
+else()
+ tar cvzf "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}" Jamoma/
+endif()
 
 cd ${TRAVIS_BUILD_DIR}
 

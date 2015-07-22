@@ -39,4 +39,5 @@ addons:
     packages:
     - gcc-4.9
     - g++-4.9
-    - texinfo
+    - unzip # needed in Mingw-w64 to unzip Windows binary archive
+    - zip

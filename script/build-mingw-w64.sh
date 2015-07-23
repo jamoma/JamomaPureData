@@ -9,9 +9,14 @@ MINGW="${HOME}/mingw64"
 mkdir -p ${MINGW}
 export PATH=$PATH:$MINGW/bin
 
+<<COMMENT0
 GCCDEPS="${HOME}/gccdeps"
 mkdir -p $GCCDEPS
 export PATH=$PATH:$GCCDEPS
+COMMENT0
+
+sudo apt-get build-dep gcc
+sudo apt-get install texinfo libgmp-dev libmpfr-dev libmpc-dev
 
 if [ ! -d binutils-src ]; then
     wget http://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.bz2
@@ -19,6 +24,7 @@ if [ ! -d binutils-src ]; then
     mv binutils-2.25 binutils-src
 fi
 
+<<COMMENT1
 if [ ! -d gmp-src ]; then
     wget http://ftp.gnu.org/gnu/gmp/gmp-4.3.2.tar.gz
     tar xf gmp-4.3.2.tar.gz
@@ -36,6 +42,7 @@ if [ ! -d mpc-src ]; then
     tar xf mpc-1.0.3.tar.gz
     mv mpc-1.0.3 mpc-src
 fi
+COMMENT1
 
 if [ ! -d mingw-w64-src ]; then
 #    wget http://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v4.0.2.tar.bz2
@@ -88,6 +95,7 @@ mkdir -p $MINGW/x86_64-w64-mingw32/lib32
 ln -sf x86_64-w64-mingw32 $MINGW/mingw
 ln -sf lib $MINGW/mingw/lib64
 
+<<COMMENT2
 if [ ! -d gmp-build ]; then
     echo "***************"
     echo "Build gmp"
@@ -120,6 +128,7 @@ if [ ! -d mpc-build ]; then
     make && make install
     cd ..
 fi
+COMMENT2
 
 if [ ! -d mingw-headers-build ]; then
     echo "***************"
@@ -146,10 +155,7 @@ cd gcc-build
     --enable-targets=all \
     --prefix=$MINGW \
     --with-sysroot=$MINGW \
-    --enable-threads=posix \
-    --with-gmp=$GCCDEPS \
-    --with-mpc=$GCCDEPS \
-    --with-mpfr=$GCCDEPS
+    --enable-threads=posix
 make all-gcc && make install-gcc
 cd ..
 

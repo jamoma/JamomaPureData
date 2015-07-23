@@ -47,6 +47,7 @@ if [ ! -d mingw-w64-src ]; then
 #    mv mingw-w64-v4.0.2 mingw-w64-src
 
 # The following is used to not download the whole history but just a specific commit
+<<COMMENT1.1
     mkdir mingw-w64-src
     cd mingw-w64-src
     git init
@@ -54,7 +55,8 @@ if [ ! -d mingw-w64-src ]; then
     git fetch origin f3f8cd3173d82fa6f4ae31ecf8189e5ff19b1ca9
     git reset --hard FETCH_HEAD
     cd ..
-    # git clone ://github.com/avilleret/mingw-w64.git mingw-w64-src
+COMMENT1.1
+    git clone ://github.com/avilleret/mingw-w64.git mingw-w64-src --depth=1
 fi
 
 if [ ! -d gcc-src ]; then

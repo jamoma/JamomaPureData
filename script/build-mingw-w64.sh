@@ -68,11 +68,11 @@ fi
 
 # The first step is to build and install binutils:
 
-if [ ! -d binutils-build ]; then
+# if [ ! -d binutils-build ]; then
     echo "***************"
     echo "Build and install binutils"
     echo "***************"
-    mkdir binutils-build
+    mkdir -p binutils-build
     cd binutils-build
     ../binutils-src/configure \
         --target=x86_64-w64-mingw32 \
@@ -81,7 +81,7 @@ if [ ! -d binutils-build ]; then
         --with-sysroot=$MINGW
     make && make install
     cd ..
-fi
+# fi
 
 # Double-check before proceeding that binutils is in your PATH:
 if [ "x$(which x86_64-w64-mingw32-ld)" = "x" ]; then
@@ -130,11 +130,11 @@ if [ ! -d mpc-build ]; then
 fi
 COMMENT2
 
-if [ ! -d mingw-headers-build ]; then
+#if [ ! -d mingw-headers-build ]; then
     echo "***************"
     echo "Unpack, configure, and install MinGW-w64 headers for the Windows API and C runtime"
     echo "***************"
-    mkdir mingw-headers-build
+    mkdir -p mingw-headers-build
     cd mingw-headers-build
     ../mingw-w64-src/mingw-w64-headers/configure \
         --prefix=$MINGW/x86_64-w64-mingw32 \
@@ -142,7 +142,7 @@ if [ ! -d mingw-headers-build ]; then
         --build=$(gcc -dumpmachine)
     make install
     cd ..
-fi
+#fi
 
 # Next we unpack, configure and build GCC -- but only the core compiler. We can't build libgcc and the C++ library yet:
 echo "***************"
@@ -164,7 +164,7 @@ echo "***************"
 echo "Build ../mingw-w64-src/mingw-w64-crt"
 echo "***************"
 
-mkdir mingw-crt-build
+mkdir -p mingw-crt-build
 cd mingw-crt-build
 CFLAGS=-I"$MINGW/x86_64-w64-mingw32/include/_mingw_mac.h" ../mingw-w64-src/mingw-w64-crt/configure \
     --prefix=$MINGW/x86_64-w64-mingw32 \
@@ -181,7 +181,7 @@ echo "***************"
 echo "Build ../mingw-w64-src/mingw-w64-libraries/winpthreads/ (64bit)"
 echo "***************"
 
-mkdir mingw-wpth-build64
+mkdir -p mingw-wpth-build64
 cd mingw-wpth-build64
 ../mingw-w64-src/mingw-w64-libraries/winpthreads/configure \
     --prefix=$MINGW/x86_64-w64-mingw32 \
@@ -207,7 +207,7 @@ cd ..
 echo "***************"
 echo "Build and install ../mingw-w64-src/mingw-w64-libraries/winpthreads/ 32bit version"
 echo "***************"
-mkdir mingw-wpth-build32
+mkdir -p mingw-wpth-build32
 cd mingw-wpth-build32
 ../mingw-w64-src/mingw-w64-libraries/winpthreads/configure \
     --prefix=$MINGW/x86_64-w64-mingw32 \

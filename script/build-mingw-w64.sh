@@ -166,7 +166,7 @@ echo "***************"
 
 mkdir mingw-crt-build
 cd mingw-crt-build
-CFLAGS=-I"../mingw-w64-src/mingw-w64-headers/crt" ../mingw-w64-src/mingw-w64-crt/configure \
+CFLAGS=-I"$MINGW/x86_64-w64-mingw32/include/_mingw_mac.h" ../mingw-w64-src/mingw-w64-crt/configure \
     --prefix=$MINGW/x86_64-w64-mingw32 \
     --with-sysroot=$MINGW \
     --enable-lib32 \

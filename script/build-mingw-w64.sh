@@ -50,10 +50,11 @@ if [ ! -d mingw-w64-src ]; then
     mkdir mingw-w64-src
     cd mingw-w64-src
     git init
-    git remote add origin git://git.code.sf.net/p/mingw-w64/mingw-w64
+    git remote add origin https://github.com/avilleret/mingw-w64.git
     git fetch origin f3f8cd3173d82fa6f4ae31ecf8189e5ff19b1ca9
     git reset --hard FETCH_HEAD
     cd ..
+    # git clone ://github.com/avilleret/mingw-w64.git mingw-w64-src
 fi
 
 if [ ! -d gcc-src ]; then

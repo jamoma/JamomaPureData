@@ -7,7 +7,7 @@ if [ "x${TRAVIS_BRANCH}" != "xmaster" ]; then
   exit 0
 fi
 
-GITDEPLOYTARGET=git@github.com:jamoma/JamomaWebSite.
+GITDEPLOYTARGET=git@github.com:jamoma/nightly-builds.git
 
 if [ "x${GITDEPLOYTARGET}" = "x" ]; then
  echo "no git-deploytarget defined; skipping deployment"
@@ -63,14 +63,15 @@ tar cvzf "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}" Jamoma/
 
 cd ${TRAVIS_BUILD_DIR}
 
-git clone git@github.com:jamoma/JamomaWebSite.git --depth=1 JamomaWebSite
-mv ${ARCHIVE_NAME} JamomaWebSite/content/download/0.6/nightly-builds/
-cd JamomaWebSite
+git clone ${GITDEPLOYTARGET} --depth=1 JamomaNighltyBuilds
+mkdir -p JamomaNighltyBuilds/JamomaPuredata
+mv ${ARCHIVE_NAME} JamomaNighltyBuilds/JamomaPuredata/
+cd JamomaNighltyBuilds
 
 git config user.email "travis-ci@jamoma.org"
 git config user.name "Travis CI"
 git config push.default matching
 
-git add -f content/download/0.6/nightly-builds/${ARCHIVE_NAME}
+git add -f JamomaNighltyBuilds/JamomaPuredata/${ARCHIVE_NAME}
 git commit -m "JamomaPuredata ${TRAVIS_COMMIT} ${TRAVIS_OS_NAME}/${ARCH}"
 git push

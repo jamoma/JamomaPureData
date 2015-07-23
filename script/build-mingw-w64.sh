@@ -38,9 +38,18 @@ if [ ! -d mpc-src ]; then
 fi
 
 if [ ! -d mingw-w64-src ]; then
-    wget http://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v4.0.2.tar.bz2
-    tar xfj mingw-w64-v4.0.2.tar.bz2
-    mv mingw-w64-v4.0.2 mingw-w64-src
+#    wget http://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v4.0.2.tar.bz2
+#    tar xfj mingw-w64-v4.0.2.tar.bz2
+#    mv mingw-w64-v4.0.2 mingw-w64-src
+
+# The following is used to not download the whole history but just a specific commit
+    mkdir mingw-w64-src
+    cd mingw-w64-src
+    git init
+    git remote add git://git.code.sf.net/p/mingw-w64/mingw-w64
+    git fetch origin f3f8cd3173d82fa6f4ae31ecf8189e5ff19b1ca9
+    git reset --hard FETCH_HEAD
+    cd ..
 fi
 
 if [ ! -d gcc-src ]; then

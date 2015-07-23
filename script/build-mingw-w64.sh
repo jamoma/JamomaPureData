@@ -5,7 +5,7 @@ set -e
 # Look at http://dlbeer.co.nz/articles/mingw64.html
 # for a detailed explanation
 
-MINGW="${HOME}/mingw64"
+MINGW="${HOME}/mingw-w64-install"
 mkdir -p ${MINGW}
 export PATH=$PATH:$MINGW/bin
 
@@ -14,9 +14,6 @@ GCCDEPS="${HOME}/gccdeps"
 mkdir -p $GCCDEPS
 export PATH=$PATH:$GCCDEPS
 COMMENT0
-
-sudo apt-get build-dep gcc
-sudo apt-get install texinfo libgmp-dev libmpfr-dev libmpc-dev
 
 if [ ! -d binutils-src ]; then
     wget http://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.bz2
@@ -187,12 +184,13 @@ cd mingw-wpth-build64
     --prefix=$MINGW/x86_64-w64-mingw32 \
     --host=x86_64-w64-mingw32 \
     --build=$(gcc -dumpmachine)
-make
+if [ !make ]; then
 
 # At this point, the build will fail, due to the fact that we
 # enabled POSIX threads in the compiler, but libpthread.a doesn't
 # exist yet. Work around it and try again:
-cp fakelib/libgcc.a fakelib/libpthread.a
+    cp fakelib/libgcc.a fakelib/libpthread.a
+fi
 
 make && make install
 
@@ -217,9 +215,10 @@ cd mingw-wpth-build32
     CCAS='x86_64-w64-mingw32-gcc -m32' \
     DLLTOOL='x86_64-w64-mingw32-dlltool -m i386' \
     RC='x86_64-w64-mingw32-windres -F pe-i386'
-make
+if [ !make ]; then
 
-cp fakelib/libgcc.a fakelib/libpthread.a
+     cp fakelib/libgcc.a fakelib/libpthread.a
+fi
 
 make && make install
 

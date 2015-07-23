@@ -161,7 +161,7 @@ cd ..
 
 # We've already unpacked the MinGW-w64 package. Now we use it to build and install the C runtime:
 echo "***************"
-echo "Build and install the C runtime"
+echo "Build ../mingw-w64-src/mingw-w64-crt"
 echo "***************"
 
 mkdir mingw-crt-build
@@ -178,7 +178,7 @@ cd ..
 
 # First, build and install a 64-bit version. We need to move the DLL after installation so that it's not clobbered by the 32-bit version later:
 echo "***************"
-echo "Build and install a 64bit version"
+echo "Build ../mingw-w64-src/mingw-w64-libraries/winpthreads/ (64bit)"
 echo "***************"
 
 mkdir mingw-wpth-build64
@@ -205,7 +205,7 @@ cd ..
 
 # Now build the 32-bit version. This is almost the same, except for the configure arguments and the final destination for the DLL:
 echo "***************"
-echo "Build and install a 32bit version"
+echo "Build and install ../mingw-w64-src/mingw-w64-libraries/winpthreads/ 32bit version"
 echo "***************"
 mkdir mingw-wpth-build32
 cd mingw-wpth-build32

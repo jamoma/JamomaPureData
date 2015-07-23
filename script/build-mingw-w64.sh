@@ -56,7 +56,7 @@ if [ ! -d mingw-w64-src ]; then
     git reset --hard FETCH_HEAD
     cd ..
 COMMENT1.1
-    git clone ://github.com/avilleret/mingw-w64.git mingw-w64-src --depth=1
+    git clone https://github.com/avilleret/mingw-w64.git mingw-w64-src --depth=1
 fi
 
 if [ ! -d gcc-src ]; then

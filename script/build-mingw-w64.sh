@@ -13,8 +13,8 @@ ln -sf `which g++-4.9` ${HOME}/bin/g++
 export PATH=$PATH:$MINGW/bin:${HOME}/bin
 
 upload_log_and_exit() {
-    gist config.log
     gcc -v
+    gist config.log
     exit 1
 }
 

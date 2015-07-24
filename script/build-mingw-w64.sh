@@ -9,6 +9,9 @@ MINGW="${HOME}/mingw-w64-install"
 mkdir -p ${MINGW}
 export PATH=$PATH:$MINGW/bin
 
+mkdir -p "${HOME}/mingw-w64"
+cd "${HOME}/mingw-w64"
+
 if [ "x${TRAVIS}" != "xtrue" ]; then
   sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test || ( sudo apt-get install -qq -y python-software-properties && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test )
   sudo apt-get -qq update

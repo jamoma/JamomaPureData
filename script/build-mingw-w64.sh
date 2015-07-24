@@ -9,6 +9,7 @@ MINGW="${HOME}/mingw-w64-install"
 mkdir -p ${MINGW}
 export PATH=$PATH:$MINGW/bin
 
+
 mkdir -p "${HOME}/mingw-w64"
 cd "${HOME}/mingw-w64"
 
@@ -179,7 +180,6 @@ echo "***************"
 
 find $MINGW/x86_64-w64-mingw32/include/ -name _mingw_mac.h
 echo ../mingw-w64-src/mingw-w64-crt/configure \
-    CPPFLAGS="$CPPFLAGS -I'$MINGW/x86_64-w64-mingw32/include/'" \
     --prefix=$MINGW/x86_64-w64-mingw32 \
     --with-sysroot=$MINGW \
     --enable-lib32 \
@@ -189,7 +189,7 @@ echo ../mingw-w64-src/mingw-w64-crt/configure \
 
 mkdir -p mingw-crt-build
 cd mingw-crt-build
-../mingw-w64-src/mingw-w64-crt/configure \
+PATH=$PATH:$MINGW/bin ../mingw-w64-src/mingw-w64-crt/configure \
     CPPFLAGS="$CPPFLAGS -I'$MINGW/x86_64-w64-mingw32/include'" \
     --prefix=$MINGW/x86_64-w64-mingw32 \
     --with-sysroot=$MINGW \

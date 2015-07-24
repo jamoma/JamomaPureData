@@ -9,6 +9,15 @@ MINGW="${HOME}/mingw-w64-install"
 mkdir -p ${MINGW}
 export PATH=$PATH:$MINGW/bin
 
+if [ "x${TRAVIS}" != "xtrue" ]; then
+  sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  sudo apt-get -qq update
+  sudo apt-get -qq -y install gcc-4.9 g++-4.9
+
+  sudo apt-get -qq -y install unzip zip
+  sudo apt-get -qq -y install libgmp-dev libmpfr-dev libmpc-dev texinfo
+fi
+
 <<COMMENT0
 GCCDEPS="${HOME}/gccdeps"
 mkdir -p $GCCDEPS

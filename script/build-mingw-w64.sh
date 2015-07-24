@@ -164,7 +164,8 @@ cd gcc-build
     --enable-targets=all \
     --prefix=$MINGW \
     --with-sysroot=$MINGW \
-    --enable-threads=posix
+    --enable-threads=posix \
+    --enable-languages=c,c++
 make all-gcc && make install-gcc
 cd ..
 

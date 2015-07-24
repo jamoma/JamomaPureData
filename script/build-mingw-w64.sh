@@ -7,7 +7,10 @@ set -e
 
 MINGW="${HOME}/mingw-w64-install"
 mkdir -p ${MINGW}
-export PATH=$PATH:$MINGW/bin
+mkdir -p ${HOME}/bin
+ln -sf `which gcc-4.9` ${HOME}/bin/gcc
+ln -sf `which g++-4.9` ${HOME}/bin/g++
+export PATH=$PATH:$MINGW/bin:${HOME}/bin
 
 upload_log_and_exit() {
     gist config.log

@@ -27,7 +27,12 @@ case "$TRAVIS_OS_NAME" in
 
       elif [ "x$ARCH" = "xmingw-w64" ]; then
 
-        ${0%/*}/build-mingw-w64.sh
+        cd ${HOME}
+        wget https://dl.dropboxusercontent.com/u/3680458/mingw-w64-install.tar.gz
+        wget https://dl.dropboxusercontent.com/u/3680458/mingw-w64-install.sha
+        shasum -c mingw-w64-install.sha
+        tar -xvf mingw-w64-install.tar.gz
+        cd -
 
         # Download PureData for Windows
         wget http://msp.ucsd.edu/Software/pd-0.46-6.msw.zip

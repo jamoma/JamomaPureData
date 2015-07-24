@@ -245,12 +245,14 @@ void data_subscribe(TTPtr self, t_symbol *relativeAddress)
     TTAddress   returnedAddress;
     TTNodePtr   returnedNode = NULL;
     TTNodePtr   returnedContextNode = NULL;
+    TTErr       err = kTTErrNone;
 
 	// for relative address
 	if (TTAddress(relativeAddress->s_name).getType() == kAddressRelative) {
         
-        if(!jamoma_subscriber_create((t_eobj*)x, x->wrappedObject, relativeAddress->s_name, x->subscriberObject, returnedAddress, &returnedNode, &returnedContextNode))
-            pd_error((t_object*)x, "error when registering %s", relativeAddress->s_name);
+        err = jamoma_subscriber_create((t_eobj*)x, x->wrappedObject, relativeAddress->s_name, x->subscriberObject, returnedAddress, &returnedNode, &returnedContextNode);
+        if( err != kTTErrNone )
+            pd_error((t_object*)x, "error %d when registering %s", err, relativeAddress->s_name);
         
 #ifndef JMOD_MESSAGE
 #ifndef JMOD_RETURN

@@ -198,13 +198,11 @@ cd mingw-wpth-build64
     --prefix=$MINGW/x86_64-w64-mingw32 \
     --host=x86_64-w64-mingw32 \
     --build=$(gcc -dumpmachine)
-if [ !make ]; then
+make || cp fakelib/libgcc.a fakelib/libpthread.a 
 
 # At this point, the build will fail, due to the fact that we
 # enabled POSIX threads in the compiler, but libpthread.a doesn't
 # exist yet. Work around it and try again:
-    cp fakelib/libgcc.a fakelib/libpthread.a
-fi
 
 make && make install
 
@@ -229,10 +227,7 @@ cd mingw-wpth-build32
     CCAS='x86_64-w64-mingw32-gcc -m32' \
     DLLTOOL='x86_64-w64-mingw32-dlltool -m i386' \
     RC='x86_64-w64-mingw32-windres -F pe-i386'
-if [ !make ]; then
-
-     cp fakelib/libgcc.a fakelib/libpthread.a
-fi
+make || cp fakelib/libgcc.a fakelib/libpthread.a
 
 make && make install
 

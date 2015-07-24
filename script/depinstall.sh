@@ -7,6 +7,8 @@ if [ "x${TRAVIS_BRANCH}" = "xfeature/mingw-w64" -a "x${ARCH}" != "xmingw-w64" ];
   exit 0
 fi
 
+gem install gist
+
 if [ "x${TRAVIS}" != "xtrue" ]; then
   sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   sudo apt-get -qq update

@@ -14,6 +14,10 @@ if [ "x${TRAVIS_BRANCH}" = "xfeature/mingw-w64" -a "x${ARCH}" != "xmingw-w64" ];
   exit 0
 fi
 
+if [ "x$ARCH" = "xmingw-w64" ]; then
+  ${0%/*}/build-mingw-w64.sh
+fi
+
 mkdir -p build
 cd build
 

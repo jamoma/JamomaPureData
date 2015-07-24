@@ -253,6 +253,6 @@ echo "***************"
 
 echo "Path : $PATH"
 echo "Find i686-w64-mingw32-gcc in PATH :"
-which i686-w64-mingw32-gcc
+which x86_64-w64-mingw32-gcc
 echo "Find i686-w64-mingw32-g++ in PATH :"
-which i686-w64-mingw32-g++
+which x86_64-w64-mingw32-g++

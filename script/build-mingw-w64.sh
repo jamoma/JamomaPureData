@@ -9,6 +9,11 @@ MINGW="${HOME}/mingw-w64-install"
 mkdir -p ${MINGW}
 export PATH=$PATH:$MINGW/bin
 
+upload_log_and_exit() {
+    gist config.log
+    gcc -v
+    exit 1
+}
 
 mkdir -p "${HOME}/mingw-w64"
 cd "${HOME}/mingw-w64"
@@ -91,7 +96,7 @@ fi
         --target=x86_64-w64-mingw32 \
         --enable-targets=x86_64-w64-mingw32,i686-w64-mingw32 \
         --prefix=$MINGW \
-        --with-sysroot=$MINGW || (gist config.log && exit 1)
+        --with-sysroot=$MINGW || upload_log_and_exit
     make && make install
     cd ..
 # fi
@@ -152,7 +157,7 @@ COMMENT2
     ../mingw-w64-src/mingw-w64-headers/configure \
         --prefix=$MINGW/x86_64-w64-mingw32 \
         --host=x86_64-w64-mingw32 \
-        --build=$(gcc -dumpmachine) || (gist config.log && exit 1)
+        --build=$(gcc -dumpmachine) || upload_log_and_exit
     make install
     cd ..
 #fi
@@ -169,7 +174,7 @@ cd gcc-build
     --prefix=$MINGW \
     --with-sysroot=$MINGW \
     --enable-threads=posix \
-    --enable-languages=c,c++ || (gist config.log && exit 1)
+    --enable-languages=c,c++ || upload_log_and_exit
 make all-gcc && make install-gcc
 cd ..
 
@@ -185,7 +190,7 @@ echo ../mingw-w64-src/mingw-w64-crt/configure \
     --enable-lib32 \
     --enable-lib64 \
     --host=x86_64-w64-mingw32 \
-    --build=$(gcc -dumpmachine) || (gist config.log && exit 1)
+    --build=$(gcc -dumpmachine) || upload_log_and_exit
 
 mkdir -p mingw-crt-build
 cd mingw-crt-build
@@ -196,7 +201,7 @@ PATH=$PATH:$MINGW/bin ../mingw-w64-src/mingw-w64-crt/configure \
     --enable-lib32 \
     --enable-lib64 \
     --host=x86_64-w64-mingw32 \
-    --build=$(gcc -dumpmachine) || (gist config.log && exit 1)
+    --build=$(gcc -dumpmachine) || upload_log_and_exit
 make && make install
 cd ..
 
@@ -210,7 +215,7 @@ cd mingw-wpth-build64
 ../mingw-w64-src/mingw-w64-libraries/winpthreads/configure \
     --prefix=$MINGW/x86_64-w64-mingw32 \
     --host=x86_64-w64-mingw32 \
-    --build=$(gcc -dumpmachine) || (gist config.log && exit 1)
+    --build=$(gcc -dumpmachine) || upload_log_and_exit
 make || cp fakelib/libgcc.a fakelib/libpthread.a
 
 # At this point, the build will fail, due to the fact that we
@@ -239,7 +244,7 @@ cd mingw-wpth-build32
     CC='x86_64-w64-mingw32-gcc -m32' \
     CCAS='x86_64-w64-mingw32-gcc -m32' \
     DLLTOOL='x86_64-w64-mingw32-dlltool -m i386' \
-    RC='x86_64-w64-mingw32-windres -F pe-i386' || (gist config.log && exit 1)
+    RC='x86_64-w64-mingw32-windres -F pe-i386' || upload_log_and_exit
 make || cp fakelib/libgcc.a fakelib/libpthread.a
 
 make && make install

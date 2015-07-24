@@ -10,7 +10,7 @@ mkdir -p ${MINGW}
 export PATH=$PATH:$MINGW/bin
 
 if [ "x${TRAVIS}" != "xtrue" ]; then
-  sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test || ( sudo apt-get install -qq -y python-software-properties && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test )
   sudo apt-get -qq update
   sudo apt-get -qq -y install gcc-4.9 g++-4.9
 

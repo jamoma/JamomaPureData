@@ -190,7 +190,7 @@ echo ../mingw-w64-src/mingw-w64-crt/configure \
 mkdir -p mingw-crt-build
 cd mingw-crt-build
 ../mingw-w64-src/mingw-w64-crt/configure \
-    CPPFLAGS="$CPPFLAGS -I'$MINGW/x86_64-w64-mingw32/include/'" \
+    CPPFLAGS="$CPPFLAGS -I'$MINGW/x86_64-w64-mingw32/include'" \
     --prefix=$MINGW/x86_64-w64-mingw32 \
     --with-sysroot=$MINGW \
     --enable-lib32 \

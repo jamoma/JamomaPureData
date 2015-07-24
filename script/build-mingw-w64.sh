@@ -178,6 +178,14 @@ echo "Build ../mingw-w64-src/mingw-w64-crt"
 echo "***************"
 
 find $MINGW/x86_64-w64-mingw32/include/ -name _mingw_mac.h
+echo ../mingw-w64-src/mingw-w64-crt/configure \
+    CPPFLAGS="$CPPFLAGS -I'$MINGW/x86_64-w64-mingw32/include/'" \
+    --prefix=$MINGW/x86_64-w64-mingw32 \
+    --with-sysroot=$MINGW \
+    --enable-lib32 \
+    --enable-lib64 \
+    --host=x86_64-w64-mingw32 \
+    --build=$(gcc -dumpmachine)
 
 mkdir -p mingw-crt-build
 cd mingw-crt-build

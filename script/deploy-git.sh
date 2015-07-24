@@ -72,6 +72,6 @@ git config user.email "travis-ci@jamoma.org"
 git config user.name "Travis CI"
 git config push.default matching
 
-git add -f JamomaNighltyBuilds/JamomaPuredata/${ARCHIVE_NAME}
+git add -f JamomaPuredata/${ARCHIVE_NAME}
 git commit -m "JamomaPuredata ${TRAVIS_COMMIT} ${TRAVIS_OS_NAME}/${ARCH}"
 git push

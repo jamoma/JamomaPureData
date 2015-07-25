@@ -45,17 +45,17 @@ case "$TRAVIS_OS_NAME" in
   		if [ "x$(uname -m)" = "xi386" ]; then
   			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz
   			tar -xzf cmake-3.2.2-Linux-i386.tar.gz
-        PATH=${PWD}/cmake-3.2.2-Linux-x86_64/bin:$PATH
+        export PATH=${PWD}/cmake-3.2.2-Linux-i386/bin:$PATH
   		else
   			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
   			tar -xzf cmake-3.2.2-Linux-x86_64.tar.gz
-        PATH=${PWD}/cmake-3.2.2-Linux-x86_64/bin:$PATH
+        export PATH=${HOME}/cmake-3.2.2-Linux-x86_64/bin:$PATH
   		fi
 	 ;;
 	osx)
 			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Darwin-x86_64.tar.gz
 			tar -xf cmake-3.2.2-Darwin-x86_64.tar.gz
-      PATH=${PWD}/cmake-3.2.2-Darwin-x86_64/CMake.app/Contents/bin:$PATH
+      export PATH=${HOME}/cmake-3.2.2-Darwin-x86_64/CMake.app/Contents/bin:$PATH
 
       wget http://msp.ucsd.edu/Software/pd-0.46-6.mac.tar.gz
       tar xvf pd-0.46-6.mac.tar.gz

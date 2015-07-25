@@ -21,9 +21,9 @@ cd build
 CMAKE_OPTIONS="-DPD_MAIN_PATH=${HOME}/pd -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/JamomaInstall"
 
 if [ "x$ARCH" = "xrpi" ]; then
-  CMAKE_OPTIONS="$CMAKE_OPTIONS -DCMAKE_TOOLCHAIN_FILE=`readlink -f ../Shared/CMake/toolchains/arm-linux-gnueabihf.cmake` -DCROSS_COMPILER_PATH=`readlink -f ${PWD}/../tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/`"
+  CMAKE_OPTIONS="$CMAKE_OPTIONS -DCROSS_COMPILER_PATH=${HOME}/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/ -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/Shared/CMake/toolchains/arm-linux-gnueabihf.cmake"
 elif [ "x$ARCH" = "xmingw-w64" ]; then
-  CMAKE_OPTIONS="$CMAKE_OPTIONS -DCROSS_COMPILER_PATH=`readlink -f ${HOME}/mingw-w64-install/` -DCMAKE_TOOLCHAIN_FILE=../Shared/CMake/toolchains/mingw-64.cmake -DJAMOMA_CORE_SRC_PATH=`readlink -f ${PWD}/../JamomaCore` -DPD_MAIN_PATH=`readlink -f $PWD/../pd`"
+  CMAKE_OPTIONS="$CMAKE_OPTIONS -DCROSS_COMPILER_PATH=${HOME}/mingw-w64-install/ -DCMAKE_TOOLCHAIN_FILE=../Shared/CMake/toolchains/mingw-64.cmake"
 elif [ "x$TRAVIS_OS_NAME" = "xosx" ]; then
   CMAKE_OPTIONS="$CMAKE_OPTIONS -DFAT_BINARY=ON"
 else
@@ -31,8 +31,8 @@ else
   export CXX=g++-4.9
 fi
 
-echo "Configuring with CMAKE_OPTIONS=$CMAKE_OPTIONS"
-/tmp/cmake/bin/cmake .. $CMAKE_OPTIONS
+echo "Configuring with CMAKE_OPTIONS=${CMAKE_OPTIONS}"
+cmake ${CMAKE_OPTIONS} ${TRAVIS_BUILD_DIR}
 echo "Now make"
 make -j 4
 make install

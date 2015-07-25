@@ -32,7 +32,7 @@ else
 fi
 
 echo "Configuring with CMAKE_OPTIONS=${CMAKE_OPTIONS}"
-cmake ${CMAKE_OPTIONS} ${TRAVIS_BUILD_DIR}
+${HOME}/cmake/bin/cmake ${CMAKE_OPTIONS} ${TRAVIS_BUILD_DIR}
 echo "Now make"
 make -j 4
 make install

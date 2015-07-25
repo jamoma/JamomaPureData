@@ -4,18 +4,15 @@
 
 # the name of the target operating system
 SET(CMAKE_SYSTEM_NAME Windows)
-SET(LIBXML2_INCLUDE_DIR "${CROSS_COMPILER_PATH}/local32/include/xml2")
-SET(LIBXML2_LIBRARIES "${CROSS_COMPILER_PATH}/local32/lib")
+SET(MINGW-W64 1)
 # which compilers to use for C and C++
 SET(CMAKE_C_COMPILER   ${CROSS_COMPILER_PATH}/bin/x86_64-w64-mingw32-gcc -m32)
 SET(CMAKE_CXX_COMPILER ${CROSS_COMPILER_PATH}/bin/x86_64-w64-mingw32-g++ -m32)
 SET(CMAKE_RC_COMPILER  ${CROSS_COMPILER_PATH}/bin/x86_64-w64-mingw32-windres)
 
 # here is the target environment located
-#SET(CMAKE_FIND_ROOT_PATH  /usr/i586-mingw32msvc /home/alex/mingw-install )
 SET(CMAKE_FIND_ROOT_PATH ${CROSS_COMPILER_PATH}/x86_64-w64-mingw32
-                         ${JAMOMA_CORE_SRC_PATH}/Foundation/library/libxml2/win32/libmingw-w64-32bit
-                         ${JAMOMA_CORE_SRC_PATH}/Foundation/library/libiconv2 )
+                         ${CROSS_COMPILER_PATH}/local32 )
 
 # adjust the default behaviour of the FIND_XXX() commands:
 # search headers and libraries in the target environment, search

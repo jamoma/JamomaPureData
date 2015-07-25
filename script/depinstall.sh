@@ -23,7 +23,7 @@ case "$TRAVIS_OS_NAME" in
 
         wget http://msp.ucsd.edu/Software/pd-0.46-6.rpi.tar.gz
         tar xvf pd-0.46-6.rpi.tar.gz
-        mv pd-0.46-6 pd
+        mv pd-0.46-6 ~/pd
 
       elif [ "x$ARCH" = "xmingw-w64" ]; then
 
@@ -37,11 +37,12 @@ case "$TRAVIS_OS_NAME" in
         # Download PureData for Windows
         wget http://msp.ucsd.edu/Software/pd-0.46-6.msw.zip
         unzip -q pd-*.zip
+        mv pd ~/pd
 
       else
         wget http://msp.ucsd.edu/Software/pd-0.46-6.src.tar.gz
         tar xvf pd-0.46-6.src.tar.gz
-        mv pd-0.46-6 pd
+        mv pd-0.46-6 ~/pd
       fi
 
   		if [ "x$(uname -m)" = "xi386" ]; then
@@ -59,7 +60,7 @@ case "$TRAVIS_OS_NAME" in
 
       wget http://msp.ucsd.edu/Software/pd-0.46-6.mac.tar.gz
       tar xvf pd-0.46-6.mac.tar.gz
-      ln -s Pd-0.46-6.app/Contents/Resources/ pd
+      ln -s Pd-0.46-6.app/Contents/Resources/ ~/pd
 
       brew install coreutils
 	;;

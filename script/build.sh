@@ -18,22 +18,17 @@ mkdir -p build
 cd build
 
 # common options to all jobs
-CMAKE_OPTIONS="-DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package"
+CMAKE_OPTIONS="-DPD_MAIN_PATH=${HOME}/pd -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package"
 
 if [ "x$ARCH" = "xrpi" ]; then
   CMAKE_OPTIONS="$CMAKE_OPTIONS -DCMAKE_TOOLCHAIN_FILE=`readlink -f ../Shared/CMake/toolchains/arm-linux-gnueabihf.cmake` -DCROSS_COMPILER_PATH=`readlink -f ${PWD}/../tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/`"
 elif [ "x$ARCH" = "xmingw-w64" ]; then
   CMAKE_OPTIONS="$CMAKE_OPTIONS -DCROSS_COMPILER_PATH=`readlink -f ${HOME}/mingw-w64-install/` -DCMAKE_TOOLCHAIN_FILE=../Shared/CMake/toolchains/mingw-64.cmake -DJAMOMA_CORE_SRC_PATH=`readlink -f ${PWD}/../JamomaCore` -DPD_MAIN_PATH=`readlink -f $PWD/../pd`"
-  # /tmp/cmake/bin/cmake -DPD_MAIN_PATH=`readlink -f ${PWD}/../pd` -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package -DCMAKE_TOOLCHAIN_FILE=`readlink -f ../Shared/CMake/toolchains/mingw-64.cmake` -DJAMOMA_CORE_SRC_PATH=`readlink -f ${PWD}/../JamomaCore` ..
 elif [ "x$TRAVIS_OS_NAME" = "xosx" ]; then
-  CMAKE_OPTIONS="$CMAKE_OPTIONS -DPD_MAIN_PATH=`greadlink -f ${PWD}/../pd` -DFAT_BINARY=ON"
+  CMAKE_OPTIONS="$CMAKE_OPTIONS -DFAT_BINARY=ON"
 else
   export CC=gcc-4.9
   export CXX=g++-4.9
-fi
-
-if [ "x$TRAVIS_OS_NAME" != "xosx" ]; then
-  CMAKE_OPTIONS="$CMAKE_OPTIONS -DPD_MAIN_PATH=`readlink -f ${PWD}/../pd`"
 fi
 
 echo "Configuring with CMAKE_OPTIONS=$CMAKE_OPTIONS"

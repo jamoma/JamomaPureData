@@ -30,7 +30,7 @@ case "$TRAVIS_OS_NAME" in
         wget https://dl.dropboxusercontent.com/u/3680458/mingw-w64-install.tar.gz
         wget https://dl.dropboxusercontent.com/u/3680458/mingw-w64-install.sha
         shasum -c mingw-w64-install.sha
-        tar -xvf mingw-w64-install.tar.gz
+        tar -xf mingw-w64-install.tar.gz
 
         # Download PureData for Windows
         wget http://msp.ucsd.edu/Software/pd-0.46-6.msw.zip

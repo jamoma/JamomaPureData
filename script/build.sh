@@ -18,7 +18,7 @@ mkdir -p build
 cd build
 
 # common options to all jobs
-CMAKE_OPTIONS="-DPD_MAIN_PATH=${HOME}/pd -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package"
+CMAKE_OPTIONS="-DPD_MAIN_PATH=${HOME}/pd -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/JamomaInstall"
 
 if [ "x$ARCH" = "xrpi" ]; then
   CMAKE_OPTIONS="$CMAKE_OPTIONS -DCMAKE_TOOLCHAIN_FILE=`readlink -f ../Shared/CMake/toolchains/arm-linux-gnueabihf.cmake` -DCROSS_COMPILER_PATH=`readlink -f ${PWD}/../tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/`"
@@ -35,3 +35,4 @@ echo "Configuring with CMAKE_OPTIONS=$CMAKE_OPTIONS"
 /tmp/cmake/bin/cmake .. $CMAKE_OPTIONS
 echo "Now make"
 make -j 4
+make install

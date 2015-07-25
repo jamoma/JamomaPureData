@@ -4,8 +4,8 @@
 
 # the name of the target operating system
 SET(CMAKE_SYSTEM_NAME Windows)
-SET(PC_LIBXML_INCLUDEDIR "${JAMOMA_CORE_SRC_PATH}/Foundation/library/libxml2/win32/libmingw-w64-32bit/include")
-SET(PC_LIBXML_LIBDIR "${JAMOMA_CORE_SRC_PATH}/Foundation/library/libxml2/win32/libmingw-w64-32bit/lib")
+SET(LIBXML2_INCLUDE_DIR "${CROSS_COMPILER_PATH}/local32/include/xml2")
+SET(LIBXML2_LIBRARIES "${CROSS_COMPILER_PATH}/local32/lib")
 # which compilers to use for C and C++
 SET(CMAKE_C_COMPILER   ${CROSS_COMPILER_PATH}/bin/x86_64-w64-mingw32-gcc -m32)
 SET(CMAKE_CXX_COMPILER ${CROSS_COMPILER_PATH}/bin/x86_64-w64-mingw32-g++ -m32)
@@ -27,7 +27,7 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 add_definitions(-DTT_PLATFORM_WIN)
 add_definitions(-DTTSTATIC)
 
-install(FILES 
+install(FILES
 ${CROSS_COMPILER_PATH}/x86_64-w64-mingw32/lib32/libstdc++-6.dll
 ${CROSS_COMPILER_PATH}/x86_64-w64-mingw32/lib32/libgcc_s_sjlj-1.dll
               ${JAMOMA_CORE_SRC_PATH}/Foundation/library/libxml2/win32/libmingw-w64-32bit/bin/libxml2-2.dll

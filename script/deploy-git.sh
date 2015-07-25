@@ -55,7 +55,7 @@ fi
 
 ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}.tgz"
 
-cd ${TRAVIS_BUILD_DIR}/JamomaInstall/jamoma/JamomaPuredata
+cd ${HOME}/JamomaPd-install
 
 if (MINGW)
  zip -r "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}" Jamoma/

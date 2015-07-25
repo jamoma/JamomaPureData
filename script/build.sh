@@ -2,6 +2,13 @@
 
 set -ev
 
+upload_log_and_exit() {
+    echo "error occured, print GCC version, upload log and exit"
+    gcc -v
+    gist CMakeFiles/CMakeOutput.log
+    exit 1
+}
+
 ## coverity does a double build: 1x for coverity, 1x the ordinary build
 ## let's suppress the 2nd one
 if [ "x${COVERITY_SCAN_BRANCH}" = "x1" ]; then
@@ -34,5 +41,5 @@ fi
 echo "Configuring with CMAKE_OPTIONS=${CMAKE_OPTIONS}"
 ${HOME}/cmake/bin/cmake ${CMAKE_OPTIONS} ${TRAVIS_BUILD_DIR}
 echo "Now make"
-make -j 4
-make install
+make -j 4 || upload_log_and_exit
+make install || upload_log_and_exit

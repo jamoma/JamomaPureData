@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.0)
 project(Jamoma4Pd)
 
-set(BUILD_JAMOMAPD True)
-
 message("Configuring Implementation/PureData build")
+
+if (MINGW-W64 AND NOT TARGET xml2)
+    add_library(xml2 SHARED IMPORTED)
+endif()
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/JamomaPd-externals)
 
@@ -23,7 +25,7 @@ if(NOT JAMOMA_UMBRELLA)
     if (APPLE)
         option(FAT_BINARY "Build a fat binary (32bit and 64bit)" OFF)
     endif(APPLE)
-    option(BUILD_JAMOMAPD "Build Jamoma for PureData package" OFF)
+    option(BUILD_JAMOMAPD "Build Jamoma for PureData package" ON)
     set(JAMOMA_CORE_SRC_PATH "${PROJECT_SOURCE_DIR}/JamomaCore" CACHE STRING "Path to JamomaCore source folder")
 
     if(FAT_BINARY)
@@ -44,3 +46,4 @@ include_directories(${PD_INCLUDE_DIRS})
 
 add_subdirectory(library)
 add_subdirectory(source)
+

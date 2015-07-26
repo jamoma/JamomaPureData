@@ -2,15 +2,15 @@ language: cpp
 sudo: false
 env:
   matrix:
-  #- ARCH=
-  #- ARCH=rpi
+  - ARCH=
+  - ARCH=rpi
   - ARCH=mingw-w64
   global:
   - secure: Ffn6fRJXZQIcKlCsxAeyZBEfmo03nQxa2ECV/M2iTDuOitXRvM/Qx+7gchCMwDd9rrifvgkiGL4owjqWqvH5reDbfjgR7zoF6Gi8HTn3IQ0eDRfU1CUZ24a/sjS9p29102K7r5t+N82DBJfrWYoVOJ/QjjCZaOBc9TSKLouyZA8=
   - secure: XPyh+19YkFfixR13pRl7a+nO77a/ynD5xPdV/E6LRWcmRhsdcYZM1H8V73zUcNm+O9d5QibcUv1nsYs1s06KPjNzh6SmEgh6jsKIxb2SpLzI5brZKMgQreZI4l90/RePNH5icXsgh3l+Azq3l8hTVVNVrolpWHfZUDM7n6mczHw=
 os:
   - linux
-  #- osx
+  - osx
 matrix:
   exclude:
   - os: osx
@@ -42,7 +42,7 @@ addons:
     - unzip # needed in Mingw-w64 to unzip Windows binary archive
     - zip
 # these are GCC build dependencies
-    - libgmp-dev 
-    - libmpfr-dev 
+    - libgmp-dev
+    - libmpfr-dev
     - libmpc-dev
     - texinfo

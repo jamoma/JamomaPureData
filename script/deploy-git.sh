@@ -55,10 +55,8 @@ fi
 
 ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}.tgz"
 
-cd ${TRAVIS_BUILD_DIR}/build
-cmake -DCMAKE_INSTALL_COMPONENT=JamomaPd -P cmake_install.cmake
+cd ${HOME}/JamomaPd-install
 
-cd ${TRAVIS_BUILD_DIR}/pd-package
 if (MINGW)
  zip -r "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}" Jamoma/
 else()

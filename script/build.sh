@@ -2,6 +2,13 @@
 
 set -ev
 
+upload_log_and_exit() {
+    echo "error occured, print GCC version, upload log and exit"
+    gcc -v
+    gist CMakeFiles/CMakeOutput.log
+    exit 1
+}
+
 ## coverity does a double build: 1x for coverity, 1x the ordinary build
 ## let's suppress the 2nd one
 if [ "x${COVERITY_SCAN_BRANCH}" = "x1" ]; then
@@ -18,25 +25,21 @@ mkdir -p build
 cd build
 
 # common options to all jobs
-CMAKE_OPTIONS="-DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package"
+CMAKE_OPTIONS="-DPD_MAIN_PATH=${HOME}/pd -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/JamomaInstall -DJAMOMAPD_INSTALL_FOLDER=${HOME}/JamomaPd-install"
 
 if [ "x$ARCH" = "xrpi" ]; then
-  CMAKE_OPTIONS="$CMAKE_OPTIONS -DCMAKE_TOOLCHAIN_FILE=`readlink -f ../Shared/CMake/toolchains/arm-linux-gnueabihf.cmake` -DCROSS_COMPILER_PATH=`readlink -f ${PWD}/../tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/`"
+  CMAKE_OPTIONS="$CMAKE_OPTIONS -DCROSS_COMPILER_PATH=${HOME}/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/ -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/Shared/CMake/toolchains/arm-linux-gnueabihf.cmake"
 elif [ "x$ARCH" = "xmingw-w64" ]; then
-  CMAKE_OPTIONS="$CMAKE_OPTIONS -DCROSS_COMPILER_PATH=`readlink -f ${HOME}/mingw-w64-install/` -DCMAKE_TOOLCHAIN_FILE=../Shared/CMake/toolchains/mingw-64.cmake -DJAMOMA_CORE_SRC_PATH=`readlink -f ${PWD}/../JamomaCore` -DPD_MAIN_PATH=`readlink -f $PWD/../pd`"
-  # /tmp/cmake/bin/cmake -DPD_MAIN_PATH=`readlink -f ${PWD}/../pd` -DBUILD_JAMOMAPD=ON -DBUILD_JAMOMAMAX=OFF -DJAMOMAPD_INSTALL_FOLDER=${TRAVIS_BUILD_DIR}/pd-package -DCMAKE_TOOLCHAIN_FILE=`readlink -f ../Shared/CMake/toolchains/mingw-64.cmake` -DJAMOMA_CORE_SRC_PATH=`readlink -f ${PWD}/../JamomaCore` ..
+  CMAKE_OPTIONS="$CMAKE_OPTIONS -DCROSS_COMPILER_PATH=${HOME}/mingw-w64-install/ -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/Shared/CMake/toolchains/mingw-w64.cmake"
 elif [ "x$TRAVIS_OS_NAME" = "xosx" ]; then
-  CMAKE_OPTIONS="$CMAKE_OPTIONS -DPD_MAIN_PATH=`greadlink -f ${PWD}/../pd` -DFAT_BINARY=ON"
+  CMAKE_OPTIONS="$CMAKE_OPTIONS -DFAT_BINARY=ON"
 else
   export CC=gcc-4.9
   export CXX=g++-4.9
 fi
 
-if [ "x$TRAVIS_OS_NAME" != "xosx" ]; then
-  CMAKE_OPTIONS="$CMAKE_OPTIONS -DPD_MAIN_PATH=`readlink -f ${PWD}/../pd`"
-fi
-
-echo "Configuring with CMAKE_OPTIONS=$CMAKE_OPTIONS"
-/tmp/cmake/bin/cmake .. $CMAKE_OPTIONS
+echo "Configuring with CMAKE_OPTIONS=${CMAKE_OPTIONS}"
+${HOME}/cmake/bin/cmake ${CMAKE_OPTIONS} ${TRAVIS_BUILD_DIR}
 echo "Now make"
-make -j 4
+make -j 4 || upload_log_and_exit
+make install || upload_log_and_exit

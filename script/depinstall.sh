@@ -15,7 +15,7 @@ if [ "x${TRAVIS}" != "xtrue" ]; then
   sudo apt-get -qq -y install gcc-4.9 g++-4.9
 fi
 
-mkdir -p /tmp/cmake
+cd ${HOME}
 case "$TRAVIS_OS_NAME" in
     linux)
   		if [ "x$ARCH" = "xrpi" ]; then
@@ -27,12 +27,10 @@ case "$TRAVIS_OS_NAME" in
 
       elif [ "x$ARCH" = "xmingw-w64" ]; then
 
-        cd ${HOME}
         wget https://dl.dropboxusercontent.com/u/3680458/mingw-w64-install.tar.gz
         wget https://dl.dropboxusercontent.com/u/3680458/mingw-w64-install.sha
         shasum -c mingw-w64-install.sha
-        tar -xvf mingw-w64-install.tar.gz
-        cd -
+        tar -xf mingw-w64-install.tar.gz
 
         # Download PureData for Windows
         wget http://msp.ucsd.edu/Software/pd-0.46-6.msw.zip
@@ -46,21 +44,27 @@ case "$TRAVIS_OS_NAME" in
 
   		if [ "x$(uname -m)" = "xi386" ]; then
   			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz
-  			tar -xzf cmake-3.2.2-Linux-i386.tar.gz -C /tmp/cmake --strip-components=1
+  			tar -xzf cmake-3.2.2-Linux-i386.tar.gz
+        # export PATH=${PWD}/cmake-3.2.2-Linux-i386/bin:$PATH
+        mv cmake-3.2.2-Linux-i386 cmake
   		else
   			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
-  			tar -xzf cmake-3.2.2-Linux-x86_64.tar.gz -C /tmp/cmake --strip-components=1
+  			tar -xzf cmake-3.2.2-Linux-x86_64.tar.gz
+        # export PATH=${HOME}/cmake-3.2.2-Linux-x86_64/bin:$PATH
+        mv cmake-3.2.2-Linux-x86_64 cmake
   		fi
 	 ;;
 	osx)
 			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Darwin-x86_64.tar.gz
-			tar -xf cmake-3.2.2-Darwin-x86_64.tar.gz -C /tmp/cmake --strip-components=1
-			ln -s /tmp/cmake/CMake.app/Contents/bin /tmp/cmake/bin
+			tar -xf cmake-3.2.2-Darwin-x86_64.tar.gz
+      # export PATH=${HOME}/cmake-3.2.2-Darwin-x86_64/CMake.app/Contents/bin:$PATH
+      ln -s ${HOME}/cmake-3.2.2-Darwin-x86_64/CMake.app/Contents ${HOME}/cmake
 
       wget http://msp.ucsd.edu/Software/pd-0.46-6.mac.tar.gz
       tar xvf pd-0.46-6.mac.tar.gz
-      ln -s Pd-0.46-6.app/Contents/Resources/ pd
+      ln -s Pd-0.46-6.app/Contents/Resources/ ~/pd
 
       brew install coreutils
 	;;
 esac
+cd -

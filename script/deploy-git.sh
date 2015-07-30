@@ -47,6 +47,7 @@ echo "ssh-keyscanned ${GITDEPLOYHOST}"
 # and use the (encrypted) auth key
 if [ -e "${KEYFILE}" ]; then
  chmod 600 "${KEYFILE}"
+ eval `ssh-agent -s`
  ssh-add "${KEYFILE}"
  echo "ssh-added ${KEYFILE}"
 else
@@ -57,6 +58,7 @@ ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}.tgz"
 
 cd ${HOME}/JamomaPd-install
 
+echo "Compress installation folder."
 if (MINGW)
  zip -r "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}" Jamoma/
 else()
@@ -65,6 +67,7 @@ endif()
 
 cd ${TRAVIS_BUILD_DIR}
 
+echo "Clone nightly-builds"
 git clone ${GITDEPLOYTARGET} --depth=1 JamomaNighltyBuilds
 mkdir -p JamomaNighltyBuilds/JamomaPuredata
 mv ${ARCHIVE_NAME} JamomaNighltyBuilds/JamomaPuredata/

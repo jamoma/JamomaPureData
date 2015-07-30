@@ -41,7 +41,7 @@ fi
 # (so we are not asked to accept it)
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
-ssh-keyscan -H ${GITDEPLOYHOST} >> ~/.ssh/known_hosts
+ssh-keyscan -H ${GITDEPLOYHOST} >> ~/.ssh/known_hosts || error "ssh-keyscan failed, go ahead"
 echo "ssh-keyscanned ${GITDEPLOYHOST}"
 
 # and use the (encrypted) auth key

@@ -48,9 +48,9 @@ echo "ssh-keyscanned ${GITDEPLOYHOST}"
 if [ -e "${KEYFILE}" ]; then
  chmod 600 "${KEYFILE}"
  ssh-add "${KEYFILE}"
- error "ssh-added ${KEYFILE}"
+ echo "ssh-added ${KEYFILE}"
 else
- error "missing ${KEYFILE}"
+ echo "missing ${KEYFILE}"
 fi
 
 ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}.tgz"

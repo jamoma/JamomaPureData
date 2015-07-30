@@ -59,11 +59,11 @@ ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}.tgz"
 cd ${HOME}/JamomaPd-install
 
 echo "Compress installation folder."
-if (MINGW)
+if [ "x$ARCH" = "xmingw-w64" ]; then
  zip -r "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}" Jamoma/
-else()
+else
  tar cvzf "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}" Jamoma/
-endif()
+fi
 
 cd ${TRAVIS_BUILD_DIR}
 

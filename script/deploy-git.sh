@@ -54,7 +54,10 @@ else
  echo "missing ${KEYFILE}"
 fi
 
-ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}.tgz"
+if [ "x$ARCH" = "xmingw-w64" ]; then
+  TRAVIS_OS_NAME="Windows"
+  ARCH="win32"
+fi
 
 ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}"
 

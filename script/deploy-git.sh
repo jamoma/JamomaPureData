@@ -57,6 +57,8 @@ fi
 if [ "x$ARCH" = "xmingw-w64" ]; then
   TRAVIS_OS_NAME="Windows"
   ARCH="win32"
+elif [ "x$ARCH" = "x" -a "xTRAVIS_OS_NAME" = "xLinux" ]; then
+  ARCH=`uname -p`
 fi
 
 ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}"
@@ -75,13 +77,13 @@ cd ${TRAVIS_BUILD_DIR}
 echo "Clone nightly-builds"
 git clone ${GITDEPLOYTARGET} --depth=1 JamomaNighltyBuilds
 mkdir -p JamomaNighltyBuilds/JamomaPuredata
-mv ${ARCHIVE_NAME} JamomaNighltyBuilds/JamomaPuredata/
+mv ${ARCHIVE_NAME}* JamomaNighltyBuilds/JamomaPuredata/
 cd JamomaNighltyBuilds
 
 git config user.email "travis-ci@jamoma.org"
 git config user.name "Travis CI"
 git config push.default matching
 
-git add -f JamomaPuredata/${ARCHIVE_NAME}
+git add -f JamomaPuredata/${ARCHIVE_NAME}*
 git commit -m "JamomaPuredata ${TRAVIS_COMMIT} ${TRAVIS_OS_NAME}/${ARCH}"
 git push

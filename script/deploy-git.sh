@@ -54,19 +54,26 @@ else
  echo "missing ${KEYFILE}"
 fi
 
+ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}"
+
 if [ "x$ARCH" = "xmingw-w64" ]; then
-  TRAVIS_OS_NAME="Windows"
-  ARCH="win32"
-elif [ "x$ARCH" = "x" -a "xTRAVIS_OS_NAME" = "xLinux" ]; then
-  ARCH=`uname -p`
+  ARCHIVE_NAME="JamomaPd-Windows-win32-${TRAVIS_TAG}"
+elif [ "x$ARCH" = "x" -a "xTRAVIS_OS_NAME" = "xlinux" ]; then
+  ARCHIVE_NAME="JamomaPd-Linux-x86_64"
+elif [ "x$ARCH" = "xrpi" ]; then
+  ARCHIVE_NAME="JamomaPd-Linux-RaspberryPi"
+elif [ "xTRAVIS_OS_NAME" = "xosx" ]; then
+  ARCHIVE_NAME="JamomaPd-OSX-fat_binary"
 fi
 
-ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}"
+if [ "x$TRAVIS_TAG" != "x" ]; then
+  ARCHIVE_NAME=${ARCHIVE_NAME}-${TRAVIS_TAG}
+fi
 
 cd ${HOME}/JamomaPd-install
 
 echo "Compress installation folder."
-if [ "x$ARCH" = "xmingw-w64" ]; then
+if [ "x$TRAVIS_OS_NAME" = "Windows" ]; then
  zip -r "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}.zip" Jamoma/
 else
  tar cvzf "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}.tar.gz" Jamoma/

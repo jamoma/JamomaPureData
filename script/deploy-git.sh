@@ -58,11 +58,11 @@ ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}"
 
 if [ "x$ARCH" = "xmingw-w64" ]; then
   ARCHIVE_NAME="JamomaPd-Windows-win32-${TRAVIS_TAG}"
-elif [ "x$ARCH" = "x" -a "xTRAVIS_OS_NAME" = "xlinux" ]; then
+elif [ "x$ARCH" = "x" -a "x$TRAVIS_OS_NAME" = "xlinux" ]; then
   ARCHIVE_NAME="JamomaPd-Linux-x86_64"
 elif [ "x$ARCH" = "xrpi" ]; then
   ARCHIVE_NAME="JamomaPd-Linux-RaspberryPi"
-elif [ "xTRAVIS_OS_NAME" = "xosx" ]; then
+elif [ "x$TRAVIS_OS_NAME" = "xosx" ]; then
   ARCHIVE_NAME="JamomaPd-OSX-fat_binary"
 fi
 

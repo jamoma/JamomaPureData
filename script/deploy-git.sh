@@ -73,7 +73,7 @@ fi
 cd ${HOME}/JamomaPd-install
 
 echo "Compress installation folder."
-if [ "x$TRAVIS_OS_NAME" = "Windows" ]; then
+if [ "x$ARCH" = "xmingw-w64" ]; then
  zip -r "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}.zip" Jamoma/
 else
  tar cvzf "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}.tar.gz" Jamoma/

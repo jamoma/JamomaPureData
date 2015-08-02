@@ -129,14 +129,52 @@ void plugtastic_classinit()
 
 #endif // STUFF_INHERITED_FROM_PLUGTASTIC
 
+#if defined(TT_PLATFORM_WIN)
+void add_dll_directory()
+{
+		TTString	fullpath{}, supportpath{};
+		char		temppath[4096];
+		LONG		lRes;
 
+		LPCSTR moduleName = "Jamoma.dll";
+		HMODULE	hmodule = GetModuleHandle(moduleName);
+		// get the path
+		GetModuleFileName(hmodule, (LPSTR)temppath, 4096);
 
+		if (!FAILED(hmodule) && temppath[0])
+		{
+			fullpath = temppath;
+
+			// get support folder path
+			fullpath = fullpath.substr(0, fullpath.length() - (strlen(moduleName) + 1));
+
+			supportpath = fullpath + TTString("\\support\\");
+
+			ADD_DLL_PROC lpfnAdllDllDirectory = (ADD_DLL_PROC)GetProcAddress(GetModuleHandle(TEXT("kernel32.dll")), "AddDllDirectory");
+
+	    if (lpfnAdllDllDirectory)
+	    {
+	        DLL_DIRECTORY_COOKIE cookie = ((ADD_DLL_PROC)lpfnAdllDllDirectory)(supportpath.cstr());
+	        std::cout << cookie << std::endl;
+	    } else {
+	    	post("Jamoma can't update Pd's DLL search path.");
+	    	post("Please make sure your system is update with KB2533623.");
+	    	post("You can also try to move all DLL from Jamoma\\support\\ folder to Jamoma\\ folder (where Jamoma.ldd is)");
+	    }
+		}
+
+}
+#endif
 /************************************************************************************/
 // Main() Function
 
 extern "C" int JAMOMA_EXPORT_MAXOBJ setup_j0x2eloader(void)
 {
     t_class *c;
+
+#if defined(TT_PLATFORM_"WIN")
+    	add_dll_directory();
+#endif
 
     epd_init();
     jamoma_init();

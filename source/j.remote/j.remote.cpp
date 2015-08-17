@@ -48,11 +48,6 @@ typedef struct extra {
 } t_extra;
 #define EXTRA ((t_extra*)x->extra)
 
-#define set_out 0
-#define value_out 1
-#define attach_out 2
-#define	dump_out 3
-
 // Definitions
 void        WrapTTViewerClass(WrappedClassPtr c);
 void        WrappedViewerClass_new(TTPtr self, long argc, t_atom *argv);
@@ -74,7 +69,6 @@ void        remote_set(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void        remote_address(TTPtr self, t_symbol *address);
 void        remote_loadbang(TTPtr self);
 
-void        remote_attach(TTPtr self, int attach_output_id);
 void        remote_mousemove(TTPtr self, t_object *patcherview, t_pt pt, long modifiers);
 void        remote_mouseleave(TTPtr self, t_object *patcherview, t_pt pt, long modifiers);
 void        remote_mousedown(TTPtr self, t_object *patcherview, t_pt pt, long modifiers);
@@ -95,12 +89,6 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2eremote(void)
 
 void WrapTTViewerClass(WrappedClassPtr c)
 {
-	eclass_addmethod(c->pdClass, (method)remote_assist,					"assist",				A_CANT, 0L);
-	
-    // eclass_addmethod(c->pdClass, (method)remote_mousemove,				"mousemove",			A_CANT, 0);
-    // eclass_addmethod(c->pdClass, (method)remote_mouseleave,				"mouseleave",			A_CANT, 0);
-    // eclass_addmethod(c->pdClass, (method)remote_mousedown,				"mousedown",			A_CANT, 0);
-	
 	eclass_addmethod(c->pdClass, (method)remote_return_value,			"return_value",			A_CANT, 0);
 	eclass_addmethod(c->pdClass, (method)remote_return_model_address,	"return_model_address",	A_CANT, 0);
 	eclass_addmethod(c->pdClass, (method)remote_return_description,     "return_description",	A_CANT, 0);
@@ -161,8 +149,6 @@ void WrappedViewerClass_new(TTPtr self, long argc, t_atom *argv)
 	
 	// Make two outlets
 	x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 3);
-	x->outlets[value_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output data
-    x->outlets[attach_out] = outlet_new((t_object*)x, NULL);					// anything outlet to select ui
     x->outlets[0] = outlet_new((t_object*)x, NULL);						// anything outlet to output qlim data
 	
     // clear support for qelem value
@@ -177,29 +163,6 @@ void WrappedViewerClass_new(TTPtr self, long argc, t_atom *argv)
 	// Trying to use a loadbang method instead is also not fully successful (as of Max 5.0.6)
 //	defer_low((t_object*)x, (method)remote_subscribe, NULL, 0, 0);
     // remote_subscribe(x);
-}
-
-// Method for Assistance Messages
-void remote_assist(TTPtr self, void *b, long msg, long arg, char *dst)
-{
-	if (msg==1) 						// Inlet
-		strcpy(dst, "input");
-	else {								// Outlets
-		switch(arg) {
-			case set_out:
-				strcpy(dst, "set: connect to ui object");
-				break;
-			case value_out:
-				strcpy(dst, "value");
-				break;
-			case attach_out:
-				strcpy(dst, "attach: connect this outlet to ui object if the set or the value outlets are not directly connected to it");
-				break;
-			case dump_out:
-				strcpy(dst, "dumpout");
-				break;
-		}
- 	}
 }
 
 void WrappedViewerClass_free(TTPtr self)
@@ -225,11 +188,6 @@ void remote_subscribe(TTPtr self)
     
     if (x->address == kTTAdrsEmpty)
 		return;
-    
-    // attach the j.remote to connected ui object
-    // TODO : this should be done when the an object is connected to one of the j.remote outlet
-    // (but this means we need to unsubscribe then subscribe with the new name)
-    remote_attach(self, set_out);
     
 	// for absolute address we only bind the given address but we don't subscribe the remote into the namespace
 	if (x->address.getType() == kAddressAbsolute) {
@@ -440,7 +398,7 @@ void remote_return_model_address(TTPtr self, t_symbol *msg, long argc, t_atom *a
 
 void remote_return_description(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 {
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
+	// WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
 	
     // if an ui object is connected
     // if (EXTRA->connected)
@@ -465,86 +423,7 @@ void remote_address(TTPtr self, t_symbol *address)
 
 void remote_loadbang(TTPtr self)
 {
-    WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
     remote_subscribe(self);
-}
-
-void remote_attach(TTPtr self, int attach_output_id)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	t_outlet	*myoutlet = NULL;
-	t_dll		*connecteds = NULL;
-	t_object	*object, *box;
-    t_symbol    *maxclass = NULL;
-	long        ac;
-	t_atom		*av;
-	
-    /* TODO reenable this for Pd later
-     * but how to know on wich object it's connected ?
-	// get the first object connected to the given outlet
-	object_obex_lookup(x, _sym_pound_B, &box);
-	
-	myoutlet = (t_outlet*)jbox_getoutlet((t_jbox*)box, attach_output_id);
-	if (myoutlet)
-		connecteds = (t_dll*)myoutlet->o_dll;
-	
-	if (connecteds) {
-        
-		object = (t_object*)connecteds->d_x1;
-        
-        // check object class
-        if (object)
-           maxclass = object_attr_getsym(object, _sym_maxclass);
-
-        EXTRA->connected = object;
-		if (EXTRA->connected && maxclass) {
-			
-            // get presentation object size
-			ac = 0;
-			av = NULL;
-			object_attr_getvalueof(EXTRA->connected, _sym_presentation_rect , &ac, &av);
-			if (ac && av) {
-				EXTRA->x = atom_getlong(av+0);
-				EXTRA->y = atom_getlong(av+1);
-				EXTRA->w = atom_getlong(av+2);
-				EXTRA->h = atom_getlong(av+3);
-			}
-            
-            // if no name is provided : edit the name.instance part of the address and the name of the ui object
-            if (EXTRA->name == kTTAdrsEmpty) {
-                
-                TTString editName = x->address.c_str();
-                editName += "(";
-                editName += maxclass->s_name;
-                editName += ")";
-                
-                EXTRA->name = TTAddress(editName);
-            }
-		}
-	}
-    */
-    
-    // if no ui object are connected to :
-    if (!connecteds || !object || !maxclass) {
-        
-        // the set outlet
-        if (attach_output_id == set_out)
-            
-            // try to see at the data outlet
-            return  remote_attach(self, value_out);
-        
-        // the value outlet
-        else if (attach_output_id == value_out)
-            
-            // try to see at the attach outlet
-            return  remote_attach(self, attach_out);
-        
-        // the attach outlet
-        else
-            
-            // give up
-            return;
-    }
 }
 
 // When the mouse is moving on the j.ui (not our remote object !)

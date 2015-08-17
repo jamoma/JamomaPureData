@@ -88,13 +88,9 @@ void *init_new(t_symbol *s, long argc, t_atom *argv)
 		x->patcherNode = NULL;
         x->address = TTAddress(relativeAddress->s_name);
 		
-		attr_args_process(x, argc, argv);										// handle attribute args				
-
-		// The following must be deferred because we have to interrogate our box,
-		// and our box is not yet valid until we have finished instantiating the object.
-		// Trying to use a loadbang method instead is also not fully successful (as of Max 5.0.6)
+		attr_args_process(x, argc, argv);										// handle attribute args
+        
         init_subscribe(x);
-        // defer_low((t_object*)x, (method)init_subscribe, NULL, 0, 0);
 	}
 	
 	return (x);																	// Return the pointer

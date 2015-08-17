@@ -402,8 +402,6 @@ void score_dowrite(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 		}
         */
         
-        short       outvol;
-        t_fourcc	outtype, filetype = 'TEXT';
         char        filepath[MAX_FILENAME_CHARS];
         
         strncpy(filepath, userpath.c_str(), MAX_FILENAME_CHARS); // must copy symbol before calling locatefile_extended

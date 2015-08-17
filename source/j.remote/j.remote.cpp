@@ -161,9 +161,9 @@ void WrappedViewerClass_new(TTPtr self, long argc, t_atom *argv)
 	
 	// Make two outlets
 	x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 3);
-    x->outlets[set_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output qlim data
 	x->outlets[value_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output data
     x->outlets[attach_out] = outlet_new((t_object*)x, NULL);					// anything outlet to select ui
+    x->outlets[0] = outlet_new((t_object*)x, NULL);						// anything outlet to output qlim data
 	
     // clear support for qelem value
     x->argc = 0;
@@ -359,11 +359,9 @@ void remote_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 	
 	// avoid blank before data
     if (msg == _sym_nothing) {
-        outlet_anything((t_outlet*)x->outlets[value_out], NULL, argc, argv);
-        outlet_anything((t_outlet*)x->outlets[set_out], _sym_set, argc, argv);
+        outlet_anything((t_outlet*)x->outlets[0], NULL, argc, argv);
     } else {
-        outlet_anything((t_outlet*)x->outlets[value_out], msg, argc, argv);
-        outlet_anything((t_outlet*)x->outlets[set_out], _sym_set, argc, argv);
+        outlet_anything((t_outlet*)x->outlets[0], msg, argc, argv);
     }
 	
 }

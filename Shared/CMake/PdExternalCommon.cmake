@@ -29,9 +29,9 @@ endif()
 target_link_libraries(${PROJECT_NAME} Foundation)
 target_link_libraries(${PROJECT_NAME} Modular)
 target_link_libraries(${PROJECT_NAME} JamomaPd)
-target_link_libraries(${PROJECT_NAME} DSP)
-target_link_libraries(${PROJECT_NAME} Graph)
-target_link_libraries(${PROJECT_NAME} AudioGraph)
+# target_link_libraries(${PROJECT_NAME} DSP)
+# target_link_libraries(${PROJECT_NAME} Graph)
+# target_link_libraries(${PROJECT_NAME} AudioGraph)
 
 ### Output ###
 # remove "_pd" at the start of project name

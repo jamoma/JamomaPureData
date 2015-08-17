@@ -23,7 +23,7 @@ else(PD_MAIN_PATH)
 	if (LINUX)
 		find_path(PD_INCLUDE_DIRS m_pd.h HINTS "/usr/local/include/pd"  "/usr/include/pd" "/usr/include/pdextended")
 	elseif (APPLE)
-		find_path(PD_INCLUDE_DIRS m_pd.h HINTS "/Applications/Pd-*.app/Contents/Resources/include" "/Applications/Pd-extended.app/Contents/Resources/include")
+                find_path(PD_INCLUDE_DIRS m_pd.h HINTS "/Applications/Pd-*.app/Contents/Resources/src" "/Applications/Pd-extended.app/Contents/Resources/include")
 	endif (LINUX)
 endif()
 

@@ -285,7 +285,6 @@ t_max_err wrappedModularClass_attrGet(TTPtr self, t_object *attr, long* argc, t_
 	t_symbol	*attrName = ((t_eattr*)attr)->name;
 	TTValue		v;
 	WrappedModularInstancePtr x = (WrappedModularInstancePtr)self;
-	t_max_err	err;
 	TTPtr		ptr;
 	
     // err = hashtab_lookup(x->wrappedClassDefinition->pdNamesToTTNames, attrName, (t_object**)&ptr);
@@ -312,7 +311,6 @@ t_max_err wrappedModularClass_attrSet(TTPtr self, t_object *attr, long argc, con
 	TTValue		v;
 	long        ac = 0;
 	t_atom		*av = NULL;
-	t_max_err	m_err;
 	TTErr		err;
 	TTPtr		ptr;
 	
@@ -460,7 +458,6 @@ TTErr wrappedModularClass_sendMessage(TTPtr self, t_symbol *s, long argc, const 
 	TTMessagePtr	aMessage = NULL;
 	long            ac = 0;
 	t_atom			*av = NULL;
-	t_max_err		m_err;
 	TTErr			err;
     TTPtr           ptr;
 	
@@ -847,7 +844,6 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
 	o.attributes(v);
 	for (i = 0; i < v.size(); i++) {
 		TTAttributePtr	attr = NULL;
-		t_symbol		*pdType = _sym_long;
 		
 		TTName = v[i];
         

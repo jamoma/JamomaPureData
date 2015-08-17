@@ -346,14 +346,10 @@ void model_preset_dorecall(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 void model_preset_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTString			*buffer;
-	char				title[MAX_FILENAME_CHARS];
 	TTObject            aTextHandler;
 	TTHashPtr			allPresets;
 	TTValue				v, o, args, none;
 	TTSymbol			name;
-    t_atom              a;
-	TTErr				tterr;
 	
 	// choose object to edit : default the cuelist
 	*EXTRA->toEdit = *EXTRA->presetManager;

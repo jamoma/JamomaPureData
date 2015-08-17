@@ -177,7 +177,6 @@ t_max_err wrappedClass_attrGet(TTPtr self, t_object* attr, long* argc, t_atom** 
 	long	i;
 	WrappedInstancePtr x = (WrappedInstancePtr)self;
     TTPtr		rawpointer = NULL;
-	t_max_err		err;
 	
     rawpointer = x->wrappedClassDefinition->pdNamesToTTNames[attrName->s_name];
     // err = hashtab_lookup(x->wrappedClassDefinition->pdNamesToTTNames, attrName, (t_object**)&rawpointer);
@@ -446,7 +445,6 @@ TTErr wrapTTClassAsPdClass(TTSymbol ttblueClassName, const char* pdClassName, Wr
 	o.attributes(v);
 	for (TTUInt16 i=0; i<v.size(); i++) {
 		TTAttributePtr	attr = NULL;
-		t_symbol*		pdType = _sym_long;
 		
 		name = v[i];
 		//nameSize = name->getString().length();	// to -- this crash on Windows...

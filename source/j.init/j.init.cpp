@@ -73,7 +73,6 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2einit(void)
 // Create
 void *init_new(t_symbol *s, long argc, t_atom *argv)
 {
-	long 		attrstart = attr_args_offset(argc, argv);						// support normal arguments
     t_init 		*x = (t_init *)eobj_new(g_init_class);
 	t_symbol	*relativeAddress = _sym_nothing;											// could be used to binds on a sub level j.hub
 

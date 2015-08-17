@@ -24,9 +24,6 @@
 
 // statics and globals
 static long                 initialized = false;			///< Global variabel indicating whether Jamoma has been initiated or not.
-static std::map<std::string,std::string>            *map_modules = NULL;			///< A hashtab of all modules (j.hubs) currently instantiated
-//t_object                  *obj_jamoma_clock = NULL;		// there is only one master clock for the whole system
-//t_object                  *obj_jamoma_scheduler = NULL;	// a shared global instance of the scheduler class (there may be others too)
 
 TTSymbol					kTTSym_Jamoma;
 TTObject                    JamomaApplicationManager;
@@ -53,16 +50,9 @@ TTString*					DocumentationFormat = NULL;
 
 void jamoma_init(void)
 {
-    short		outvol = 0;
-    t_fourcc	outtype, filetype = 'TEXT';
-    char        name[MAX_PATH_CHARS];
-    //char 		fullpath[MAX_PATH_CHARS];
-
 	if (!initialized) {
 
-        t_object	*pd_obj = (t_object *) SymbolGen("pd")->s_thing;
         TTString    JamomaConfigurationFilePath;
-		t_atom		a[4];
 		TTValue		v, out;
         TTErr       err;
 
@@ -346,8 +336,7 @@ void* object_method(void *x, t_symbol *s)
 short locatefile_extended(char *name, short *outvol, t_fourcc *outtype, const t_fourcc *filetypelist, short numtypes)
 {
 	int fd = -1;
-	int bin;
-	char realname[MAXPDSTRING], dirbuf[MAXPDSTRING], *basename;
+	char dirbuf[MAXPDSTRING], *basename;
 	fd = open_via_path("", name, "", dirbuf, &basename, MAXPDSTRING, 0);
 	return fd < 0;
 }
@@ -355,8 +344,7 @@ short locatefile_extended(char *name, short *outvol, t_fourcc *outtype, const t_
 short path_topathname(const short path, const char *file, char *name)
 {
 	int fd = -1;
-	int bin;
-	char realname[MAXPDSTRING], dirbuf[MAXPDSTRING], *basename;
+	char *basename;
 	fd =	open_via_path(NULL, file, "", name, &basename, MAXPDSTRING, 0);
 	strcat(name,basename);
 	return fd < 0;

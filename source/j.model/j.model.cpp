@@ -207,12 +207,11 @@ void model_subscribe(TTPtr self)
     TTNodePtr                   returnedContextNode = NULL;
 	TTObject                    aReceiver;
 	TTObject                    aTextHandler;
-	TTBoolean					isSubModel;
+	TTBoolean					isSubModel = false;
 	TTAddress                   returnedAddress, adrs;
 	TTSymbol                    description;
 	long                        ac;
 	t_atom*						av;
-    t_atom                      a;
 	t_canvas*					aPatcher = ((t_eobj*)x)->o_canvas;
 	TTAddress    modelAddress, presetAddress;
 

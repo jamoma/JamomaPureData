@@ -454,9 +454,6 @@ void score_dowrite_again(TTPtr self)
 void score_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTString    *buffer;
-	char        title[MAX_FILENAME_CHARS];
-    t_atom      a;
 	
 	// find event's state to edit it in text format
 	if (argc && argv)

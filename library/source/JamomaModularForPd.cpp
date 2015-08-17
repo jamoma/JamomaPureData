@@ -1823,7 +1823,7 @@ void jamoma_edit_filename(TTString format, TTSymbol className, t_symbol **return
 TTSymbol jamoma_file_write(t_object *x, long argc, t_atom *argv, char* default_filename)
 {
 	char 			fullpath[MAXPDSTRING];		// for storing the absolute path of the file
-	short 			err, path;						// pathID#, error number
+	short 			path;						// pathID#, error number
 //	t_filehandle	file_handle;					// a reference to our file (for opening it, closing it, etc.)
 //	t_fourcc		filetype = 'TEXT', outtype;		// the file type that is actually true
 	t_symbol        *userpath;
@@ -1877,11 +1877,7 @@ TTSymbol jamoma_file_write(t_object *x, long argc, t_atom *argv, char* default_f
 /** Get BOOT style filepath from args or, if no args open a dialog to read a file */
 TTSymbol jamoma_file_read(t_object *x, long argc, t_atom *argv, t_fourcc filetype)
 {
-	char 			filepath[MAXPDSTRING];	// for storing the name of the file locally
 	char 			fullpath[MAXPDSTRING];		// path and name passed on to the xml parser
-	char            posixpath[MAXPDSTRING];
-	short 			path = 0;						// pathID#
-	t_fourcc		outtype;
 	t_symbol        *userpath;
 	TTSymbol		result = kTTSymEmpty;
 	

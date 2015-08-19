@@ -278,13 +278,18 @@ bool jamoma_loadextern(t_symbol *objectname, long argc, t_atom *argv, t_object *
 
 t_symbol *object_attr_getsym(void *x, t_symbol *s){
     int argc=0;
-	t_atom *argv=NULL;
+    t_atom *argv=NULL;
     t_symbol*retsym = _sym_nothing;
     eclass_attr_getter((t_object *) x, s, &argc, &argv);
     if ( argv && argv[0].a_type == A_SYMBOL){
         retsym = argv[0].a_w.w_symbol;
-        free(argv);
     }
+
+    if (argv) {
+        free(argv);
+        argv=NULL;
+    }
+
     return retsym;
 }
 

@@ -301,6 +301,7 @@ void score_doread(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
         char        filepath[MAX_FILENAME_CHARS];
         
         strncpy(filepath, userpath.c_str(), MAX_FILENAME_CHARS); // must copy symbol before calling locatefile_extended
+        filepath[MAX_FILENAME_CHARS - 1] = '0';
         if (locatefile_extended((char*)filepath, &outvol, &outtype, &filetype, 0))
 			return;
         /*
@@ -405,6 +406,7 @@ void score_dowrite(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
         char        filepath[MAX_FILENAME_CHARS];
         
         strncpy(filepath, userpath.c_str(), MAX_FILENAME_CHARS); // must copy symbol before calling locatefile_extended
+        filepath[MAX_FILENAME_CHARS - 1] = '0';
         /*
         if (locatefile_extended((char*)filepath, &outvol, &outtype, &filetype, 0))
 			return;

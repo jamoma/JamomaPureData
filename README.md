@@ -34,11 +34,16 @@ Then you are ready to build JamomaCore and JamomaPuredata. From the root of the 
 ~~~~
 mkdir build
 cd build 
-cmake -DBUILD_JAMOMAPD:STRING=True -DPD_MAIN_PATH=/path/to/pd/src/dir ..
+cmake -DBUILD_JAMOMAPD:STRING=True ..
 make
 ~~~~
 
-On Mac OS X, you will find the Pd source directory inside the application bundle, it should look like : `/Applications/Pd-0.46-6-64bit.app/Contents/Resources/src`.
+Pd-vanilla is now a submodule of JamomaPuredata.
+By default it will build against the last tested Pd version.
+
+If you want to build against another version or if you are building for Windows platform and need a DLL to link to, then you can override the Pd source folder with `-DPD_MAIN_PATH=/path/to/pd/` option.
+
+On Mac OS X, you will find the Pd source directory inside the application bundle, it should look like : `/Applications/Pd-0.46-6-64bit.app/Contents/Resources/`.
 
 For more informations on CMake build system, please see the [Building with CMake](https://github.com/jamoma/Jamoma/wiki/Building-with-CMake) page on Jamoma wiki.
 

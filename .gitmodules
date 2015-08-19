@@ -4,3 +4,6 @@
 [submodule "JamomaCore"]
 	path = JamomaCore
 	url = https://github.com/jamoma/JamomaCore.git
+[submodule "pd-vanilla"]
+	path = pd-vanilla
+	url = git://git.code.sf.net/p/pure-data/pure-data

@@ -41,9 +41,8 @@ else()
     set(JAMOMA_CORE_SRC_PATH "${PROJECT_SOURCE_DIR}/../../Core/")
 endif()
 
-find_package(Pd REQUIRED)
-include_directories(${PD_INCLUDE_DIRS})
+set(PD_MAIN_PATH "${PROJECT_SOURCE_DIR}/pd-vanilla/" CACHE STRING "Path to Pd folder (where there is a src folder)")
+include_directories(${PD_MAIN_PATH}/src)
 
 add_subdirectory(library)
 add_subdirectory(source)
-

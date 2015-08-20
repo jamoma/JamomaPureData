@@ -62,6 +62,9 @@ t_object *wrappedModularClass_new(t_symbol *name, long argc, t_atom *argv)
         x->patcherAddress = kTTAdrsEmpty;
 
         x->dumpOut = NULL;
+
+        // create the first inlet
+        eobj_proxynew(x);
 		
 		// Make specific things
         ModularSpec *spec = (ModularSpec*)wrappedPdClass->specificities;
@@ -93,7 +96,7 @@ void wrappedModularClass_unregister(WrappedModularInstancePtr x)
 	TTErr		err;
     
 #ifndef ARRAY_EXTERNAL
-    
+
 	x->subscriberObject = TTObject();
     
     // check the wrappedObject is still valid because it could have been released in spec->_free method
@@ -163,6 +166,8 @@ void wrappedModularClass_free(WrappedModularInstancePtr x)
         free(x->argv);
 	
 	x->argv = NULL;
+
+    eobj_free(x);
     
     // delete x->internals;
     // x->internals = NULL;
@@ -536,7 +541,7 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
 										  (method)wrappedModularClass_new,
 										  (method)wrappedModularClass_free,
 										  sizeof(WrappedModularInstance),
-                                          0,
+                                          CLASS_NOINLET,
                                           A_GIMME,
 										  0);
     wrappedPdClass->ttblueClassName = ttblueClassName;

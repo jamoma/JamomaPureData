@@ -158,6 +158,8 @@ void wrappedClass_free(WrappedInstancePtr x)
 	delete x->audioIn;
 	delete x->audioOut;
 	delete[] x->controlSignalNames;
+
+    eobj_free(x);
 }
 
 
@@ -408,7 +410,7 @@ TTErr wrapTTClassAsPdClass(TTSymbol ttblueClassName, const char* pdClassName, Wr
                                             (method)wrappedClass_new,
                                             (method)wrappedClass_free,
 											sizeof(WrappedInstance), 
-                                            0,
+                                            CLASS_NOINLET,
 											A_GIMME, 
 											0);
 	wrappedPdClass->ttblueClassName = ttblueClassName;

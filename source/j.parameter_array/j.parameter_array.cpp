@@ -94,8 +94,6 @@ void WrapTTDataArrayClass(WrappedClassPtr c)
     eclass_addmethod(c->pdClass, (method)data_dec,							"-",					A_GIMME, 0);
 
     eclass_addmethod(c->pdClass, (method)data_address,						"address",				A_SYM,0);
-//    eclass_addmethod(c->pdClass, (method)data_array_build,          		"loadbang",				A_SYM,0);
-
 }
 
 void WrappedDataArrayClass_new(TTPtr self, long argc, t_atom *argv)
@@ -112,32 +110,29 @@ void WrappedDataArrayClass_new(TTPtr self, long argc, t_atom *argv)
 			relativeAddress = atom_getsym(argv);
 
 	if (relativeAddress == _sym_nothing) {
-        pd_error((t_object*)x, "j.parameter|j.message need a name as first argument" );
+        pd_error((t_object*)x, "j.parameter_array need a name as first argument" );
 		x->extra = NULL;
 		return;
 	}
 
 	// add an inlet for the index
-	x->inlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 1);
-//	x->inlets[0] = proxy_new(x, 1, &x->index);	// use this member to store index (because index is used for data array)
-    x->inlets[0] = eobj_proxynew(x);
-    x->index = 1;
+    eobj_proxynew(x);	// use this member to store index (because index is used for data array)
 
 	// Make outlets (before attr_args_process)
 	/////////////////////////////////////////////////////////////////////////////////
 
 	// Don't create outlets during dynamic changes
 	x->outlets = (TTHandle)sysmem_newptr(sizeof(TTPtr) * 2);
-    x->outlets[index_out] = outlet_new((t_object*)x, NULL);					// long outlet to output data index
     x->outlets[data_out] = outlet_new((t_object*)x, NULL);						// anything outlet to output data
+    x->outlets[index_out] = outlet_new((t_object*)x, NULL);					// long outlet to output data index
 
     x->useInternals = YES;
-    // x->internals->setThreadProtection(YES); // TODO this crashes if a j.model exists when instanciating j.*_array object
+    x->internals->setThreadProtection(YES);
 
 	x->arraySize = 0;
 	x->arrayIndex = 0;
 	x->arrayAddress = kTTAdrsEmpty;
-    // x->arrayArgs = none; // TODO this crashes if a j.model exists when instanciating j.*_array object
+    x->arrayArgs = none;
 	x->arrayAttrFormat = gensym("single");
 
 	// Prepare extra data for parameters and messages
@@ -158,16 +153,18 @@ void WrappedDataArrayClass_new(TTPtr self, long argc, t_atom *argv)
 	}
 
     // set array address and parse number between brackets
-    x->arrayAddress = relativeAddress->s_name;
+    x->arrayAddress = TTAddress(relativeAddress->s_name);
     if (x->arrayAddress.getType() != kAddressRelative)
     {
         x->arrayAddress = kTTAdrsEmpty;
         pd_error((t_object*)x, "can't register because %s is not a relative address", relativeAddress->s_name);
     }
 
-    t_atom number;
-    atom_setlong(&number, jamoma_parse_bracket(relativeAddress, x->arrayFormatInteger, x->arrayFormatString));
+    t_atom anumber;
+    int number = jamoma_parse_bracket(relativeAddress, x->arrayFormatInteger, x->arrayFormatString);
+    atom_setlong(&anumber, number);
 
+    data_array_build(self, _sym_nothing, 1, &anumber);
 }
 
 void WrappedDataArrayClass_free(TTPtr self)
@@ -448,12 +445,17 @@ void data_float(TTPtr self, t_float value)
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
 	t_atom a;
 
-	if (!x->internals->isEmpty()) {
-		atom_setfloat(&a, value);
-		data_list(self, _sym_float, 1, &a);
-	}
-	else
-		pd_error((t_object*)x, "float : the array is empty");
+    if(eobj_getproxy(x)){
+        atom_setlong(&a,value);
+        wrappedModularClass_ArraySelect(self, _sym_nothing, 1, &a);
+    } else {
+        if (!x->internals->isEmpty()) {
+            atom_setfloat(&a, value);
+            data_list(self, _sym_float, 1, &a);
+        } else {
+            pd_error((t_object*)x, "float : the array is empty");
+        }
+    }
 }
 
 void data_list(TTPtr self, t_symbol *msg, long argc, const t_atom *argv)
@@ -493,10 +495,11 @@ void WrappedDataArrayClass_anything(TTPtr self, t_symbol *msg, long argc, t_atom
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
     TTObject o;
 
-    if (x->inlets[0])
+    if (eobj_getproxy(x)){
 		wrappedModularClass_ArraySelect(self, msg, argc, argv);
-	else
+    } else {
         data_list(self, msg, argc, argv);
+    }
 }
 
 void data_array(TTPtr self, t_symbol *msg, long argc, const t_atom *argv)

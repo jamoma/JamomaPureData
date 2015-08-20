@@ -91,7 +91,7 @@ void WrapTTExplorerClass(WrappedClassPtr c)
 	
     // CLASS_ATTR_SYM(c->pdClass,			"format",	0,		WrappedModularInstance,	msg);	// use msg member to store format
     CLASS_ATTR_ACCESSORS(c->pdClass,	"format",	nmspc_get_format,	nmspc_set_format);
-    // CLASS_ATTR_ENUM(c->pdClass,		"format",	0,		"none umenu umenu_prefix jit.cellblock coll");
+    // CLASS_ATTR_ENUM(c->pdClass,		"format",	0,		"none umenu umenu_prefix coll");
 
     CLASS_ATTR_LONG(c->pdClass,		"relative",	0,		WrappedModularInstance,	index);	// use index member to store relative
     CLASS_ATTR_ACCESSORS(c->pdClass,	"relative",	nmspc_get_relative,	nmspc_set_relative);
@@ -305,37 +305,6 @@ void nmspc_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 		}
 	}
 	
-	// JIT CELLBLOCK FORMAT
-	else if (x->msg == gensym("jit.cellblock")) {
-		
-		// clear jit.cellblock
-		atom_setsym(a, gensym("all"));
-        outlet_anything((t_outlet*)x->outlets[data_out], _sym_clear, 1, a);
-		
-		// prepare jit.cellblock structure
-		atom_setlong(a, argc);
-        outlet_anything((t_outlet*)x->outlets[data_out], gensym("rows"), 1, a);
-		
-		// fill jit.cellblock
-		// output argv
-		for (i = 0; i < argc; i++) {
-			s = atom_getsym(argv+i);
-			
-			if (output == kTTSym_attributes)
-                s = jamoma_TTName_To_PdName(TTSymbol(s->s_name));
-			
-			if (output == kTTSym_brothers && s == _sym_bang)
-				s = gensym("0");
-			
-			if (s) {
-				atom_setlong(j, 0);
-				atom_setlong(j+1, i);
-				atom_setsym(j+2, s);
-                outlet_anything((t_outlet*)x->outlets[data_out], _sym_set, 3, j);
-			}
-		}
-	}
-	
 	// COLL FORMAT
 	else if (x->msg == gensym("coll")) {
 		
@@ -403,33 +372,6 @@ void nmspc_return_selection(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 			atom_setlong(u, i);
 			atom_setlong(u+1, state);
             outlet_anything((t_outlet*)x->outlets[data_out], gensym("checkitem"), 2, u);
-		}
-	}
-	
-	// JIT CELLBLOCK FORMAT
-	else if (x->msg == gensym("jit.cellblock")) {
-		
-		// update background color
-		for (i = 0; i < (TTUInt32) argc; i++) {
-			
-			atom_setlong(j, 0);
-			atom_setlong(j+1, i);
-			atom_setsym(j+2, gensym("brgb"));
-			
-			state = atom_getlong(argv+i);
-			
-			if (state) {
-				atom_setlong(j+3, 158);
-				atom_setlong(j+4, 0);
-				atom_setlong(j+5, 92);
-			}
-			else {
-				atom_setlong(j+3, 0);
-				atom_setlong(j+4, 0);
-				atom_setlong(j+5, 0);
-			}
-			
-            outlet_anything((t_outlet*)x->outlets[data_out], gensym("cell"), 6, j);
 		}
 	}
 	
@@ -529,8 +471,8 @@ long nmspc_myobject_iterator(t_nmspc *x, t_object *b)
 			//TODO : max_node_attribute_add(newTTNode,gensym("varname"), b);
 			//TODO : max_node_attribute_add(newTTNode,gensym("maxclass"), b);
 
-			//if (newInstanceCreated)
-			//	object_warn((t_object *)x,"%s : this scripting name is already registered in the tree", varname->s_name);
+            //if (newInstanceCreated)
+            //	object_warn((t_object *)x,"%s : this scripting name is already registered in the tree", varname->s_name);
 		}
 	}
 

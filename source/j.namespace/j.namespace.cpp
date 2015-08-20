@@ -60,6 +60,7 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2enamespace(void)
 	spec->_new = &WrappedExplorerClass_new;
 	spec->_free = &WrappedExplorerClass_free;
 	spec->_any = NULL;
+    spec->_notify = NULL;
 	
     return (void)wrapTTModularClassAsPdClass(kTTSym_Explorer, "j.namespace", NULL, spec);
 }

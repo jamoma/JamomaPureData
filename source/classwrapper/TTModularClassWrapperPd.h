@@ -97,14 +97,12 @@ typedef struct _modularSpecificities {
 /** Data Structure for this object
 */
 typedef struct _wrappedModularInstance {
-#ifdef AUDIO_EXTERNAL
+#if defined AUDIO_EXTERNAL
     t_edspbox								obj;						///< Max msp object header
-#else 
-#ifdef UI_EXTERNAL
-    t_ebox									box;						///< Max ui object header
+#elif defined UI_EXTERNAL
+    t_ebox									obj;						///< Max ui object header
 #else
     t_eobj      							obj;						///< Pd control object header
-#endif
 #endif
 	TTHandle								inlets;						///< an array of inlets
 	long									index;						///< index of the inlet used

@@ -105,7 +105,7 @@ t_eobj* wrappedClass_new(t_symbol* name, long argc, t_atom* argv)
             inlet_new(&x->obj.o_obj, &x->obj.o_obj.ob_pd, &s_signal, &s_signal);
 		*/
 
-		eobj_dspsetup(x,x->numInputs,0);
+        // eobj_dspsetup(x,x->numInputs,0);
         // dsp_setup(x, x->numInputs);			// inlets
 				
 		//if (wrappedPdClass->options && !wrappedPdClass->options->lookup(TT("numControlOutlets"), v))
@@ -313,7 +313,7 @@ void wrappedClass_assist(WrappedInstancePtr self, void *b, long msg, long arg, c
 {
 	if (msg==1)	{		// Inlets
 		if (arg==0)
-			strcpy(dst, "signal input, control messages"); //leftmost inlet
+            strcpy(dst, "signal input, control messages"); //leftmost inlet
 		else { 
 			if (arg > self->numInputs-self->numControlSignals-1)
 				//strcpy(dst, "control signal input");		
@@ -426,7 +426,7 @@ TTErr wrapTTClassAsPdClass(TTSymbol ttblueClassName, const char* pdClassName, Wr
 	o.messages(v);
 	for (TTUInt16 i=0; i<v.size(); i++) {
 		name = v[i];
-		//nameSize = name->getString().length();	// to -- this crash on Windows...
+        //nameSize = name->getString().length();	// TODO -- this crash on Windows...
 		nameSize = strlen(name.c_str());
 		nameCString = new char[nameSize+1];
         strncpy(nameCString, name.c_str(), nameSize+1);
@@ -444,7 +444,7 @@ TTErr wrapTTClassAsPdClass(TTSymbol ttblueClassName, const char* pdClassName, Wr
 		TTAttributePtr	attr = NULL;
 		
 		name = v[i];
-		//nameSize = name->getString().length();	// to -- this crash on Windows...
+        //nameSize = name->getString().length();	// TODO -- this crash on Windows...
 		nameSize = strlen(name.c_str());
 		nameCString = new char[nameSize+1];
         strncpy(nameCString, name.c_str(), nameSize+1);

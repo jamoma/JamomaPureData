@@ -113,11 +113,11 @@ typedef struct _wrappedModularInstance {
 
 	WrappedClassPtr							wrappedClassDefinition;		///< A pointer to the class definition
 
-#ifndef ARRAY_EXTERNAL
+//#ifndef ARRAY_EXTERNAL
 	TTObject                                wrappedObject;				///< The instance of the Jamoma object we are wrapping
 	TTObject                                subscriberObject;			///< The instance of a TTSubscriber object used to
 																		///< register the wrapped object in the tree structure
-#endif
+//#endif
 	
 	TTBoolean								useInternals;				///< The hash table can be used as an array of wrappedObject
 	TTHashPtr                               internals;					///< An hash table to store any internal TTObjectBases (like TTData, TTViewer, ...)
@@ -132,7 +132,7 @@ typedef struct _wrappedModularInstance {
 	TTSymbol								patcherName;				///< the patcher name in which the external is
 	TTAddress								patcherAddress;				///< the patcher address in which the external is
 	
-#ifdef ARRAY_EXTERNAL
+//#ifdef ARRAY_EXTERNAL
 	TTUInt32								arraySize;					// the size of the array size for iteration
 	TTUInt32								arrayIndex;					// the index number for array selection
 	TTAddress								arrayAddress;				// keep the address in memory to filter repetitions
@@ -142,7 +142,7 @@ typedef struct _wrappedModularInstance {
 	TTString								arrayFormatString;			///< a format string to edit string instance
 	
 	t_symbol								*arrayAttrFormat;			// Is it 'single' format output or 'array' format output
-#endif
+//#endif
 	
 	void									*extra;						///< used to keep very specific things
 

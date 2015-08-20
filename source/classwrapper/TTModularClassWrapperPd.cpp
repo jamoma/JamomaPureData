@@ -21,13 +21,6 @@ t_object *wrappedModularClass_new(t_symbol *name, long argc, t_atom *argv)
     WrappedClass*				wrappedPdClass = NULL;
     WrappedModularInstancePtr	x = NULL;
 	TTErr						err = kTTErrNone;
-#ifdef UI_EXTERNAL
-	long					flags;
-	t_dictionary*			d = NULL;
-	
-	if (!(d=object_dictionaryarg(argc,argv)))
-		return NULL;
-#endif
 	
 	// Find the WrappedClass
     // hashtab_lookup(wrappedPdClasses, name, (t_object**)&wrappedPdClass);
@@ -69,36 +62,6 @@ t_object *wrappedModularClass_new(t_symbol *name, long argc, t_atom *argv)
         x->patcherAddress = kTTAdrsEmpty;
 
         x->dumpOut = NULL;
-		
-#ifdef UI_EXTERNAL
-		flags = 0
-		| JBOX_DRAWFIRSTIN		// 0
-		| JBOX_NODRAWBOX		// 1
-		| JBOX_DRAWINLAST		// 2
-		//	| JBOX_TRANSPARENT		// 3
-		//	| JBOX_NOGROW			// 4
-		//	| JBOX_GROWY			// 5
-		| JBOX_GROWBOTH			// 6
-		//	| JBOX_IGNORELOCKCLICK	// 7
-		//	| JBOX_HILITE			// 8
-		//	| JBOX_BACKGROUND		// 9
-		//	| JBOX_NOFLOATINSPECTOR	// 10
-		//	| JBOX_TEXTFIELD		// 11
-		//    | JBOX_MOUSEDRAGDELTA	// 12
-		//	| JBOX_COLOR			// 13
-		//	| JBOX_BINBUF			// 14
-		//	| JBOX_DRAWIOLOCKED		// 15
-		//	| JBOX_DRAWBACKGROUND	// 16
-		//	| JBOX_NOINSPECTFIRSTIN	// 17
-		//	| JBOX_DEFAULTNAMES		// 18
-		//	| JBOX_FIXWIDTH			// 19
-		;
-		
-		jbox_new(&x->box, flags, argc, argv);
-		x->box.b_firstin = (t_object *)x;
-		attr_dictionary_process(x,d);
-		jbox_ready((t_jbox *)x);
-#endif
 		
 		// Make specific things
         ModularSpec *spec = (ModularSpec*)wrappedPdClass->specificities;
@@ -199,11 +162,6 @@ void wrappedModularClass_free(WrappedModularInstancePtr x)
 	if (x->argv)
         free(x->argv);
 	
-#ifdef UI_EXTERNAL
-	notify_free((t_object *)x);
-	jbox_free((t_jbox *)x);
-#endif
-	
 	x->argv = NULL;
     
     // delete x->internals;
@@ -250,16 +208,7 @@ t_max_err wrappedModularClass_notify(TTPtr self, t_symbol *s, t_symbol *msg, voi
 	if (spec->_notify)
 		spec->_notify(self, s, msg, sender, data);
 	
-#ifdef UI_EXTERNAL
-	if (msg == _sym_modified)
-		jbox_redraw(&x->box);
-	else if ((msg == _sym_attr_modified) && (sender == x))
-		jbox_redraw(&x->box);
-	
-	return jbox_notify((t_jbox*)x, s, msg, sender, data);
-#else
     return 0; // MAX_ERR_NONE;
-#endif
 }
 
 
@@ -567,185 +516,6 @@ void wrappedModularClass_dump(TTPtr self)
     }
 }
 
-
-#ifdef UI_EXTERNAL
-void wrappedModularClass_paint(WrappedModularInstancePtr x, t_object *view)
-{
-	t_rect			rect;
-	t_rect			r;
-	t_jgraphics     *g;
-	t_jsurface		*jsurface;
-	unsigned char*	data;
-	TTValue			v;
-	TTErr			err;
-	TTInt32			width;
-	TTInt32			height;
-	TTInt32			stride;
-	
-	g = (t_jgraphics*)patcherview_get_jgraphics(view);		// obtain graphics context
-	jbox_get_rect_for_view((t_object *)x, view, &rect);		// this is the box rectangle -- but we draw relative to 0 0, and thus only care about width & height
-	
-	v.resize(2);
-	v[0] = rect.width;
-	v[1] = rect.height;
-	err = selectedObject->sendMessage(TTSymbol("resize"), v);
-	err = selectedObject->sendMessage(TTSymbol("paint"));
-	err = selectedObject->sendMessage(TTSymbol("getData"), v);
-	if (!err) {
-		data = (unsigned char*)TTPtr(v);
-		v[1] width;
-		v[2] height;
-		v[3] stride;
-		
-		jsurface = jgraphics_image_surface_create_for_data(data, JGRAPHICS_FORMAT_ARGB32, width, height, stride, NULL, NULL);
-		
-		r.x = 0;
-		r.y = 0;
-		r.width = rect.width;
-		r.height = rect.height;
-		jgraphics_image_surface_draw(g, jsurface, r, r);
-		jgraphics_surface_destroy(jsurface);
-	}
-}
-
-
-TTPtr wrappedModularClass_oksize(TTPtr self, t_rect *newrect)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTValue					v;
-	
-	v.resize(4);
-	v[0] = 0.0;
-	v[1] = 0.0;
-	v[2] = newrect->width;
-	v[3] = newrect->height;
-	
-	selectedObject->sendMessage(TTSymbol("verifyResize"), v);
-	
-	v[2] newrect->width;
-	v[3] newrect->height;
-	return (void *)1;
-}
-
-
-void wrappedModularClass_mousedblclick(TTPtr self, t_object *patcherview, t_pt pt, long modifiers)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTValue					v;
-	
-	vresize(3);
-	v[0] = pt.x;
-	v[1] = pt.y;
-    v[2] = convertModifiersFromPdToTTGraphics(modifiers);
-	selectedObject->sendMessage(TTSymbol("mouseDoubleClicked"), v);
-	jbox_redraw((t_jbox *)x);
-}
-
-
-void wrappedModularClass_mousedown(TTPtr self, t_object *patcherview, t_pt pt, long modifiers)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTValue					v;
-	
-	vresize(3);
-	v[0] = pt.x;
-	v[1] = pt.y;
-    v[2] = convertModifiersFromPdToTTGraphics(modifiers);
-	selectedObject->sendMessage(TTSymbol("mouseDown"), v);
-	jbox_redraw((t_jbox *)x);
-}
-
-
-void wrappedModularClass_mousedrag(TTPtr self, t_object *patcherview, t_pt pt, long modifiers)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTValue					v;
-	
-	vresize(3);
-	v[0] = pt.x;
-	v[1] = pt.y;
-    v[2] = convertModifiersFromPdToTTGraphics(modifiers);
-	selectedObject->sendMessage(TTSymbol("mouseDragged"), v);
-	jbox_redraw((t_jbox *)x);
-}
-
-
-void wrappedModularClass_mouseup(TTPtr self, t_object *patcherview, t_pt pt, long modifiers)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTValue					v;
-	
-	vresize(3);
-	v[0] = pt.x;
-	v[1] = pt.y;
-    v[2] = convertModifiersFromPdToTTGraphics(modifiers);
-	selectedObject->sendMessage(TTSymbol("mouseUp"), v);
-	jbox_redraw((t_jbox *)x);
-}
-
-
-void wrappedModularClass_mouseenter(TTPtr self, t_object *patcherview, t_pt pt, long modifiers)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTValue					v;
-	
-	vresize(3);
-	v[0] = pt.x;
-	v[1] = pt.y;
-    v[2] = convertModifiersFromPdToTTGraphics(modifiers);
-	selectedObject->sendMessage(TTSymbol("mouseEntered"), v);
-	jbox_redraw((t_jbox *)x);
-}
-
-
-void wrappedModularClass_mousemove(TTPtr self, t_object *patcherview, t_pt pt, long modifiers)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTValue					v;
-	
-	vresize(3);
-	v[0] = pt.x;
-	v[1] = pt.y;
-    v[2] = convertModifiersFromPdToTTGraphics(modifiers);
-	selectedObject->sendMessage(TTSymbol("mouseMoved"), v);
-	jbox_redraw((t_jbox *)x);
-}
-
-
-void wrappedModularClass_mouseleave(TTPtr self, t_object *patcherview, t_pt pt, long modifiers)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTValue					v;
-	
-	vresize(3);
-	v[0] = pt.x;
-	v[1] = pt.y;
-    v[2] = convertModifiersFromPdToTTGraphics(modifiers);
-	selectedObject->sendMessage(TTSymbol("mouseExited"), v);
-	jbox_redraw((t_jbox *)x);
-}
-
-
-int convertModifiersFromPdToTTGraphics(int pdModifiers)
-{
-	int ttGraphicsModifiers = 0;
-	
-    if (pdModifiers & eCapsLock)
-		ttGraphicsModifiers |= TTModifierCapslock;
-    else if (pdModifiers & eShiftKey)
-		ttGraphicsModifiers |= TTModifierShiftKey;
-    else if (pdModifiers & eControlKey)
-		ttGraphicsModifiers |= TTModifierControlKey;
-    else if (pdModifiers & eAltKey)
-		ttGraphicsModifiers |= TTModifierAltKey;
-    else if (pdModifiers & eCommandKey)
-		ttGraphicsModifiers |= TTModifierCommandKey;
-	
-	return ttGraphicsModifiers;
-}
-#endif
-
-
 TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClassName, WrappedClassPtr* c, ModularSpec* specificities)
 {
 	TTObject        o;
@@ -759,10 +529,6 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
 	// AV : why do we need to do initialize this each time a new class is instanciated ?
     // jamoma_init();
     // common_symbols_init();
-    
-#ifdef UI_EXTERNAL
-	TTGraphicsInit();
-#endif
 	
     wrappedPdClass = new WrappedClass;
     wrappedPdClass->pdClassName = gensym(pdClassName);
@@ -786,11 +552,6 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
         return kTTErrGeneric;
     }
     
-#ifdef UI_EXTERNAL
-    jbox_initclass(wrappedPdClass->pdClass, flags);
-    wrappedPdClass->pdClass->c_flags |= CLASS_FLAG_NEWDICTIONARY; // to specify dictionary constructor
-#endif
-    
 #ifdef AUDIO_EXTERNAL
     // Setup our class to work with MSP
     class_dspinit(wrappedPdClass->pdClass);
@@ -810,25 +571,6 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
 	for (i = 0; i < v.size(); i++) {
 		TTName = v[i];
         
-#ifdef UI_EXTERNAL
-		if (TTName == TTSymbol("mouseDown"))
-            class_addmethod(wrappedPdClass->pdClass, (method)wrappedUIClass_mousedown,	"mousedown",	A_CANT, 0);
-		else if (TTName == TTSymbol("mouseDragged"))
-            class_addmethod(wrappedPdClass->pdClass, (method)wrappedUIClass_mousedrag,	"mousedrag",	A_CANT, 0);
-		else if (TTName == TTSymbol("mouseUp"))
-            class_addmethod(wrappedPdClass->pdClass, (method)wrappedUIClass_mouseup,		"mouseup",		A_CANT, 0);
-		else if (TTName == TTSymbol("mouseEntered"))
-            class_addmethod(wrappedPdClass->pdClass, (method)wrappedUIClass_mouseenter,	"mouseenter",	A_CANT, 0);
-		else if (TTName == TTSymbol("mouseExited"))
-            class_addmethod(wrappedPdClass->pdClass, (method)wrappedUIClass_mouseleave,	"mouseleave",	A_CANT, 0);
-		else if (TTName == TTSymbol("mouseMoved"))
-            class_addmethod(wrappedPdClass->pdClass, (method)wrappedUIClass_mousemove,	"mousemove",	A_CANT, 0);
-		else if (TTName == TTSymbol("mouseDoubleClicked"))
-            class_addmethod(wrappedPdClass->pdClass, (method)wrappedUIClass_mousedblclick,"mousedoubleclick",	A_CANT, 0);
-		else if (TTName == TTSymbol("verifyResize"))
-            class_addmethod(wrappedPdClass->pdClass, (method)wrappedUIClass_oksize,		"oksize",		A_CANT, 0);
-		else
-#endif
             if (TTName == TTSymbol("test")                      ||
                 TTName == TTSymbol("getProcessingBenchmark")    ||
                 TTName == TTSymbol("resetBenchmarking"))
@@ -888,9 +630,6 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
 		}
 	}
 	
-#ifdef UI_EXTERNAL
-    class_addmethod(wrappedPdClass->pdClass, (method)wrappedClass_paint,					"paint",				A_CANT, 0L);
-#endif
     // eclass_addmethod(wrappedPdClass->pdClass, (method)stdinletinfo,							"inletinfo",			A_CANT, 0);
     eclass_addmethod(wrappedPdClass->pdClass, (method)wrappedModularClass_notify,			"notify",				A_CANT, 0);
     eclass_addmethod(wrappedPdClass->pdClass, (method)wrappedModularClass_shareContextNode,	"share_context_node",	A_CANT,	0);
@@ -903,11 +642,6 @@ TTErr wrapTTModularClassAsPdClass(TTSymbol& ttblueClassName, const char* pdClass
 	}
 	
     eclass_addmethod(wrappedPdClass->pdClass, (method)wrappedModularClass_dump,				"dump",					A_GIMME, 0);
-    
-#ifdef UI_EXTERNAL
-    CLASS_ATTR_DEFAULT(wrappedPdClass->pdClass,	"patching_rect",	0,	"0. 0. 160. 160.");
-    CLASS_ATTR_MIN(wrappedPdClass->pdClass,		"patching_size",	0,	"1. 1.");
-#endif
 	
 #ifdef ARRAY_EXTERNAL
 	

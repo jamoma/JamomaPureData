@@ -276,57 +276,6 @@ TTErr		wrappedModularClass_setAttribute(TTPtr self, t_symbol *s, long argc, cons
 */
 void		wrappedModularClass_dump(TTPtr self);
 
-
-#ifdef UI_EXTERNAL
-void		wrappedModularClass_paint(WrappedModularInstancePtr x, t_object *view);
-
-
-/**
-*/
-TTPtr		wrappedModularClass_oksize(TTPtr self, t_rect *newrect);
-
-
-/**
-*/
-void		wrappedModularClass_mousedblclick(TTPtr self, t_object *patcherview, t_pt pt, long modifiers);
-
-
-/**
-*/
-void		wrappedModularClass_mousedown(TTPtr self, t_object *patcherview, t_pt pt, long modifiers);
-
-
-/**
-*/
-void		wrappedModularClass_mousedrag(TTPtr self, t_object *patcherview, t_pt pt, long modifiers);
-
-
-/**
-*/
-void		wrappedModularClass_mouseup(TTPtr self, t_object *patcherview, t_pt pt, long modifiers);
-
-
-/**
-*/
-void		wrappedModularClass_mouseenter(TTPtr self, t_object *patcherview, t_pt pt, long modifiers);
-
-
-/**
-*/
-void		wrappedModularClass_mousemove(TTPtr self, t_object *patcherview, t_pt pt, long modifiers);
-
-
-/**
-*/
-void		wrappedModularClass_mouseleave(TTPtr self, t_object *patcherview, t_pt pt, long modifiers);
-
-
-/**
-*/
-int			convertModifiersFromMaxToTTGraphics(int maxModifiers);
-#endif
-
-
 #ifdef ARRAY_EXTERNAL
 /**
  @param attr		The name of the attribute to get

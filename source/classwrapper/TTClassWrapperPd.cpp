@@ -402,11 +402,6 @@ TTErr wrapTTClassAsPdClass(TTSymbol ttblueClassName, const char* pdClassName, Wr
 	common_symbols_init();
 	TTDSPInit();
 	
-    /*
-    if (!wrappedPdClasses)
-        wrappedPdClasses = hashtab_new(0);
-    */
-	
 	wrappedPdClass = new WrappedClass;
 	wrappedPdClass->pdClassName = gensym((char*)pdClassName);
     wrappedPdClass->pdClass = eclass_new(	(char*)pdClassName,

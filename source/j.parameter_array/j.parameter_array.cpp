@@ -168,11 +168,6 @@ void WrappedDataArrayClass_new(TTPtr self, long argc, t_atom *argv)
     t_atom number;
     atom_setlong(&number, jamoma_parse_bracket(relativeAddress, x->arrayFormatInteger, x->arrayFormatString));
 
-	// The following must be deferred because we have to interrogate our box,
-	// and our box is not yet valid until we have finished instantiating the object.
-	// Trying to use a loadbang method instead is also not fully successful (as of Max 5.0.6)
-    // data_array_build(x, _sym_nothing, 1, &number);
-//	defer_low((t_object*)x, (method)data_array_build, _sym_nothing, 1, &number);
 }
 
 void WrappedDataArrayClass_free(TTPtr self)
@@ -368,7 +363,6 @@ void data_address(TTPtr self, t_symbol *address)
                     t_atom zero;
                     atom_setlong(&zero, 0);
                     data_array_build(self, _sym_nothing, 1, &zero);
-//                    defer(self,(method)data_array_build, _sym_nothing, 1, &zero);
                 }
 
                 x->arrayFormatInteger = newArrayFormatInteger;
@@ -376,7 +370,6 @@ void data_address(TTPtr self, t_symbol *address)
 
                 // build internals
                 data_array_build(self, _sym_nothing, 1, &number);
-//                defer(self,(method)data_array_build, _sym_nothing, 1, &number);
 
                 // for array mode : output the array once afterward
                 if (x->arrayAttrFormat == gensym("array"))

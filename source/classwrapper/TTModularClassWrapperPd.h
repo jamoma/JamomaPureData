@@ -104,9 +104,9 @@ typedef struct _wrappedModularInstance {
 #else
     t_eobj      							obj;						///< Pd control object header
 #endif
-	TTHandle								inlets;						///< an array of inlets
-	long									index;						///< index of the inlet used
-	TTHandle								outlets;					///< an array of outlet
+
+    t_float									index;						///< index of the inlet used
+    TTHandle								outlets;					///< an array of outlet
 	t_symbol								*msg;
 	long                                    argc;
 	t_atom									*argv;

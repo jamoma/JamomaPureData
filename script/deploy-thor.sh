@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
@@ -64,6 +64,10 @@ elif [ "x$ARCH" = "xrpi" ]; then
   ARCHIVE_NAME="JamomaPd-Linux-RaspberryPi"
 elif [ "x$TRAVIS_OS_NAME" = "xosx" ]; then
   ARCHIVE_NAME="JamomaPd-OSX-fat_binary"
+fi
+
+if [ "x$TRAVIS_COMMIT" != "x" ]; then
+  ARCHIVE_NAME=${ARCHIVE_NAME}-${TRAVIS_COMMIT:0:7}
 fi
 
 if [ "x$TRAVIS_TAG" != "x" ]; then

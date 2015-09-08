@@ -56,19 +56,20 @@ fi
 
 DATE=`git show -s --format=%ci HEAD`
 TIME=${DATE:11:8}
-TIME=${TIME//:/-}
+TIME=${TIME//:/}
 DATE=${DATE:0:10}
+DATE=${DATE/-:/}
 
 ARCHIVE_NAME="JamomaPd-${DATE}-${TIME}-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}"
 
 if [ "x$ARCH" = "xmingw-w64" ]; then
-  ARCHIVE_NAME="JamomaPd-Windows-win32-${TRAVIS_TAG}"
+  ARCHIVE_NAME="JamomaPd-${DATE}-${TIME}-Windows-win32-${TRAVIS_TAG}"
 elif [ "x$ARCH" = "x" -a "x$TRAVIS_OS_NAME" = "xlinux" ]; then
-  ARCHIVE_NAME="JamomaPd-Linux-x86_64"
+  ARCHIVE_NAME="JamomaPd-${DATE}-${TIME}-Linux-x86_64"
 elif [ "x$ARCH" = "xrpi" ]; then
-  ARCHIVE_NAME="JamomaPd-Linux-RaspberryPi"
+  ARCHIVE_NAME="JamomaPd-${DATE}-${TIME}-Linux-RaspberryPi"
 elif [ "x$TRAVIS_OS_NAME" = "xosx" ]; then
-  ARCHIVE_NAME="JamomaPd-OSX-fat_binary"
+  ARCHIVE_NAME="JamomaPd-${DATE}-${TIME}-OSX-fat_binary"
 fi
 
 if [ "x$TRAVIS_COMMIT" != "x" ]; then

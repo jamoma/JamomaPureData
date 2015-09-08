@@ -86,7 +86,7 @@ echo "Compress installation folder."
 if [ "x$ARCH" = "xmingw-w64" ]; then
  zip -r "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}.zip" Jamoma/
 else
- tar cvzf "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}.tar.gz" Jamoma/
+ tar czf "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}.tar.gz" Jamoma/
 fi
 
 cd ${TRAVIS_BUILD_DIR}

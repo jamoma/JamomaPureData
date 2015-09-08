@@ -41,3 +41,5 @@ addons:
     - g++-4.9
     - unzip # needed in Mingw-w64 to unzip Windows binary archive
     - zip
+git:
+  depth: 1

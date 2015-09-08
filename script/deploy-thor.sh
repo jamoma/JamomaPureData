@@ -54,7 +54,12 @@ else
  echo "missing ${KEYFILE}"
 fi
 
-ARCHIVE_NAME="JamomaPd-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}"
+DATE=`git show -s --format=%ci HEAD`
+TIME=${DATE:11:8}
+TIME=${TIME//:/-}
+DATE=${DATE:0:10}
+
+ARCHIVE_NAME="JamomaPd-${DATE}-${TIME}-${TRAVIS_OS_NAME}_${ARCH}-${TRAVIS_TAG}"
 
 if [ "x$ARCH" = "xmingw-w64" ]; then
   ARCHIVE_NAME="JamomaPd-Windows-win32-${TRAVIS_TAG}"

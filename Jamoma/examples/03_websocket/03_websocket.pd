@@ -1,0 +1,68 @@
+#N canvas 537 688 1047 338 10;
+#X floatatom 57 206 5 0 0 0 - - -, f 5;
+#X floatatom 57 169 5 0 0 0 - - -, f 5;
+#X floatatom 54 115 5 0 0 0 - - -, f 5;
+#X floatatom 54 78 5 0 0 0 - - -, f 5;
+#X obj 543 266 j.modular WebSocket;
+#X obj 543 61 getdir;
+#X obj 543 32 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 543 170 protocol/setup htmlPath \$1/jamomarmot \, protocol/setup
+port 9001;
+#X msg 559 241 activity \$1;
+#X obj 559 222 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 543 288 print;
+#X obj 755 237 j.remote frequency;
+#X floatatom 719 241 5 0 0 0 - - -, f 5;
+#X obj 543 4 loadbang;
+#X msg 555 123 symbol /home/user/pd-externals/Jamoma/example/03_websocket_rmot
+;
+#X obj 53 95 j.parameter frequency @type decimal @unit Hz @range 20
+1000;
+#X obj 57 186 j.parameter gain @type decimal @unit dB @range -100 0
+;
+#N canvas 1 128 450 300 model 0;
+#X obj 65 60 j.parameter scale @type decimal @range 0 1;
+#X floatatom 65 82 5 0 0 0 - - -, f 5;
+#X floatatom 65 42 5 0 0 0 - - -, f 5;
+#X floatatom 65 142 5 0 0 0 - - -, f 5;
+#X floatatom 65 102 5 0 0 0 - - -, f 5;
+#X obj 65 120 j.parameter translation @type decimal @range -4 4;
+#X obj 220 217 j.model myModel;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X restore 218 38 pd model;
+#N canvas 1 112 450 300 model2 0;
+#X obj 65 60 j.parameter scale @type decimal @range 0 1;
+#X floatatom 65 82 5 0 0 0 - - -, f 5;
+#X floatatom 65 42 5 0 0 0 - - -, f 5;
+#X floatatom 65 142 5 0 0 0 - - -, f 5;
+#X floatatom 65 102 5 0 0 0 - - -, f 5;
+#X obj 65 120 j.parameter translation @type decimal @range -4 4;
+#X obj 220 217 j.model myModel;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X restore 284 36 pd model2;
+#X text 586 61 <-- [getdir] might fail to load;
+#X text 612 76 you can either try to find him yourself (try the great
+deken plugin) or fill the message box below with the full path to the
+folder of this patch :;
+#X connect 1 0 16 0;
+#X connect 3 0 15 0;
+#X connect 4 0 10 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 4 0;
+#X connect 8 0 4 0;
+#X connect 9 0 8 0;
+#X connect 11 0 12 0;
+#X connect 12 0 11 0;
+#X connect 13 0 6 0;
+#X connect 14 0 7 0;
+#X connect 15 0 2 0;
+#X connect 16 0 0 0;

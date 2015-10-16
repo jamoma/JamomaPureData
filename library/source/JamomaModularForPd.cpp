@@ -108,10 +108,6 @@ TTErr jamoma_subscriber_create(t_eobj *x, TTObject& anObject, TTAddress relative
                         patcherArg = TTAddress(atom_getsymbol(argv+2)->s_name);
                 }
                 
-                // free args
-                if (argv) free(argv);
-                argv=NULL;
-                
                 // warn the user that it should provide unique name
                 
                 // if no name has been provided

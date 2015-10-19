@@ -50,9 +50,9 @@ Then you first have to load the `[jamoma]` external itself which loads and initi
 You have two options :
 - put a `[jamoma]` object in your patch
 or
-- add `jamoma` to the library to load at startup.
-To add a library at startup on Pd-extended, go to Preferences and add in the "Startup flag" (or something like that) field : `-lib jamoma`.
-If you are using Pd Vanilla (and I encourage you to do so), go to Preferences->Startup, add a new and type `jamoma`.
+- add `Jamoma` to the library to load at startup.
+To add a library at startup on Pd-extended, go to Preferences and add in the "Startup flag" (or something like that) field : `-lib Jamoma`.
+If you are using Pd Vanilla (and I encourage you to do so), go to Preferences->Startup, add a new and type `Jamoma`.
 
 If Jamoma loads it prints something like : 
 

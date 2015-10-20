@@ -30,7 +30,7 @@ CMAKE_OPTIONS="-DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/JamomaInstall"
 if [ "x$ARCH" = "xrpi" ]; then
   CMAKE_OPTIONS="$CMAKE_OPTIONS -DCROSS_COMPILER_PATH=${HOME}/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/ -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/Shared/CMake/toolchains/arm-linux-gnueabihf.cmake"
 elif [ "x$ARCH" = "xmingw-w64" ]; then
-  CMAKE_OPTIONS="$CMAKE_OPTIONS -DCROSS_COMPILER_PATH=${HOME}/mingw-w64-install/ -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/Shared/CMake/toolchains/mingw-w64.cmake"
+  CMAKE_OPTIONS="$CMAKE_OPTIONS -DCROSS_COMPILER_PATH=${HOME}/mingw-w64-install/ -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/Shared/CMake/toolchains/mingw-w64.cmake -DPD_MAIN_PATH=${HOME}/pd"
 elif [ "x$TRAVIS_OS_NAME" = "xosx" ]; then
   CMAKE_OPTIONS="$CMAKE_OPTIONS -DFAT_BINARY=ON"
 else

@@ -5,6 +5,7 @@ env:
   - ARCH=
   - ARCH=rpi
   - ARCH=mingw-w64
+  - COMPILER=clang
   global:
   - secure: Ffn6fRJXZQIcKlCsxAeyZBEfmo03nQxa2ECV/M2iTDuOitXRvM/Qx+7gchCMwDd9rrifvgkiGL4owjqWqvH5reDbfjgR7zoF6Gi8HTn3IQ0eDRfU1CUZ24a/sjS9p29102K7r5t+N82DBJfrWYoVOJ/QjjCZaOBc9TSKLouyZA8=
   - secure: XPyh+19YkFfixR13pRl7a+nO77a/ynD5xPdV/E6LRWcmRhsdcYZM1H8V73zUcNm+O9d5QibcUv1nsYs1s06KPjNzh6SmEgh6jsKIxb2SpLzI5brZKMgQreZI4l90/RePNH5icXsgh3l+Azq3l8hTVVNVrolpWHfZUDM7n6mczHw=
@@ -17,6 +18,8 @@ matrix:
     env: ARCH=rpi
   - os: osx
     env: ARCH=mingw-w64
+  - os: osx
+    env: COMPILER=clang
 before_install:
 - "./script/depinstall.sh"
 script:

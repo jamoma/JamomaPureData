@@ -38,6 +38,10 @@ else
   export CXX=g++-4.9
 fi
 
+if [  "x${COMPILER}" = "xclang" ]; then
+  CMAKE_OPTIONS="$CMAKE_OPTIONS -DCMAKE_CXX_COMPILER=clang=++"
+fi
+
 echo "Configuring with CMAKE_OPTIONS=${CMAKE_OPTIONS}"
 ${HOME}/cmake/bin/cmake ${CMAKE_OPTIONS} ${TRAVIS_BUILD_DIR}
 echo "Now make"

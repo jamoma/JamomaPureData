@@ -39,7 +39,7 @@ else
 fi
 
 if [  "x${COMPILER}" = "xclang" ]; then
-  CMAKE_OPTIONS="$CMAKE_OPTIONS -DCMAKE_CXX_COMPILER=clang=++"
+  CMAKE_OPTIONS="$CMAKE_OPTIONS -DCMAKE_CXX_COMPILER=clang++"
 fi
 
 echo "Configuring with CMAKE_OPTIONS=${CMAKE_OPTIONS}"

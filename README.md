@@ -21,8 +21,25 @@ Then the build process is straightforward :
     git submodule update --init
     mkdir build 
     cd build 
-    cmake ..
+    cmake .. -DCMAKE_INSTALL_PREFIX=${PWD}/JamomaInstall
     make
+    make install
+
+To build with ninja / clang, from the cmake step ;
+
+    cmake .. -G Ninja -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_INSTALL_PREFIX=${PWD}/JamomaInstall
+    ninja
+    ninja install
+
+After the install step you should have a working package located at `JamomaInstall/jamoma/JamomaPd/Jamoma`. You can copy this directly to your Pd externals directory :
+- `~/pd-externals` on Linux
+- `~/Library/Pd` on Mac OS (create it if it doesn't exists)
+- `%AppData%\Pd\` on Windows)
+
+If you want to get involved in development then you may want to have a package with versionned files, so every changes in help for instance will appear in your versionning tool. For that, I sugguest to copy the package from `JamomaInstall/jamoma/JamomaPd/Jamoma` and erase the `Jamoma` folder at the root of the repository. Then make a symlink to that directory into your Pd externals folder with (for Linux) :
+
+    cp -R JamomaInstall/jamoma/JamomaPd/Jamoma .
+    ln -s ${PWD}/Jamoma ~/pd-externals
 
 Pd-vanilla is now a submodule of JamomaPuredata.
 By default it will build against the last tested Pd version.

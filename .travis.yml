@@ -1,25 +1,43 @@
 language: cpp
 sudo: false
 env:
-  matrix:
-  - ARCH=
-  - ARCH=rpi
-  - ARCH=mingw-w64
-  - COMPILER=clang
   global:
   - secure: Ffn6fRJXZQIcKlCsxAeyZBEfmo03nQxa2ECV/M2iTDuOitXRvM/Qx+7gchCMwDd9rrifvgkiGL4owjqWqvH5reDbfjgR7zoF6Gi8HTn3IQ0eDRfU1CUZ24a/sjS9p29102K7r5t+N82DBJfrWYoVOJ/QjjCZaOBc9TSKLouyZA8=
   - secure: XPyh+19YkFfixR13pRl7a+nO77a/ynD5xPdV/E6LRWcmRhsdcYZM1H8V73zUcNm+O9d5QibcUv1nsYs1s06KPjNzh6SmEgh6jsKIxb2SpLzI5brZKMgQreZI4l90/RePNH5icXsgh3l+Azq3l8hTVVNVrolpWHfZUDM7n6mczHw=
-os:
-  - linux
-  - osx
 matrix:
-  exclude:
-  - os: osx
-    env: ARCH=rpi
-  - os: osx
-    env: ARCH=mingw-w64
-  - os: osx
-    env: COMPILER=clang
+  include:
+    - os: osx
+    - os: linux
+      env: ARCH=rpi
+    - os: linux
+      sudo: false
+      env: ARCH=mingw-w64
+      addons:
+        apt:
+          packages:
+          - unzip
+          - zip
+    - os: linux
+      sudo: false
+      env: COMPILER=clang
+      addons:
+        apt:
+          sources:
+          - llvm-toolchain-precise-3.7
+          - ubuntu-toolchain-r-test
+          packages:
+          - gcc-4.9
+          - clang-3.6
+    - os: linux
+      sudo: false
+      env: ARCH=
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test
+          packages:
+          - gcc-4.9
+          - g++-4.9
 before_install:
 - "./script/depinstall.sh"
 script:
@@ -30,20 +48,10 @@ addons:
   coverity_scan:
     project:
       name: jamoma/JamomaPureData
-      description: Build submitted via Travis CI
     notification_email: jamoma-devel@lists.sourceforge.net
     build_command_prepend: mkdir build && cd build && /tmp/cmake/bin/cmake .. -DBUILD_JAMOMAPD=ON
       -DBUILD_JAMOMAMAX=OFF; make clean
     build_command: make -j 4
     branch_pattern: coverity_scan
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - gcc-4.9
-    - g++-4.9
-    - clang-3.7
-    - unzip # needed in Mingw-w64 to unzip Windows binary archive
-    - zip
 git:
   depth: 1

@@ -27,7 +27,7 @@ matrix:
           - ubuntu-toolchain-r-test
           packages:
           - gcc-4.9
-          - clang-3.6
+          - clang-3.7
     - os: linux
       sudo: false
       env: ARCH=

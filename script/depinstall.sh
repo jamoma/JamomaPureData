@@ -21,9 +21,9 @@ case "$TRAVIS_OS_NAME" in
   		if [ "x$ARCH" = "xrpi" ]; then
   			git clone -b Jamoma https://github.com/avilleret/tools.git
 
-        wget http://msp.ucsd.edu/Software/pd-0.46-6.rpi.tar.gz
-        tar xvf pd-0.46-6.rpi.tar.gz
-        mv pd-0.46-6 pd
+        #wget http://msp.ucsd.edu/Software/pd-0.46-6.rpi.tar.gz
+        #tar xvf pd-0.46-6.rpi.tar.gz
+        #mv pd-0.46-6 pd
 
       elif [ "x$ARCH" = "xmingw-w64" ]; then
 
@@ -36,10 +36,10 @@ case "$TRAVIS_OS_NAME" in
         wget http://msp.ucsd.edu/Software/pd-0.46-6.msw.zip
         unzip -q pd-*.zip
 
-      else
-        wget http://msp.ucsd.edu/Software/pd-0.46-6.src.tar.gz
-        tar xvf pd-0.46-6.src.tar.gz
-        mv pd-0.46-6 pd
+      #else
+        #wget http://msp.ucsd.edu/Software/pd-0.46-6.src.tar.gz
+        #tar xf pd-0.46-6.src.tar.gz
+        #mv pd-0.46-6 pd
       fi
 
   		if [ "x$(uname -m)" = "xi386" ]; then
@@ -60,9 +60,9 @@ case "$TRAVIS_OS_NAME" in
       # export PATH=${HOME}/cmake-3.2.2-Darwin-x86_64/CMake.app/Contents/bin:$PATH
       ln -s ${HOME}/cmake-3.2.2-Darwin-x86_64/CMake.app/Contents ${HOME}/cmake
 
-      wget http://msp.ucsd.edu/Software/pd-0.46-6.mac.tar.gz
-      tar xvf pd-0.46-6.mac.tar.gz
-      ln -s Pd-0.46-6.app/Contents/Resources/ ~/pd
+      #wget http://msp.ucsd.edu/Software/pd-0.46-6.mac.tar.gz
+      #tar xvf pd-0.46-6.mac.tar.gz
+      #ln -s Pd-0.46-6.app/Contents/Resources/ ~/pd
 
       brew install coreutils
 	;;

@@ -78,7 +78,7 @@ void WrapTTExplorerClass(WrappedClassPtr c)
 	
     eclass_addmethod(c->pdClass, (method)nmspc_bang,				"explore",					A_NULL, 0); // overwrite explore message to use the bang method
 
-    eclass_addmethod(c->pdClass, (method)NULL,				"loadbang",					A_NULL, 0); // overwrite explore message to use the bang method
+    eclass_addmethod(c->pdClass, (method)nmspc_loadbang,				"loadbang",					A_NULL, 0);
 
     //eclass_addmethod(c->pdClass, (method)nmspc_add_max_namespace,	"add_max_namespace",		0);
 	
@@ -360,6 +360,12 @@ void nmspc_return_selection(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 	// NO FORMAT
 	else if (x->msg == gensym("none") || x->msg == _sym_nothing)
         outlet_anything((t_outlet*)x->outlets[data_out], gensym("selection"), argc, argv);
+}
+
+
+void nmspc_loadbang(TTPtr self){
+    WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
+    nmspc_subscribe((t_object*)x);
 }
 
 void nmspc_bang(TTPtr self)

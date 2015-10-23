@@ -34,8 +34,6 @@ void		WrapTTCueManagerClass(WrappedClassPtr c);
 void		WrappedCueManagerClass_new(TTPtr self, long argc, t_atom *argv);
 void		WrappedCueManageClass_free(TTPtr self);
 
-void		cue_assist(TTPtr self, void *b, long msg, long arg, char *dst);
-
 void		cue_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void		cue_return_names(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
@@ -78,8 +76,6 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2ecue(void)
 
 void WrapTTCueManagerClass(WrappedClassPtr c)
 {
-	eclass_addmethod(c->pdClass, (method)cue_assist,				"assist",				A_CANT, 0L);
-
 	eclass_addmethod(c->pdClass, (method)cue_subscribe,				"loadbang",				A_NULL, 0L);
     
 	eclass_addmethod(c->pdClass, (method)cue_return_model_address,  "return_model_address", A_CANT, 0);
@@ -230,23 +226,6 @@ void cue_return_model_address(TTPtr self, t_symbol *msg, long argc, t_atom *argv
 		absoluteAddress = TTAddress(atom_getsym(argv)->s_name).appendAddress(x->address);
 		x->wrappedObject.set(kTTSym_address, absoluteAddress);
 	}
-}
-
-// Method for Assistance Messages
-void cue_assist(TTPtr self, void *b, long msg, long arg, char *dst)
-{
-	if (msg==1)			// Inlets
-		strcpy(dst, "");		
-	else {							// Outlets
-		switch(arg) {
-			case line_out:
-				strcpy(dst, "cue output");
-				break;
-			case dump_out:
-				strcpy(dst, "dumpout");
-				break;
-		}
- 	}
 }
 
 void cue_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv)

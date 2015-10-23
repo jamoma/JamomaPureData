@@ -677,7 +677,7 @@ TTErr makeInternals_data(TTPtr self, TTAddress address, TTSymbol name, t_symbol 
     
 	returnedData = TTObject(kTTSym_Data, service);
     
-    baton = TTValue(TTPtr(x), TTPtr(callbackMethod), deferlow);
+    baton = TTValue(TTPtr(x), TTPtr(callbackMethod), NO);
 	
     returnedData.set(kTTSym_baton, baton);
 	returnedData.set(kTTSym_function, TTPtr(&jamoma_callback_return_value));
@@ -716,7 +716,7 @@ TTErr makeInternals_explorer(TTPtr self, TTSymbol name, t_symbol *callbackMethod
 	// prepare arguments
 	returnValueCallback = TTObject("callback");
     
-	baton = TTValue(TTPtr(x), TTPtr(callbackMethod), deferlow);
+    baton = TTValue(TTPtr(x), TTPtr(callbackMethod), NO);
     
 	returnValueCallback.set(kTTSym_baton, baton);
 	returnValueCallback.set(kTTSym_function, TTPtr(&jamoma_callback_return_value));
@@ -750,7 +750,7 @@ TTErr makeInternals_viewer(TTPtr self, TTAddress address, TTSymbol name, t_symbo
 	
 	returnedViewer = TTObject(kTTSym_Viewer);
     
-    baton = TTValue(TTPtr(x), TTPtr(callbackMethod), deferlow);
+    baton = TTValue(TTPtr(x), TTPtr(callbackMethod), NO);
     returnedViewer.set(kTTSym_baton, baton);
 	returnedViewer.set(kTTSym_function, TTPtr(&jamoma_callback_return_value));
 	
@@ -791,7 +791,7 @@ TTErr makeInternals_receiver(TTPtr self, TTAddress address, TTSymbol name, t_sym
 	
 	returnValueCallback = TTObject("callback");
     
-	baton = TTValue(TTPtr(x), TTPtr(callbackMethod), deferlow);
+    baton = TTValue(TTPtr(x), TTPtr(callbackMethod), NO);
     
 	returnValueCallback.set(kTTSym_baton, baton);
 	returnValueCallback.set(kTTSym_function, TTPtr(&jamoma_callback_return_value));

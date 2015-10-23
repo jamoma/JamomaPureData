@@ -26,12 +26,10 @@ void		WrapTTExplorerClass(WrappedClassPtr c);
 void		WrappedExplorerClass_new(TTPtr self, long argc, t_atom *argv);
 void		WrappedExplorerClass_free(TTPtr self);
 
-void		nmspc_assist(TTPtr self, void *b, long m, long a, char *s);
-
 void		nmspc_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
 void		nmspc_return_selection(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
-
+void        nmspc_loadbang(TTPtr self);
 void		nmspc_bang(TTPtr self);
 void		nmspc_symbol(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
@@ -67,9 +65,7 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2enamespace(void)
 
 void WrapTTExplorerClass(WrappedClassPtr c)
 {
-	// add methods
-    eclass_addmethod(c->pdClass, (method)nmspc_assist,				"assist",					A_CANT, 0);
-	
+	// add methods	
     eclass_addmethod(c->pdClass, (method)nmspc_return_value,		"return_value",				A_CANT, 0);
 	
     eclass_addmethod(c->pdClass, (method)nmspc_return_model_address,"return_model_address",		A_CANT, 0);
@@ -136,25 +132,6 @@ void WrappedExplorerClass_free(TTPtr self)
 {
     WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
     x->wrappedObject.set(kTTSym_namespace, kTTSymEmpty);
-}
-
-void nmspc_assist(TTPtr self, void *b, long msg, long arg, char *dst)
-{
-	if (msg==1) 						// Inlet
-		strcpy(dst, "input");
-	else {							// Outlets
-		switch(arg) {
-			case data_out:
-				strcpy(dst, "result of exploration");
-				break;
-			case size_out:
-				strcpy(dst, "size of the result (after the result)");
-				break;
-			case dump_out:
-				strcpy(dst, "dumpout");
-				break;
-		}
- 	}
 }
 
 void nmspc_subscribe(TTPtr self)

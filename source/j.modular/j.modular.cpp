@@ -130,6 +130,7 @@ void WrappedApplicationClass_new(TTPtr self, long argc, t_atom *argv)
             if ( out.size() > 0 )
               protocol = out[0];
             else {
+
                 pd_error((t_object*)x, "Can't initialise protocol %s. Are you sure it exits ?", protocolName.c_str());
                 return;
             }
@@ -175,7 +176,8 @@ void WrappedApplicationClass_free(TTPtr self)
     
         TTValue out;
         protocol = accessProtocol(EXTRA->protocolName);
-        protocol.send("ApplicationUnregister", applicationName, out);
+        if ( protocol.valid() )
+            protocol.send("ApplicationUnregister", applicationName, out);
     }
     
 	// don't release the local application

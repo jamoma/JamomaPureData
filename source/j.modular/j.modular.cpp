@@ -124,11 +124,15 @@ void WrappedApplicationClass_new(TTPtr self, long argc, t_atom *argv)
                 TTModularApplicationManager->sendMessage("ProtocolInstantiate", protocolName, out);
             } catch ( TTException & e )
             {
-                pd_error((t_object*)x, "Can't instantiate protocole %s. Reason : %s", protocolName.c_str(),e.getReason());
+                pd_error((t_object*)x, "Can't instantiate protocol %s. Reason : %s", protocolName.c_str(),e.getReason());
                 return;
             }
-
-            protocol = out[0];
+            if ( out.size() > 0 )
+              protocol = out[0];
+            else {
+                pd_error((t_object*)x, "Can't initialise protocol %s. Are you sure it exits ?", protocolName.c_str());
+                return;
+            }
         }
 
         // register the application to the protocol

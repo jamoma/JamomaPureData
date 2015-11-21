@@ -43,12 +43,12 @@ case "$TRAVIS_OS_NAME" in
       fi
 
   		if [ "x$(uname -m)" = "xi386" ]; then
-  			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz
+  			wget --no-check-certificate http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz
   			tar -xf cmake-3.2.2-Linux-i386.tar.gz
         # export PATH=${PWD}/cmake-3.2.2-Linux-i386/bin:$PATH
         mv cmake-3.2.2-Linux-i386 cmake
   		else
-  			wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
+  			wget --no-check-certificate http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
   			tar -xf cmake-3.2.2-Linux-x86_64.tar.gz
         # export PATH=${HOME}/cmake-3.2.2-Linux-x86_64/bin:$PATH
         mv cmake-3.2.2-Linux-x86_64 cmake

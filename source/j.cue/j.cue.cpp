@@ -50,18 +50,9 @@ void		cue_dowrite(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void		cue_write_again(TTPtr self);
 void		cue_dowrite_again(TTPtr self);
 
-void		cue_dorecall(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
-
 void		cue_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void		cue_edclose(TTPtr self, char **text, long size);
 void		cue_doedit(TTPtr self);
-
-void		cue_subscribe(TTPtr self);
-
-void		cue_return_model_address(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
-
-t_max_err	cue_get_relative(TTPtr self, TTPtr attr, long *ac, t_atom **av);
-t_max_err	cue_set_relative(TTPtr self, TTPtr attr, long ac,  t_atom *av);
 
 extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2ecue(void)
 {
@@ -76,9 +67,6 @@ extern "C" void JAMOMA_EXPORT_MAXOBJ setup_j0x2ecue(void)
 
 void WrapTTCueManagerClass(WrappedClassPtr c)
 {
-	eclass_addmethod(c->pdClass, (method)cue_subscribe,				"loadbang",				A_NULL, 0L);
-    
-	eclass_addmethod(c->pdClass, (method)cue_return_model_address,  "return_model_address", A_CANT, 0);
 	
 	eclass_addmethod(c->pdClass, (method)cue_return_value,			"return_value",			A_CANT, 0);
 	
@@ -99,10 +87,6 @@ void WrapTTCueManagerClass(WrappedClassPtr c)
 	
 	eclass_addmethod(c->pdClass, (method)cue_read_again,			"read/again",			A_NULL, 0);
 	eclass_addmethod(c->pdClass, (method)cue_write_again,			"write/again",			A_NULL, 0);
-    
-	CLASS_ATTR_LONG(c->pdClass,			"relative",	0,		WrappedModularInstance,	index);	// use index member to store relative
-	CLASS_ATTR_ACCESSORS(c->pdClass,	"relative",	cue_get_relative,	cue_set_relative);
-	CLASS_ATTR_STYLE(c->pdClass,		"relative",	0,		"onoff");
 }
 
 void WrappedCueManagerClass_new(TTPtr self, long argc, t_atom *argv)
@@ -166,67 +150,7 @@ void WrappedCueManageClass_free(TTPtr self)
 	free(EXTRA);
 }
 
-void cue_subscribe(TTPtr self)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTValue						v;
-	TTAddress                   contextAddress = kTTAdrsEmpty;
-	TTAddress                   absoluteAddress, returnedAddress;
-    TTNodePtr                   returnedNode;
-    TTNodePtr                   returnedContextNode;
-	TTObject                    anObject, empty;
-	
-	jamoma_patcher_get_info(((t_eobj*)x)->o_canvas, &x->patcherPtr, x->patcherContext, x->patcherClass, x->patcherName);
-	
-	if (!jamoma_subscriber_create((t_eobj*)x, empty, kTTAdrsEmpty, x->subscriberObject, returnedAddress, &returnedNode, &returnedContextNode)) {
-        
-		// get the context address to make
-		// a receiver on the contextAddress/model:address attribute
-		x->subscriberObject.get("contextAddress", v);
-		contextAddress = v[0];
-	}
 
-	post("j.cue : contextAddress : %s",contextAddress.c_str());
-	
-	// bind on the model:address attribute
-	if (contextAddress != kTTAdrsEmpty) {
-		
-		absoluteAddress = contextAddress.appendAddress(x->address);
-		x->wrappedObject.set(kTTSym_address, x->address);
-		
-		makeInternals_receiver(x, contextAddress, TTSymbol("/model:address"), gensym("return_model_address"), anObject, YES); // YES : we want to deferlow this method
-	}
-	
-	// while the context node is not registered : try to binds again :(
-	// (to -- this is not a good way todo. For binding we should make a subscription
-	// to a notification mechanism and each time an TTObjet subscribes to the namespace
-	// using jamoma_subscriber_create we notify all the externals which have used
-	// jamoma_subscriber_create with NULL object to bind)
-	else {
-		
-		// release the subscriber
-		x->subscriberObject = TTObject();
-		
-		// The following must be deferred because we have to interrogate our box,
-		// and our box is not yet valid until we have finished instantiating the object.
-		// Trying to use a loadbang method instead is also not fully successful (as of Max 5.0.6)
-		// defer_low((t_object*)x, (method)cue_subscribe, NULL, 0, 0);
-		cue_subscribe(x); // actually in Pd this could cause an infinite loop...
-	}
-}
-
-void cue_return_model_address(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTAddress   absoluteAddress;
-	
-	if (argc && argv) {
-		
-		// set address attribute of the wrapped Receiver object
-		absoluteAddress = TTAddress(atom_getsym(argv)->s_name).appendAddress(x->address);
-		x->wrappedObject.set(kTTSym_address, absoluteAddress);
-	}
-}
 
 void cue_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 {
@@ -337,7 +261,7 @@ void cue_read(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 void cue_doread(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 {	
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTValue			o, v, none;
+	TTValue			o, v;
 	TTSymbol		fullpath;
 	TTObject		aTextHandler;
 	TTErr			tterr;
@@ -356,7 +280,7 @@ void cue_doread(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 			aTextHandler.set(kTTSym_object, x->wrappedObject);
 			
 //			critical_enter(0);
-			tterr = aTextHandler.send(kTTSym_Read, v, none);
+			tterr = aTextHandler.send(kTTSym_Read, v);
 //			critical_exit(0);
 			
 			if (!tterr)
@@ -390,9 +314,7 @@ void cue_doread_again(TTPtr self)
 
 			aTextHandler.set(kTTSym_object, x->wrappedObject);
 			
-//			critical_enter(0);
-			tterr = aTextHandler.send(kTTSym_ReadAgain, v, none);
-//			critical_exit(0);
+			tterr = aTextHandler.send(kTTSym_ReadAgain, v);
 			
 			if (!tterr)
 				outlet_anything((t_outlet*)x->dumpOut, _sym_read, 0, NULL);
@@ -404,7 +326,6 @@ void cue_doread_again(TTPtr self)
 
 void cue_write(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 {
-//	defer(self, (method)cue_dowrite, msg, argc, argv);
 	cue_dowrite(self, msg, argc, argv);
 }
 
@@ -413,7 +334,7 @@ void cue_dowrite(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
 	char 			filename[MAX_FILENAME_CHARS];
 	TTSymbol		fullpath;
-	TTValue			o, v, none;
+	TTValue			o, v;
 	TTObject        aTextHandler;
 	TTErr			tterr;
 	
@@ -432,9 +353,7 @@ void cue_dowrite(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 
 			aTextHandler.set(kTTSym_object, x->wrappedObject);
 			
-//			critical_enter(0);
-			tterr = aTextHandler.send(kTTSym_Write, v, none);
-//			critical_exit(0);
+			tterr = aTextHandler.send(kTTSym_Write, v);
 			
 			if (!tterr)
 				outlet_anything((t_outlet*) x->dumpOut, _sym_write, argc, argv);
@@ -446,14 +365,13 @@ void cue_dowrite(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 
 void cue_write_again(TTPtr self)
 {
-//	defer(self, (method)cue_dowrite_again, NULL, 0, NULL);
 	cue_dowrite(self,NULL,0,NULL);
 }
 
 void cue_dowrite_again(TTPtr self)
 {	
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTValue			o, v, none;
+	TTValue			o, v;
 	TTObject        aTextHandler;
 	TTErr			tterr;
 	
@@ -467,51 +385,12 @@ void cue_dowrite_again(TTPtr self)
 
 			aTextHandler.set(kTTSym_object, x->wrappedObject);
 			
-//			critical_enter(0);
-			tterr = aTextHandler.send(kTTSym_WriteAgain, v, none);
-//			critical_exit(0);
+			tterr = aTextHandler.send(kTTSym_WriteAgain, v);
 			
 			if (!tterr)
 				outlet_anything((t_outlet*)x->dumpOut, _sym_write, 0, NULL);
 			else
 				outlet_anything((t_outlet*)x->dumpOut, _sym_error, 0, NULL);
-		}
-	}
-}
-
-void cue_dorecall(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	TTValue			v, none;
-	TTNodePtr		contextNode;
-	TTObject        o;
-	TTBoolean		initialized;
-	
-	if (argc && argv) {
-		if (atom_gettype(argv) == A_SYM) {
-			
-			x->wrappedObject.send(kTTSym_Recall, TTSymbol(atom_getsym(argv)), none);
-		}
-		
-		// Check Context Node
-		if (x->subscriberObject.valid()) {
-			
-			x->subscriberObject.get("contextNode", v);
-			contextNode = TTNodePtr((TTPtr)v[0]);
-			
-			// If it is a none initialized Container : initialize it
-            o = contextNode->getObject();
-			if (o.valid()) {
-                
-				if (o.name() == kTTSym_Container) {
-					
-					o.get(kTTSym_initialized, v);
-					initialized = v[0];
-					
-					if (!initialized)
-						o.send(kTTSym_Init);
-				}
-            }
 		}
 	}
 }
@@ -523,7 +402,7 @@ void cue_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 	char				title[MAX_FILENAME_CHARS];
 	TTObject            aTextHandler;
 	TTHashPtr			allCues;
-	TTValue				v, o, none;
+	TTValue				v, o;
 	TTSymbol			name = kTTSymEmpty;
     t_atom				a;
 	TTErr				tterr;
@@ -542,7 +421,7 @@ void cue_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 			x->wrappedObject.get("names", v);
 			
 			if (index > 0 && index <= v.size())
-				v.get(index-1, name);
+				name = v[index-1];
 			else
             {
                 pd_error((t_object*)x, "%ld doesn't exist", atom_getlong(argv));
@@ -593,7 +472,7 @@ void cue_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 			
 			critical_enter(0);
 			aTextHandler.set(kTTSym_object, *EXTRA->toEdit);
-			tterr = aTextHandler.send(kTTSym_Write, (TTPtr)buffer, none);
+			tterr = aTextHandler.send(kTTSym_Write, (TTPtr)buffer);
 			critical_exit(0);
 		}
 		
@@ -612,7 +491,11 @@ void cue_edit(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 		delete buffer;
 		buffer = NULL;
 	}
-	*/
+    else
+    {
+        object_attr_setchar(EXTRA->textEditor, gensym("visible"), 1);
+    }
+*/
 }
 
 void cue_edclose(TTPtr self, char **text, long size)
@@ -623,14 +506,13 @@ void cue_edclose(TTPtr self, char **text, long size)
 	EXTRA->textEditor = NULL;
 	
 	cue_doedit(x);
-//	defer_low((t_object*)x, (method)cue_doedit, NULL, 0, NULL);
 }
 
 void cue_doedit(TTPtr self)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
 	TTObject    aTextHandler;
-	TTValue		o, args, none;
+	TTValue		o, args;
     t_atom		a;
 	TTErr		tterr;
 	
@@ -641,9 +523,7 @@ void cue_doedit(TTPtr self)
 		
 		aTextHandler = o[0];
 		
-//		critical_enter(0);
-		tterr = aTextHandler.send(kTTSym_Read, (TTPtr)EXTRA->text, none);
-//		critical_exit(0);
+		tterr = aTextHandler.send(kTTSym_Read, (TTPtr)EXTRA->text);
 		
 		// output a flag
         atom_setsym(&a, gensym("closed"));
@@ -658,46 +538,4 @@ void cue_doedit(TTPtr self)
 	EXTRA->textEditor = NULL;
 	*EXTRA->toEdit = x->wrappedObject;
 	EXTRA->cueName = kTTSymEmpty;
-}
-
-t_max_err cue_get_relative(TTPtr self, TTPtr attr, long *ac, t_atom **av)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	
-	if ((*ac)&&(*av)) {
-		//memory passed in, use it
-	} else {
-		//otherwise allocate memory
-		*ac = 1;
-		if (!(*av = (t_atom*)getbytes(sizeof(t_atom)*(*ac)))) {
-			*ac = 0;
-			return -4; // MAX_ERR_OUT_OF_MEM;
-		}
-	}
-	
-	atom_setlong(*av, x->index);
-	
-	return 0; // MAX_ERR_NONE;
-}
-
-t_max_err cue_set_relative(TTPtr self, TTPtr attr, long ac, t_atom *av)
-{
-	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
-	
-	if (ac&&av) {
-		x->index = atom_getlong(av);
-		
-		if (x->index) {
-			// The following must be deferred because we have to interrogate our box,
-			// and our box is not yet valid until we have finished instantiating the object.
-			// Trying to use a loadbang method instead is also not fully successful (as of Max 5.0.6)
-			cue_subscribe(x);
-//			defer_low((t_object*)x, (method)cue_subscribe, NULL, 0, 0);
-		}
-		
-	} else {
-		// no args
-		x->index = 0;
-	}
-	return 0; // MAX_ERR_NONE;
 }

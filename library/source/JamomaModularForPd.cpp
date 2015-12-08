@@ -1819,9 +1819,7 @@ void jamoma_edit_filename(TTString format, TTSymbol className, t_symbol **return
 TTSymbol jamoma_file_write(t_object *x, long argc, t_atom *argv, char* default_filename)
 {
 	char 			fullpath[MAXPDSTRING];		// for storing the absolute path of the file
-	short 			path;						// pathID#, error number
-//	t_filehandle	file_handle;					// a reference to our file (for opening it, closing it, etc.)
-//	t_fourcc		filetype = 'TEXT', outtype;		// the file type that is actually true
+    char            filename[MAXPDSTRING];      // buffer to avoid scrambling argv
 	t_symbol        *userpath;
 	TTSymbol		result = kTTSymEmpty;
 	
@@ -1832,16 +1830,9 @@ TTSymbol jamoma_file_write(t_object *x, long argc, t_atom *argv, char* default_f
 			
 			if (userpath != _sym_nothing && userpath != _sym_bang) {
 				// Use BOOT style path
-				path = 0;
 
-				t_binbuf* buf = binbuf_new();
-				// path_nameconform(userpath->s_name, fullpath, PATH_STYLE_NATIVE, PATH_TYPE_BOOT);// Copy symbol argument to a local string
-				canvas_makefilename(((t_eobj*)x)->o_canvas,userpath->s_name,fullpath,MAXPDSTRING);
-				binbuf_write(buf,fullpath,(char*)"",1);
-				binbuf_free(buf);
-				// Create a file using Max API
-				// path_createsysfile(fullpath, path, filetype, &file_handle);
-				
+                snprintf(filename, MAX_FILENAME_CHARS, userpath->s_name);
+                canvas_makefilename(((t_eobj*)x)->o_canvas,filename,fullpath,MAXPDSTRING);
 				result = TTSymbol(fullpath);
 			}
 		}

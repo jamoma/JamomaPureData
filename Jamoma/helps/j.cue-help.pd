@@ -1,10 +1,10 @@
-#N canvas 601 299 1235 561 10;
+#N canvas 595 327 1235 561 10;
 #X obj 519 191 j.cue;
 #X obj 388 409 j.parameter test @type decimal;
 #X obj 388 439 j.parameter test2 @type decimal;
 #X obj 490 254 print left;
 #X obj 560 254 print right;
-#N canvas 61 677 450 300 my.model 1;
+#N canvas 55 705 450 300 my.model 1;
 #X obj 351 147 j.model;
 #X obj 350 115 inlet;
 #X obj 351 169 outlet;
@@ -42,6 +42,9 @@
 #X text 909 124 you may also want to get the saved state of a particular
 node;
 #X msg 889 109 output init /my/test;
+#X msg 781 220 write cue-list.txt;
+#X msg 791 240 read cue-list.txt;
+#X text 774 201 Read and write cue files;
 #X connect 0 0 3 0;
 #X connect 0 1 4 0;
 #X connect 1 0 6 0;
@@ -61,3 +64,5 @@ node;
 #X connect 23 0 0 0;
 #X connect 24 0 0 0;
 #X connect 26 0 0 0;
+#X connect 27 0 0 0;
+#X connect 28 0 0 0;

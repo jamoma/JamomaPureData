@@ -157,8 +157,8 @@ void cue_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
 	
 	// avoid blank before line
-	if (msg == _sym_nothing)
-		outlet_anything((t_outlet*)x->outlets[line_out], _sym_nothing, argc, argv);
+    if (msg ==  gensym(""))
+        outlet_anything((t_outlet*)x->outlets[line_out], NULL, argc, argv);
 	else
 		outlet_anything((t_outlet*)x->outlets[line_out], msg, argc, argv);
 }
@@ -284,9 +284,9 @@ void cue_doread(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 //			critical_exit(0);
 			
 			if (!tterr)
-				outlet_anything((t_outlet*)x->dumpOut, _sym_read, argc, argv);
+                outlet_anything((t_outlet*)x->dumpOut, gensym("read"), argc, argv);
 			else
-				outlet_anything((t_outlet*)x->dumpOut, _sym_error, 0, NULL);
+                outlet_anything((t_outlet*)x->dumpOut, gensym("error"), 0, NULL);
 		}
 	}
 }
@@ -317,9 +317,9 @@ void cue_doread_again(TTPtr self)
 			tterr = aTextHandler.send(kTTSym_ReadAgain, v);
 			
 			if (!tterr)
-				outlet_anything((t_outlet*)x->dumpOut, _sym_read, 0, NULL);
+                outlet_anything((t_outlet*)x->dumpOut, gensym("reqd"), 0, NULL);
 			else
-				outlet_anything((t_outlet*)x->dumpOut, _sym_error, 0, NULL);
+                outlet_anything((t_outlet*)x->dumpOut, gensym("error"), 0, NULL);
 		}
 	}
 }
@@ -356,9 +356,9 @@ void cue_dowrite(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 			tterr = aTextHandler.send(kTTSym_Write, v);
 			
 			if (!tterr)
-				outlet_anything((t_outlet*) x->dumpOut, _sym_write, argc, argv);
+                outlet_anything((t_outlet*) x->dumpOut, gensym("write"), argc, argv);
 			else
-				outlet_anything((t_outlet*) x->dumpOut, _sym_error, 0, NULL);
+                outlet_anything((t_outlet*) x->dumpOut, gensym("error"), 0, NULL);
 		}
 	}
 }
@@ -388,9 +388,9 @@ void cue_dowrite_again(TTPtr self)
 			tterr = aTextHandler.send(kTTSym_WriteAgain, v);
 			
 			if (!tterr)
-				outlet_anything((t_outlet*)x->dumpOut, _sym_write, 0, NULL);
+                outlet_anything((t_outlet*)x->dumpOut, gensym("write"), 0, NULL);
 			else
-				outlet_anything((t_outlet*)x->dumpOut, _sym_error, 0, NULL);
+                outlet_anything((t_outlet*)x->dumpOut, gensym("error"), 0, NULL);
 		}
 	}
 }
@@ -530,7 +530,7 @@ void cue_doedit(TTPtr self)
 		outlet_anything((t_outlet*)x->dumpOut, gensym("editor"), 1, &a);
 		
 		if (tterr)
-			outlet_anything((t_outlet*)x->dumpOut, _sym_error, 0, NULL);
+            outlet_anything((t_outlet*)x->dumpOut, gensym("error"), 0, NULL);
 	}
 	
 	delete EXTRA->text;

@@ -158,7 +158,7 @@ void cue_return_value(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 	
 	// avoid blank before line
     if (msg ==  gensym(""))
-        outlet_anything((t_outlet*)x->outlets[line_out], NULL, argc, argv);
+        outlet_anything((t_outlet*)x->outlets[line_out], argv->a_w.w_symbol, argc-1, argv+1);
 	else
 		outlet_anything((t_outlet*)x->outlets[line_out], msg, argc, argv);
 }

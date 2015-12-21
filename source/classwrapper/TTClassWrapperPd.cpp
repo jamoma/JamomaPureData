@@ -401,7 +401,6 @@ TTErr wrapTTClassAsPdClass(TTSymbol ttblueClassName, const char* pdClassName, Wr
 	t_symbol*		namePdSymbol = NULL;
 	TTUInt32		nameSize = 0;
 	
-	common_symbols_init();
 	TTDSPInit();
 	
 	wrappedPdClass = new WrappedClass;

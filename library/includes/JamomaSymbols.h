@@ -218,10 +218,46 @@ extern "C" JAMOMA_EXPORT t_symbol *jps_done,
 				*jps_remove,
 				*jps_dispatch,
 	  			*jps_subpatcher,
-	  			*jps_bpatcher						  
-				;
+                *jps_bpatcher,
+
+                // Pd Symbols
+                *_sym_box,
+                *_sym_subpatcher,
+                *_sym_bpatcher,
+                *_sym_parentpatcher,
+                *_sym_pd,
+                *_sym_topmost,
+                *_sym_nothing,
+                *_sym_float,
+                *_sym_int,
+                *_sym_list,
+                *_sym_bang,
+                *_sym_init,
+                *_sym_symbol,
+                *_sym_loadbang,
+                *_sym_firstobject,
+                *_sym_free,
+                *_sym_getname,
+                *_sym_j_model,
+                *_sym_j_view,
+                *_sym_j_ui,
+                *_sym_j_patcher,
+                *_sym_share_patcher,
+                *_sym_share_patcher_info,
+                *_sym_j_in,
+                *_sym_j_out,
+                *_sym_j_intilda,
+                *_sym_j_outtilda,
+                *_sym_jpatcher,
+                *_sym_read,
+                *_sym_error,
+                *_sym_write,
+                *_sym_none,
+                *_sym_clear,
+                *_sym_append,
+                *_sym_store;
+
 
 extern "C" void jamomaSymbolsInit();
 
 #endif // #ifndef __JAMOMA_SYMBOLS_H__
-

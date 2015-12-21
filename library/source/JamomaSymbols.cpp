@@ -217,9 +217,43 @@ t_symbol	*jps_done,
 			*jps_remove,
 			*jps_dispatch,
 			*jps_subpatcher,
-			*jps_bpatcher	
-			;
+            *jps_bpatcher,
 
+            *_sym_box,
+            *_sym_subpatcher,
+            *_sym_bpatcher,
+            *_sym_parentpatcher,
+            *_sym_pd,
+            *_sym_topmost,
+            *_sym_nothing,
+            *_sym_float,
+            *_sym_int,
+            *_sym_list,
+            *_sym_bang,
+            *_sym_init,
+            *_sym_symbol,
+            *_sym_loadbang,
+            *_sym_firstobject,
+            *_sym_free,
+            *_sym_getname,
+            *_sym_j_model,
+            *_sym_j_view,
+            *_sym_j_ui,
+            *_sym_j_patcher,
+            *_sym_share_patcher,
+            *_sym_share_patcher_info,
+            *_sym_j_in,
+            *_sym_j_out,
+            *_sym_j_intilda,
+            *_sym_j_outtilda,
+            *_sym_jpatcher,
+            *_sym_read,
+            *_sym_error,
+            *_sym_write,
+            *_sym_none,
+            *_sym_clear,
+            *_sym_append,
+            *_sym_store;
 
 void jamomaSymbolsInit()
 {
@@ -438,5 +472,40 @@ void jamomaSymbolsInit()
 	jps_dispatch					= SymbolGen("dispatch");
 	jps_bpatcher					= SymbolGen("bpatcher");
 	jps_subpatcher					= SymbolGen("subpatcher");
-}
 
+    _sym_box                        = gensym("box");
+    _sym_subpatcher                 = gensym("subpatcher");
+    _sym_bpatcher                   = gensym("bpatcher");
+    _sym_parentpatcher              = gensym("parentpatcher");
+    _sym_pd                         = gensym("pd");
+    _sym_topmost                    = gensym("topmost");
+    _sym_nothing                    = gensym("");
+    _sym_float                      = gensym("float");
+    _sym_int                        = gensym("int");
+    _sym_list                       = gensym("list");
+    _sym_bang                       = gensym("bang");
+    _sym_init                       = gensym("init");
+    _sym_symbol                     = gensym("symbol");
+    _sym_loadbang                   = gensym("loadbang");
+    _sym_firstobject                = gensym("firstobject");
+    _sym_free                       = gensym("free");
+    _sym_getname                    = gensym("getname");
+    _sym_j_model                    = gensym("j.model");
+    _sym_j_view                     = gensym("j.view");
+    _sym_j_ui                       = gensym("j.ui");
+    _sym_j_patcher                  = gensym("j.patcher");
+    _sym_share_patcher              = gensym("share_patcher");
+    _sym_share_patcher_info         = gensym("share_patcher_info");
+    _sym_j_in                       = gensym("j.in");
+    _sym_j_out                      = gensym("j.out");
+    _sym_j_intilda                  = gensym("J.in~");
+    _sym_j_outtilda                 = gensym("j.out~");
+    _sym_jpatcher                   = gensym("jpatcher");
+    _sym_read                       = gensym("read");
+    _sym_error                      = gensym("error");
+    _sym_write                      = gensym("write");
+    _sym_none                       = gensym("none");
+    _sym_clear                      = gensym("clear");
+    _sym_append                     = gensym("append");
+    _sym_store                      = gensym("store");
+}

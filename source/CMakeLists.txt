@@ -16,9 +16,6 @@ include_directories("${PROJECT_SOURCE_DIR}/CicmWrapper/Sources")
 include_directories("${PROJECT_SOURCE_DIR}/../library/includes")
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_library(PdCommonSyms OBJECT
-			${CMAKE_CURRENT_SOURCE_DIR}/commonsyms.cpp)
-
 add_library(TTClassWrapperPd OBJECT
                         ${CMAKE_CURRENT_SOURCE_DIR}/classwrapper/TTClassWrapperPd.cpp)
 

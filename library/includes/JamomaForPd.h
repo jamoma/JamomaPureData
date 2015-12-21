@@ -75,7 +75,6 @@ extern "C"
 #ifdef __cplusplus
 }
 #endif
-#include "commonsyms.h"
 
 // standard includes
 #include <math.h>
@@ -87,7 +86,6 @@ extern "C"
 #include "JamomaPdObjectTypes.h"
 #include "JamomaSymbols.h"
 #include "JamomaModularForPd.h"
-// #include "JamomaPdSymbols.h"
 
 #define JAMOMA "Jamoma"
 #define JAMOMA_UNIT_HEIGHT 35.0

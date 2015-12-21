@@ -132,7 +132,6 @@ void jamoma_init(void)
              post("error %d : can't load configuration file  \"%s\"", err, JamomaConfigurationFilePath.c_str() );
 
 		// Initialize common symbols
-        common_symbols_init();
 		jamomaSymbolsInit();
 
 		// Initialize common regex

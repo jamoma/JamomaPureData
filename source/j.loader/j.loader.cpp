@@ -140,7 +140,6 @@ extern "C" int JAMOMA_EXPORT_MAXOBJ setup_j0x2eloader(void)
 
     epd_init();
     jamoma_init();
-    common_symbols_init();
     epd_add_folder("Jamoma","externals");
     epd_add_folder("Jamoma",".");
     epd_add_folder("Jamoma","abstractions");

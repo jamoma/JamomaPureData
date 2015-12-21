@@ -9,8 +9,6 @@
  */
 
 #include "TTModularClassWrapperPd.h"
-#include "commonsyms.h"
-// #include "ext_hashtab.h"
 
 /** A hash of all wrapped clases, keyed on the Pd class name. */
 // static t_hashtab*	wrappedPdClasses = NULL;

@@ -1,0 +1,5 @@
+support*
+externals*
+Jamoma.pd_linux
+Jamoma.pd_darwin
+Jamoma.dll

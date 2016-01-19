@@ -112,6 +112,9 @@ void WrappedApplicationClass_new(TTPtr self, long argc, t_atom *argv)
         else
             x->wrappedObject.set(kTTSym_type, TTSymbol("proxy"));
 	}
+
+    // Prepare extra data
+    x->extra = (t_extra*)malloc(sizeof(t_extra));
 	
 	// j.modular handle only one protocol per application
 	if (protocolName != kTTSymEmpty) {
@@ -125,6 +128,7 @@ void WrappedApplicationClass_new(TTPtr self, long argc, t_atom *argv)
             } catch ( TTException & e )
             {
                 pd_error((t_object*)x, "Can't instantiate protocol %s. Reason : %s", protocolName.c_str(),e.getReason());
+                EXTRA->protocolName = kTTSymEmpty;
                 return;
             }
             if ( out.size() > 0 )
@@ -132,6 +136,7 @@ void WrappedApplicationClass_new(TTPtr self, long argc, t_atom *argv)
             else {
 
                 pd_error((t_object*)x, "Can't initialise protocol %s. Are you sure it exits ?", protocolName.c_str());
+                EXTRA->protocolName = kTTSymEmpty;
                 return;
             }
         }
@@ -142,9 +147,7 @@ void WrappedApplicationClass_new(TTPtr self, long argc, t_atom *argv)
         // run this protocol
         protocol.send("Run");
 	}
-	
-	// Prepare extra data
-	x->extra = (t_extra*)malloc(sizeof(t_extra));
+
 	EXTRA->protocolName = protocolName;
 	
 	// create internal TTXmlHandler
@@ -168,9 +171,11 @@ void WrappedApplicationClass_free(TTPtr self)
     // the xmlhandler have to forget the application object
     TTValue o;
     x->internals->lookup(kTTSym_XmlHandler, o);
-    TTObject empty, anXmlHandler = o[0];
-    anXmlHandler.set(kTTSym_object, empty);
-    
+    if (o.size()){
+        TTObject empty, anXmlHandler = o[0];
+        anXmlHandler.set(kTTSym_object, empty);
+    }
+
      // unregister the application to the protocol
     if (EXTRA->protocolName != kTTSymEmpty) {
     

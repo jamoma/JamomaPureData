@@ -1,0 +1,31 @@
+#N canvas 965 176 928 233 10;
+#X floatatom 603 62 5 0 0 0 - - -, f 5;
+#X floatatom 603 82 5 0 0 0 - - -, f 5;
+#X obj 68 42 loadbang;
+#X obj 403 42 loadbang;
+#X obj 68 128 j.modular Minuit @name master;
+#X obj 68 150 print master;
+#X obj 403 150 print remote;
+#X msg 68 63 protocol/setup ip localhost \, protocol/setup port 9999
+\, name pd_remote-view, f 28;
+#X obj 403 128 j.modular pd_remote-model Minuit;
+#X msg 270 96 namespace/mirror;
+#X obj 640 62 j.remote pd_remote-model:/freq;
+#X obj 640 82 j.remote pd_remote-model:/gain;
+#X msg 270 71 namespace/build;
+#X msg 404 64 monitor 1 \, protocol/setup ip localhost \, protocol/setup
+port 10000 \, name pd_remote-model, f 28;
+#X connect 0 0 10 0;
+#X connect 1 0 11 0;
+#X connect 2 0 7 0;
+#X connect 3 0 13 0;
+#X connect 4 0 5 0;
+#X connect 7 0 4 0;
+#X connect 8 0 6 0;
+#X connect 9 0 4 0;
+#X connect 9 0 8 0;
+#X connect 10 0 0 0;
+#X connect 11 0 1 0;
+#X connect 12 0 4 0;
+#X connect 12 0 8 0;
+#X connect 13 0 8 0;

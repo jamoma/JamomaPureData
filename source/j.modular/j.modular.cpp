@@ -36,7 +36,7 @@ void	WrappedApplicationClass_free(TTPtr self);
 void	modular_assist(TTPtr self, void *b, long msg, long arg, char *dst);
 
 void	modular_protocol_setup(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
-void	modular_protocol_scan(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
+// void	modular_protocol_scan(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 
 void	modular_namespace_read(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
 void	modular_namespace_doread(TTPtr self, t_symbol *msg, long argc, t_atom *argv);
@@ -61,9 +61,9 @@ void WrapTTApplicationClass(WrappedClassPtr c)
     eclass_addmethod(c->pdClass, (method)modular_assist,					"assist",						A_CANT, 0L);
 	
     eclass_addmethod(c->pdClass, (method)modular_protocol_setup,			"protocol/setup",				A_GIMME, 0);
-    
-    eclass_addmethod(c->pdClass, (method)modular_protocol_scan,             "protocol/scan",				A_GIMME, 0);
-	
+
+//    eclass_addmethod(c->pdClass, (method)modular_protocol_scan,             "protocol/scan",				A_GIMME, 0);
+
     eclass_addmethod(c->pdClass, (method)modular_namespace_read,			"namespace/read",				A_GIMME, 0);
     
     eclass_addmethod(c->pdClass, (method)modular_namespace_write,			"namespace/write",				A_GIMME, 0);
@@ -269,7 +269,7 @@ void modular_protocol_setup(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 			pd_error((t_object*)x, "doesn't handle any application");
 	}
 }
-
+/*
 void modular_protocol_scan(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 {
 	WrappedModularInstancePtr	x = (WrappedModularInstancePtr)self;
@@ -293,6 +293,7 @@ void modular_protocol_scan(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
         outlet_anything((t_outlet*)x->dumpOut, gensym("protocol/scan"), ac, av);
     }
 }
+*/
 
 void modular_namespace_read(TTPtr self, t_symbol *msg, long argc, t_atom *argv)
 {

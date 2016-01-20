@@ -1,31 +1,39 @@
-#N canvas 965 176 928 233 10;
-#X floatatom 603 62 5 0 0 0 - - -, f 5;
-#X floatatom 603 82 5 0 0 0 - - -, f 5;
-#X obj 68 42 loadbang;
-#X obj 403 42 loadbang;
-#X obj 68 128 j.modular Minuit @name master;
-#X obj 68 150 print master;
-#X obj 403 150 print remote;
-#X msg 68 63 protocol/setup ip localhost \, protocol/setup port 9999
+#N canvas 959 204 928 293 10;
+#X floatatom 600 105 5 0 0 0 - - -, f 5;
+#X floatatom 600 155 5 0 0 0 - - -, f 5;
+#X obj 65 85 loadbang;
+#X obj 400 85 loadbang;
+#X obj 65 193 print master;
+#X obj 400 193 print remote;
+#X msg 65 106 protocol/setup ip localhost \, protocol/setup port 9999
 \, name pd_remote-view, f 28;
-#X obj 403 128 j.modular pd_remote-model Minuit;
-#X msg 270 96 namespace/mirror;
-#X obj 640 62 j.remote pd_remote-model:/freq;
-#X obj 640 82 j.remote pd_remote-model:/gain;
-#X msg 270 71 namespace/build;
-#X msg 404 64 monitor 1 \, protocol/setup ip localhost \, protocol/setup
+#X obj 400 171 j.modular pd_remote-model Minuit;
+#X obj 637 105 j.remote pd_remote-model:/freq;
+#X obj 636 155 j.remote pd_remote-model:/gain;
+#X msg 259 120 namespace/build;
+#X msg 401 107 monitor 1 \, protocol/setup ip localhost \, protocol/setup
 port 10000 \, name pd_remote-model, f 28;
-#X connect 0 0 10 0;
-#X connect 1 0 11 0;
-#X connect 2 0 7 0;
-#X connect 3 0 13 0;
-#X connect 4 0 5 0;
-#X connect 7 0 4 0;
-#X connect 8 0 6 0;
-#X connect 9 0 4 0;
-#X connect 9 0 8 0;
-#X connect 10 0 0 0;
-#X connect 11 0 1 0;
-#X connect 12 0 4 0;
-#X connect 12 0 8 0;
-#X connect 13 0 8 0;
+#X msg 636 177 set \$1;
+#X msg 637 127 set \$1;
+#X obj 65 171 j.modular Minuit @name pd_remote-view;
+#X text 62 214 Declare this patch as a Minuit application on the network
+with the name "pd_remote-view"., f 32;
+#X text 392 217 Connect this application to the other one named "pd_remote-model"
+which should run somewhere on the network., f 33;
+#X text 182 14 You should run 04-pd_remote-model.pd patch in another
+Pd instance to see how communication works.;
+#X text 256 79 click here when 04-pd_remote-model.pd is loaded, f
+22;
+#X connect 0 0 8 0;
+#X connect 1 0 9 0;
+#X connect 2 0 6 0;
+#X connect 3 0 11 0;
+#X connect 6 0 14 0;
+#X connect 7 0 5 0;
+#X connect 8 0 13 0;
+#X connect 9 0 12 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 0;
+#X connect 12 0 1 0;
+#X connect 13 0 0 0;
+#X connect 14 0 4 0;

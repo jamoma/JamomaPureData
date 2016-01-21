@@ -91,3 +91,20 @@ fi
 
 cd ${TRAVIS_BUILD_DIR}
 scp ${ARCHIVE_NAME}* ${DEPLOYTARGET}
+
+if [ "x$ARCH" = "xmingw-w64" ]; then
+elif []
+ mv ${ARCHIVE_NAME}.tar.gz JamomaPd
+fi
+
+# rename archive for deployment (since we can't use wilcard in .travis.yml)
+
+if [ "x$ARCH" = "xmingw-w64" ]; then
+  mv ${ARCHIVE_NAME}.zip JamomaPd-Windows.zip
+elif [ "x$ARCH" = "x" -a "x$TRAVIS_OS_NAME" = "xlinux" ]; then
+  mv ${ARCHIVE_NAME}.tar.gz JamomaPd-Linux-x86_64.tar.gz
+elif [ "x$ARCH" = "xrpi" ]; then
+  mv ${ARCHIVE_NAME}.tar.gz JamomaPd-Linux-RaspberryPi.tar.gz
+elif [ "x$TRAVIS_OS_NAME" = "xosx" ]; then
+  mv ${ARCHIVE_NAME}.tar.gz JamomaPd-OSX.tar.gz
+fi

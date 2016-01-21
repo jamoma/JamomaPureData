@@ -1,37 +1,45 @@
-#N canvas 666 537 928 293 10;
+#N canvas 859 604 928 293 10;
 #X floatatom 641 100 5 0 0 0 - - -, f 5;
-#X floatatom 641 150 5 0 0 0 - - -, f 5;
+#X floatatom 642 175 5 0 0 0 - - -, f 5;
 #X obj 65 85 loadbang;
-#X obj 400 85 loadbang;
-#X obj 400 193 print remote;
-#X msg 259 120 namespace/build;
-#X msg 677 172 set \$1;
+#X obj 401 85 loadbang;
 #X msg 678 122 set \$1;
-#X text 62 214 Declare this patch as a Minuit application on the network
-with the name "pd_remote-view"., f 32;
-#X text 392 217 Connect this application to the other one named "pd_remote-model"
-which should run somewhere on the network., f 33;
-#X text 182 14 You should run 04-pd_remote-model.pd patch in another
-Pd instance to see how communication works.;
-#X text 256 79 click here when 04-pd_remote-model.pd is loaded, f
-22;
-#X msg 402 107 protocol/setup ip 192.168.0.15 \, protocol/setup port
-8001 \, name application_with_models, f 28;
-#X obj 401 171 j.modular application_with_models Minuit;
-#X obj 678 100 j.remote application_with_models:/freq;
-#X obj 678 152 j.remote application_with_models:/gain;
-#X obj 65 171 j.modular Minuit @name application_with_views;
+#X floatatom 641 55 5 0 0 0 - - -, f 5;
+#X msg 678 77 set \$1;
+#X text 62 200 Declare this patch as a Minuit application on the network
+with the name "Pd"., f 32;
+#X obj 65 171 j.modular Minuit @name Pd;
 #X msg 65 105 protocol/setup ip localhost \, protocol/setup port 8002
-\, name application_with_views, f 28;
-#X connect 0 0 14 0;
-#X connect 1 0 15 0;
-#X connect 2 0 17 0;
+\, name Pd, f 28;
+#X text 392 212 Connect this application to the other one named "Max"
+which should run somewhere on the network., f 33;
+#X obj 401 171 j.modular Max Minuit;
+#X msg 401 107 protocol/setup ip localhost \, protocol/setup port 8001
+\, name Max, f 28;
+#X obj 678 55 j.remote Max:/freq;
+#X msg 260 120 namespace/build;
+#X obj 678 100 j.remote Max:/gain;
+#X floatatom 642 205 5 0 0 0 - - -, f 5;
+#X obj 679 177 j.parameter freq @type decimal;
+#X obj 679 207 j.parameter gain @type decimal;
+#X text 116 7 You should open the Max patch "max.maxpat" with which
+this Pd patch works. If Max runs on another computer \, don't forget
+to change the IP according to your configuration on both side.;
+#X text 257 90 click here when the Max patch is loaded, f 22;
+#X text 639 29 control Max parameters from Pd;
+#X text 639 156 Pd's parameters that you can control with Max;
+#X connect 0 0 15 0;
+#X connect 1 0 17 0;
+#X connect 2 0 9 0;
 #X connect 3 0 12 0;
+#X connect 4 0 0 0;
 #X connect 5 0 13 0;
-#X connect 6 0 1 0;
-#X connect 7 0 0 0;
-#X connect 12 0 13 0;
-#X connect 13 0 4 0;
-#X connect 14 0 7 0;
-#X connect 15 0 6 0;
-#X connect 17 0 16 0;
+#X connect 6 0 5 0;
+#X connect 9 0 8 0;
+#X connect 12 0 11 0;
+#X connect 13 0 6 0;
+#X connect 14 0 11 0;
+#X connect 15 0 4 0;
+#X connect 16 0 18 0;
+#X connect 17 0 1 0;
+#X connect 18 0 16 0;

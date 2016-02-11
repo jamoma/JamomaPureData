@@ -86,7 +86,6 @@ fi
 
 if [ "x${TRAVIS_BRANCH}" != "xmaster" ]; then
   echo "We are not on master branch, don't upload build."
-  exit 0
 else
   cd ${TRAVIS_BUILD_DIR}
   scp ${ARCHIVE_NAME}* ${DEPLOYTARGET}

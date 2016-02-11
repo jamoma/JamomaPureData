@@ -53,4 +53,5 @@ deploy:
     - JamomaPd-Linux-RaspberryPi.tar.gz
     - JamomaPd-Windows.zip
   on:
+    tags: true
     repo: jamoma/JamomaPureData

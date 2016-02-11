@@ -2,11 +2,6 @@
 
 set -e
 
-if [ "x${TRAVIS_BRANCH}" != "xmaster" ]; then
-  echo "We are not on master branch, don't upload build."
-  exit 0
-fi
-
 DEPLOYTARGET=jamomabuild@thor.bek.no:/Volumes/ThorData/WebServer/Jamoma/nanoc-website/output/download/JamomaPd/nightly-builds
 
 if [ "x${DEPLOYTARGET}" = "x" ]; then
@@ -89,8 +84,13 @@ else
  tar czf "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}.tar.gz" Jamoma/
 fi
 
-cd ${TRAVIS_BUILD_DIR}
-scp ${ARCHIVE_NAME}* ${DEPLOYTARGET}
+if [ "x${TRAVIS_BRANCH}" != "xmaster" ]; then
+  echo "We are not on master branch, don't upload build."
+  exit 0
+else
+  cd ${TRAVIS_BUILD_DIR}
+  scp ${ARCHIVE_NAME}* ${DEPLOYTARGET}
+fi 
 
 if [ "x$ARCH" = "xmingw-w64" ]; then
 elif []

@@ -2,11 +2,6 @@
 
 set -e
 
-if [ "x${TRAVIS_BRANCH}" != "xmaster" ]; then
-  echo "We are not on master branch, don't upload build."
-  exit 0
-fi
-
 DEPLOYTARGET=jamomabuild@thor.bek.no:/Volumes/ThorData/WebServer/Jamoma/nanoc-website/output/download/JamomaPd/nightly-builds
 
 if [ "x${DEPLOYTARGET}" = "x" ]; then
@@ -90,12 +85,12 @@ else
 fi
 
 cd ${TRAVIS_BUILD_DIR}
-scp ${ARCHIVE_NAME}* ${DEPLOYTARGET}
 
-if [ "x$ARCH" = "xmingw-w64" ]; then
-elif []
- mv ${ARCHIVE_NAME}.tar.gz JamomaPd
-fi
+if [ "x${TRAVIS_BRANCH}" != "xmaster" ]; then
+  echo "We are not on master branch, don't upload build."
+else
+  scp ${ARCHIVE_NAME}* ${DEPLOYTARGET}
+fi 
 
 # rename archive for deployment (since we can't use wilcard in .travis.yml)
 
@@ -108,3 +103,5 @@ elif [ "x$ARCH" = "xrpi" ]; then
 elif [ "x$TRAVIS_OS_NAME" = "xosx" ]; then
   mv ${ARCHIVE_NAME}.tar.gz JamomaPd-OSX.tar.gz
 fi
+
+ls

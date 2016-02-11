@@ -84,10 +84,11 @@ else
  tar czf "${TRAVIS_BUILD_DIR}/${ARCHIVE_NAME}.tar.gz" Jamoma/
 fi
 
+cd ${TRAVIS_BUILD_DIR}
+
 if [ "x${TRAVIS_BRANCH}" != "xmaster" ]; then
   echo "We are not on master branch, don't upload build."
 else
-  cd ${TRAVIS_BUILD_DIR}
   scp ${ARCHIVE_NAME}* ${DEPLOYTARGET}
 fi 
 

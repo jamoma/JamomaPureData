@@ -47,10 +47,7 @@ deploy:
   provider: releases
   api_key:
     secure: e98rjiYviaBypSIPYXW0k0/TsxACNNWjK6kjOLto1XemMf+AdK6eEtgCeEf90L5GmwwwOZHGKJyt79rixdxGTfGhEdbO0xKJrF6LloaSHfsPXUhZ0z3fnwQJqAuf8blZyWpb/1IR4saWIE7h18RIefvFU5Q/e/w6Y3uFQ5yNzos=
-  file: 
-    - JamomaPd-Linux-x86_64.tar.gz
-    - JamomaPd-OSX.tar.gz
-    - JamomaPd-Linux-RaspberryPi.tar.gz
-    - JamomaPd-Windows.zip
+  file_glob: true
+  file: ${HOME}/build/${TRAVIS_REPO_SLUG}/JamomaPd*
   on:
     repo: jamoma/JamomaPureData

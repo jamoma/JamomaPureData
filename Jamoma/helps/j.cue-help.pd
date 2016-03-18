@@ -1,4 +1,5 @@
-#N canvas 595 327 1235 561 10;
+#N canvas 422 264 1235 561 10;
+#N canvas 626 70 1337 518 Basic 0;
 #X obj 519 191 j.cue;
 #X obj 388 409 j.parameter test @type decimal;
 #X obj 388 439 j.parameter test2 @type decimal;
@@ -39,12 +40,16 @@
 #X text 826 51 Output cue content through the leftmost outlet;
 #X msg 869 69 output init;
 #X msg 879 89 output anotherCue;
-#X text 909 124 you may also want to get the saved state of a particular
+#X text 899 124 you may also want to get the saved state of a particular
 node;
 #X msg 889 109 output init /my/test;
 #X msg 781 220 write cue-list.txt;
 #X msg 791 240 read cue-list.txt;
 #X text 774 201 Read and write cue files;
+#X msg 813 160 dump;
+#X text 844 160 send out all j.cue content through right most outlet
+;
+#X obj 552 133 r to-j.cue;
 #X connect 0 0 3 0;
 #X connect 0 1 4 0;
 #X connect 1 0 6 0;
@@ -66,3 +71,36 @@ node;
 #X connect 26 0 0 0;
 #X connect 27 0 0 0;
 #X connect 28 0 0 0;
+#X connect 30 0 0 0;
+#X connect 32 0 0 0;
+#X restore 280 134 pd Basic;
+#X text 271 74 j.cue : store and recall the states of several models
+;
+#N canvas 0 22 962 336 Interpolation 0;
+#X text 54 81 1 load a cue list;
+#X floatatom 43 221 5 0 0 0 - - -, f 5;
+#X obj 79 219 j.remote /my/test;
+#X floatatom 43 241 5 0 0 0 - - -, f 5;
+#X obj 79 239 j.remote /my/test2;
+#X msg 504 141 interpolate init anotherCue \$1;
+#X floatatom 503 116 5 0 0 0 - - -, f 5;
+#X obj 259 235 s to-j.cue;
+#X text 508 88 Interpolate between two states;
+#X text 265 80 Go to state in x millisecond;
+#X msg 281 126 set ramp init \$1;
+#X floatatom 281 105 5 0 0 0 - - -, f 5;
+#X msg 291 167 recall init;
+#X msg 146 138 recall anotherCue;
+#X msg 61 106 read cue-list.txt;
+#X connect 1 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 3 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
+#X connect 10 0 7 0;
+#X connect 11 0 10 0;
+#X connect 12 0 7 0;
+#X connect 13 0 7 0;
+#X connect 14 0 7 0;
+#X restore 279 196 pd Interpolation;

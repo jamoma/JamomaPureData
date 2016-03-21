@@ -144,8 +144,8 @@ t_symbol *jamoma_patcher_get_hierarchy(t_canvas *canvas)
 {
     if ( canvas->gl_owner == NULL )
         return _sym_topmost;
-    else if ( canvas->gl_isgraph )
-        return _sym_bpatcher;
+    // else if ( canvas->gl_isgraph )
+    //    return _sym_bpatcher;
     else return _sym_subpatcher;
 }
 

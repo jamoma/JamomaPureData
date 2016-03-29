@@ -12,16 +12,13 @@ For reference, it's based on https://github.com/jamoma/JamomaMax/commit/957d817c
 ##Quickstart - 3 steps
 ####1 - Download the Jamoma library for Pure Data
 You can found nightly-builds [on this page](http://jamoma.org/download/JamomaPd/nightly-builds/).
-####2 - Move the Jamoma library to the right folder
-To use this library with Pd, you have to move the Jamoma folder to 
-#####***Linux***
-    ~/pd-externals
-#####***OSX***
-    ~/Library/Pd    
-You need to create the 'Pd' folder if it doesn't exist.
-#####***Windows***
-    %AppData%/Pd
-####2 - Load the Jamoma library on startup
+####2 - Move the Jamoma library to the Pd's externals folder
+Move the Jamoma folder to the Pd's folder, depending on your plateform :
+- `~/pd-externals` on Linux
+- `~/Library/Pd` on Mac OS (create it if it doesn't exists)
+- `%AppData%\Pd\` on Windows
+ 
+####3 - Load the Jamoma library on startup
 To add a library at startup on Pd-extended, go to Preferences and add in the "Startup flag" (or something like that) field : `-lib Jamoma`.
 If you are using Pd Vanilla (and I encourage you to do so), go to Preferences->Startup, add a new and type `Jamoma`.
 
@@ -52,10 +49,7 @@ To build with ninja / clang, from the cmake step ;
     ninja
     ninja install
 
-After the install step you should have a working package located at `JamomaInstall/jamoma/JamomaPd/Jamoma`. You can copy this directly to your Pd externals directory :
-- `~/pd-externals` on Linux
-- `~/Library/Pd` on Mac OS (create it if it doesn't exists)
-- `%AppData%\Pd\` on Windows)
+After the install step you should have a working package located at `JamomaInstall/jamoma/JamomaPd/Jamoma`. You can then follow steps 2 and 3 from the Quickstart section above.
 
 If you want to get involved in development then you may want to have a package with versionned files, so every changes in help for instance will appear in your versionning tool. For that, I sugguest to copy the package from `JamomaInstall/jamoma/JamomaPd/Jamoma` and erase the `Jamoma` folder at the root of the repository. Then make a symlink to that directory into your Pd externals folder with (for Linux) :
 
